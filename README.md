@@ -68,7 +68,7 @@ lvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 最初由微软提议的语言服务协议(LSP)现在可谓百花齐放, 它运行在后台解析代码符号并指导客户端编辑器的行为: 代码补全, 语法提示, 代码格式化, 类型提示, 文档提示, 代码导航, 符号搜索, 重构等等功能.
 
-现在 Neovim 已内建支持 LSP, 不再像以前那样, 市面上多个插件提供语法解析功能, 要想获取获取结果就要针对每个插件都做适配. Neovim 内建 LSP 后提供了同一接口获取有关信息, 极大方便了插件生态发展.
+现在 Neovim 已内建支持 LSP, 不再像以前那样, 有许多配置提供都能提供以上功能, 要想获取结果就要针对每个插件都做适配. Neovim 内建 LSP 后提供了同一接口获取有关信息, 极大方便了插件生态发展.
 
 LunarVim 默认当你打开文件时自动下载对应 Language Server, 你可能有如下情景:
 
@@ -78,7 +78,7 @@ LunarVim 默认当你打开文件时自动下载对应 Language Server, 你可�
   1. 在 config.lua 中添加,
 
      ```lua
-     vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" }) -- 禁用默认pyright
+     vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" }) -- 关闭默认的pyright
      ```
 
   2. 保存执行`:LvimCacheReset`重置原有 language server 配置缓存
@@ -95,13 +95,40 @@ LunarVim 默认当你打开文件时自动下载对应 Language Server, 你可�
 
 静态分析器可以为你的代码提供额外的提醒警告, 例如指出某些代码风格的问题, 以及一些常见的 bug. 大多数语言服务提供的语法警告功能并不强大, 也仅仅是语法级别的错误提示, 所以才需要额外的静态解析器.
 
-LunarVim 默认均为启动 Linter/Formatter, 创建~/.config/lvim/after/ftplugin/c.lua, 并添加启动代码即可, 示例可见[LunarVim](https://www.lunarvim.org/languages/#linting-formatting).
+LunarVim 默认均为启动 Linter 与 Formatter, 创建`~/.config/lvim/after/ftplugin/<lang_type>.lua`, 并添加启动代码即可, 示例可见[LunarVim](https://www.lunarvim.org/languages/#linting-formatting).
 
 你可以执行`:NulllsInfo`查看当前文件类型对应可用的 Linter 和 Formatter
 
 ```lua
+local formatters = require "lvim.lsp.null-ls.formatters"
+formatters.setup {
+  { command = "black" },
+  {
+    command = "prettier",
+    args = { "--print-width", "100" },
+    filetypes = { "typescript", "typescriptreact" },
+  },
+}
+
 local linters = require "lvim.lsp.null-ls.linters"
-linters.setup({{command = "flake8", filetypes = { "python" } }})
+linters.setup {
+  { command = "flake8" },
+  {
+    command = "shellcheck",
+    args = { "--severity", "warning" },
+  },
+  {
+    command = "codespell",
+    filetypes = { "javascript", "python" },
+  },
+}
+
+local code_actions = require "lvim.lsp.null-ls.code_actions"
+code_actions.setup {
+  {
+    command = "proselint"
+  },
+}
 ```
 
 ### Formatter
