@@ -17,7 +17,7 @@
 ## 前言
 
 自从 NeoVim 支持[LSP](https://microsoft.github.io/language-server-protocol/)并转用[Lua](https://www.lua.org/about.html)作为首席插件语言代替又丑又慢 VimL 后, 使用体验直接翻倍。
-[LunarVim](https://github.com/LunarVim/LunarVim)就是基于全新 Neovim Lua 生态打造的配置集合, 旨在将 Neovim 打造成高性能的 IDE.
+[LunarVim](https://github.com/LunarVim/LunarVim)就是基于全新 Neovim Lua 生态打造的配置集合, 旨在将 Neovim 打造成高性能的 IDE.迁移到 LunarVim 后, nvim 启动时间从原来的 829.953ms 降到了 187.835ms.
 
 ## 安装
 
