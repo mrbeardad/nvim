@@ -10,7 +10,7 @@ Modern neovim support lua as first class language, it is much faster than viml. 
 
 1. Fisrt at all, you need to install [LunarVim](https://www.lunarvim.org/01-installing.html#installation). **Beware**:
 
-   - You may nees to execute: `npm set prefix ~/.local -g` to solve access permission problem without sudo
+   - You may need to execute: `npm set prefix ~/.local -g` to solve access permission problem without sudo
    - You may need to add ~/.cargo/bin to your PATH environment value
 
 2. Then, install this customized config for lunarvim

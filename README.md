@@ -12,6 +12,7 @@
     - [Linter](#linter)
     - [Formatter](#formatter)
     - [Syntax](#syntax)
+  - [快捷键](#快捷键)
 
 ## 前言
 
@@ -95,7 +96,7 @@ LunarVim 默认当你打开文件时自动下载对应 Language Server, 你可�
 
 静态分析器可以为你的代码提供额外的提醒警告, 例如指出某些代码风格的问题, 以及一些常见的 bug. 大多数语言服务提供的语法警告功能并不强大, 也仅仅是语法级别的错误提示, 所以才需要额外的静态解析器.
 
-LunarVim 默认均为启动 Linter 与 Formatter, 创建`~/.config/lvim/after/ftplugin/<lang_type>.lua`, 并添加启动代码即可, 示例可见[LunarVim](https://www.lunarvim.org/languages/#linting-formatting).
+LunarVim 默认均未启动 Linter 与 Formatter, 创建`~/.config/lvim/after/ftplugin/<lang_type>.lua`, 并添加启动代码即可, 示例可见[LunarVim](https://www.lunarvim.org/languages/#linting-formatting).
 
 你可以执行`:NulllsInfo`查看当前文件类型对应可用的 Linter 和 Formatter
 
@@ -161,5 +162,109 @@ lvim.builtin.treesitter.ensure_installed = {
   "markdown",
   "json",
   "yaml",
+}
+```
+
+## 快捷键
+
+基本与[我的 VSCode 配置](https://github.com/mrbeardad/MyIDE/blob/master/vscode.md)相同, 为了在终端中使用 ctrl+shift 开头的按键,以及区分 Tab 和 Ctrl+i, 我重映射了我的终端按键, 将它们映射到一些不常用按键上, 所有相关按键都在[config.lua](config.lua)中标记为 HACK, 你可以尽情修改.
+
+我的 Windows Terminal 部分配置
+
+```json
+{
+  "actions": [
+    {
+      "keys": "ctrl+shift+f",
+      "command": {
+        "action": "sendInput",
+        "input": "\u001bf" // <M-f>
+      }
+    },
+    {
+      "keys": "ctrl+shift+h",
+      "command": {
+        "action": "sendInput",
+        "input": "\u001bH" // <M-H>
+      }
+    },
+    {
+      "keys": "ctrl+alt+enter",
+      "command": {
+        "action": "sendInput",
+        "input": "\u001b\u000d" // <M-CR>
+      }
+    },
+    {
+      "command": {
+        "action": "sendInput",
+        "input": "\u001bI"
+      },
+      "keys": "ctrl+i" // <M-I>
+    },
+    {
+      "keys": "ctrl+shift+j",
+      "command": {
+        "action": "sendInput",
+        "input": "\u001bJ" // <M-J>
+      }
+    },
+    {
+      "keys": "ctrl+shift+k",
+      "command": {
+        "action": "sendInput",
+        "input": "\u001bK" // <M-K>
+      }
+    },
+    {
+      "keys": "ctrl+shift+l",
+      "command": {
+        "action": "sendInput",
+        "input": "\u001bL" // <M-L>
+      }
+    },
+    {
+      "keys": "ctrl+shift+s",
+      "command": {
+        "action": "sendInput",
+        "input": "\u001bS" // <M-S>
+      }
+    },
+    {
+      "keys": "ctrl+shift+o",
+      "command": {
+        "action": "sendInput",
+        "input": "\u001bO" // <M-O>
+      }
+    },
+    {
+      "keys": "ctrl+shift+n",
+      "command": {
+        "action": "sendInput",
+        "input": "\u001bN" // <M-N>
+      }
+    },
+    {
+      "keys": "ctrl+shift+m",
+      "command": {
+        "action": "sendInput",
+        "input": "\u001bM" // <M-M>
+      }
+    },
+    {
+      "keys": "ctrl+.",
+      "command": {
+        "action": "sendInput",
+        "input": "\u001b." // <M-.>
+      }
+    },
+    {
+      "keys": "ctrl+shift+p",
+      "command": {
+        "action": "sendInput",
+        "input": "\u001bP" // <M-P>
+      }
+    }
+  ]
 }
 ```
