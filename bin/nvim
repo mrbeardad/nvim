@@ -1,0 +1,12 @@
+#!/bin/bash
+# used for neovide, copy to /usr/local/bin/nvim
+if [[ -s "$LUNARVIM_RUNTIME_DIR" ]]; then
+  exec /bin/nvim "$@"
+elif [[ -r ~/.local/share/lunarvim/lvim/init.lua ]]; then
+  export LUNARVIM_RUNTIME_DIR=${LUNARVIM_RUNTIME_DIR:-~/.local/share/lunarvim}
+  export LUNARVIM_CONFIG_DIR=${LUNARVIM_CONFIG_DIR:-~/.config/lvim}
+  export LUNARVIM_CACHE_DIR=${LUNARVIM_CACHE_DIR:-~/.cache/lvim}
+  exec /bin/nvim -u "$LUNARVIM_RUNTIME_DIR/lvim/init.lua" "$@"
+else
+  exec /bin/nvim "$@"
+fi

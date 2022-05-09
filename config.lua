@@ -589,15 +589,6 @@ lvim.plugins = {
     end,
   }, {
     "p00f/nvim-ts-rainbow"
-  }, {
-    'wfxr/minimap.vim',
-    run = "cargo install --locked code-minimap",
-    cmd = { "Minimap", "MinimapClose", "MinimapToggle", "MinimapRefresh", "MinimapUpdateHighlight" },
-    config = function()
-      vim.cmd("let g:minimap_width = 10")
-      vim.cmd("let g:minimap_auto_start = 0")
-      vim.cmd("let g:minimap_auto_start_win_enter = 0")
-    end,
   },
 }
 
@@ -613,12 +604,6 @@ lvim.plugins = {
 --   endf
 -- ]]
 vim.cmd [[
-function! AutoOpenMinimap()
-  if &diff == 0 && &bt != 'nofile' && exists(':Minimap') == 2
-    Minimap
-  endif
-endf
-
 function! SmartClose() abort
   if &bt ==# 'nofile' || &bt ==# 'quickfix'
     quit
@@ -669,5 +654,5 @@ endf
 ]]
 vim.api.nvim_set_keymap('n', 'q', '<CMD>call SmartClose()<CR>', { noremap = true })
 lvim.autocommands.custom_groups = {
-  { "WinEnter", "*", [[call AutoOpenMinimap()]] }
+  -- { "WinEnter", "*", [[call AutoOpenMinimap()]] }
 }
