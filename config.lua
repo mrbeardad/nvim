@@ -253,11 +253,12 @@ lvim.builtin.nvimtree.show_icons.git = 1
 
 lvim.builtin.bufferline.options.always_show_bufferline = true
 
-local components = require("lvim.core.lualine.components")
+lvim.builtin.lualine.options.theme = "material"
 lvim.builtin.lualine.options = {
   globalstatus       = true,
   section_separators = { left = '', right = ' ' },
 }
+local components = require("lvim.core.lualine.components")
 lvim.builtin.lualine.sections.lualine_a = {
   { '', type = 'stl' }
 }
@@ -266,17 +267,20 @@ lvim.builtin.lualine.sections.lualine_b = {
     function()
       return "  " .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
     end,
+    color = { bg = "#454c5a" },
+    separator = { right = '' }
   },
   components.branch
 }
 lvim.builtin.lualine.sections.lualine_x = {
   components.diagnostics,
+  { '', type = 'stl', color = { fg = "#454c5a" } }
 }
 lvim.builtin.lualine.sections.lualine_y = {
   components.treesitter,
   components.lsp,
   components.filetype,
-  "fileformat",
+  { "fileformat", color = { fg = "#bbbbbb" } },
 }
 lvim.builtin.lualine.sections.lualine_z = {
   { ' %l/%L  %c', type = 'stl' },
