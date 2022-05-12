@@ -133,7 +133,7 @@ vim.api.nvim_set_keymap('n', '<C-k>u', ':try | %bd | catch | endtry<CR>', { nore
 vim.api.nvim_set_keymap('n', '<C-k>w', '<CMD>%bd<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<Tab>', '<CMD>wincmd w<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<S-Tab>', '<CMD>wincmd p<CR>', { noremap = true })
-lvim.builtin.which_key.mappings["q"] = { "<CMD>call SmartClose<CR>", "Quit Cleverly" }
+lvim.builtin.which_key.mappings["q"] = { "<CMD>call SmartClose()<CR>", "Quit Cleverly" }
 
 ----------------------------------------
 -- 语言服务
@@ -211,7 +211,7 @@ local _, actions = pcall(require, "telescope.actions")
 lvim.builtin.telescope.defaults.mappings = {
   -- for input mode
   i = {
-    ["<Esc>"] = actions.close,
+    -- ["<Esc>"] = actions.close,
     ["<C-b>"] = actions.preview_scrolling_up,
     ["<C-u>"] = nil
   },
