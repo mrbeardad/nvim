@@ -382,13 +382,10 @@ lvim.plugins = {
     event = "WinScrolled",
     config = function()
       require('neoscroll').setup({
-        mappings = { '<C-d>', 'zz' },
+        mappings = { '<C-d>', '<C-u>', 'zz' },
         respect_scrolloff = true,
         easing_function = "circular", -- quadratic, cubic, quartic, quintic, circular, sine
       })
-      vim.api.nvim_set_keymap("n", "<C-b>", "<CMD>lua require('neoscroll').scroll(-vim.wo.scroll, true, 250)<CR>", { noremap = true })
-      vim.api.nvim_set_keymap("v", "<C-b>", "<CMD>lua require('neoscroll').scroll(-vim.wo.scroll, true, 250)<CR>", { noremap = true })
-      vim.api.nvim_set_keymap("s", "<C-b>", "<CMD>lua require('neoscroll').scroll(-vim.wo.scroll, true, 250)<CR>", { noremap = true })
     end
   }, {
     "lukas-reineke/indent-blankline.nvim",
