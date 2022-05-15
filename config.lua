@@ -19,7 +19,7 @@ lvim.format_on_save = true
 vim.opt.guicursor = 'n:block-blinkon10,i-ci:ver15-blinkon10,c:hor15-blinkon10,v-sm:block,ve:ver15,r-cr-o:hor10'
 vim.opt.guifont = "NerdCodePro Font:h13"
 vim.g.neovide_cursor_vfx_mode = "ripple"
-vim.g.neovide_cursor_animation_length = 0.01
+-- vim.g.neovide_cursor_animation_length = 0.01
 
 ----------------------------------------
 -- KEYMAPPINGS
@@ -82,7 +82,7 @@ vim.api.nvim_set_keymap('i', '<C-j>', '<End><CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-j>', '<CMD>put =repeat(nr2char(10), v:count1)<CR>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-k>', "repeat('<Del>', strchars(getline('.')) - getcurpos()[2] + 1)", { noremap = true, expr = true })
 vim.api.nvim_set_keymap('c', '<C-k>', "repeat('<Del>', strchars(getcmdline()) - getcmdpos() + 1)", { noremap = true, expr = true })
-vim.api.nvim_set_keymap('i', '<C-l>', '<C-Right>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<C-l>', '<Esc>ea', { noremap = true })
 vim.api.nvim_set_keymap('c', '<C-l>', '<C-Right>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-z>', '<CMD>undo<CR>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-r><C-r>', '<CMD>redo<CR>', { noremap = true })
@@ -219,7 +219,7 @@ local _, actions = pcall(require, "telescope.actions")
 lvim.builtin.telescope.defaults.mappings = {
   -- for input mode
   i = {
-    -- ["<Esc>"] = actions.close,
+    ["<Esc>"] = actions.close,
     ["<C-b>"] = actions.preview_scrolling_up,
     ["<C-u>"] = nil
   },
