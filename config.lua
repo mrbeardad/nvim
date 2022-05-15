@@ -8,6 +8,7 @@ vim.opt.directory = join_paths(get_cache_dir(), "swap")
 vim.opt.list = true
 vim.opt.listchars = 'tab:→ ,eol:↵,trail:·,extends:↷,precedes:↶'
 vim.opt.wildignorecase = true
+vim.opt.colorcolumn = '100'
 lvim.colorscheme = "onedarker"
 lvim.log.level = "warn"
 lvim.format_on_save = true
@@ -119,7 +120,7 @@ lvim.builtin.which_key.mappings["bp"] = { "<CMD>%d<CR>\"+P", "Patse Clipboard to
 lvim.builtin.which_key.mappings["<Tab>"] = { ":try | b# | catch | endtry<CR>", "Switch Buffer" }
 lvim.keys.normal_mode["<C-k>"] = false
 vim.api.nvim_set_keymap('n', '<C-k><C-o>', '<CMD>Telescope projects<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-k>o', ":e <C-r>=fnamemodify('.',':p')<CR>", { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-k>o', ":e <C-r>=fnamemodify(expand('%:p'), ':p:h')<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-k>n', '<CMD>enew<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-k>r', '<CMD>Telescope oldfiles<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-p>', '<CMD>Telescope find_files<CR>', { noremap = true })
@@ -182,8 +183,12 @@ vim.api.nvim_set_keymap('n', ']e', "<CMD>lua vim.diagnostic.goto_next()<CR>", { 
 ----------------------------------------
 -- 其它按键: vim-translator, Calc, ...
 ----------------------------------------
-vim.api.nvim_set_keymap('n', '<M-z>', "<CMD>let &wrap=!&wrap<CR>", { noremap = true })
+-- HACK: terminal map: ctrl+shift+e -> alt+shift+e
+vim.api.nvim_set_keymap('n', '<M-E>', "<CMD>NvimTreeToggle<CR>", { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-S-E>', "<CMD>NvimTreeToggle<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<M-e>', "<CMD>call Open_file_in_explorer()<CR>", { noremap = true })
+vim.api.nvim_set_keymap('n', '<M-z>', "<CMD>let &wrap=!&wrap<CR>", { noremap = true })
+lvim.builtin.which_key.mappings["sn"] = { "<CMD>lua require('telescope').extensions.notify.notify(<opts>)<CR>", "Notifications" }
 -- HACK: terminal map: ctrl+shift+p -> alt+shift+p
 vim.api.nvim_set_keymap('n', '<M-P>', "<CMD>Telescope commands<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-S-P>', "<CMD>Telescope commands<CR>", { noremap = true })
@@ -198,10 +203,11 @@ lvim.builtin.which_key.mappings["c"] = nil
 lvim.builtin.which_key.mappings["e"] = nil
 lvim.builtin.which_key.mappings["a"] = {
   name = "Application",
-  t = { "<CMD>TodoTrouble<CR>", "TODO" },
   e = { "<CMD>NvimTreeToggle<CR>", "Explorer" },
-  c = { "<CMD>Calc<CR>", "Calculator" },
+  o = { "<CMD>SymbolsOutline<CR>", "Outline" },
+  t = { "<CMD>TodoTrouble<CR>", "TODO" },
   u = { "<CMD>UndotreeToggle<CR>", "UndoTree" },
+  c = { "<CMD>Calc<CR>", "Calculator" },
 }
 
 ----------------------------------------
@@ -321,7 +327,7 @@ lvim.builtin.treesitter.ensure_installed = {
 
 -- ---WARN: configure a server manually. !!Requires `:LvimCacheReset` to take effect!!
 -- ---see the full default list `:lua print(vim.inspect(lvim.lsp.automatic_configuration.skipped_servers))`
--- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "clangd" })
 -- local opts = {} -- check the lspconfig documentation for a list of all possible options
 -- require("lvim.lsp.manager").setup("pyright", opts)
 
@@ -542,6 +548,7 @@ lvim.plugins = {
     cmd = { "Trouble*" },
     setup = function()
       -- HACK: terminal map: ctrl+shift+m -> alt+shift+m
+      vim.api.nvim_set_keymap('n', '<M-M>', "<CMD>TroubleToggle<CR>", { noremap = true })
       vim.api.nvim_set_keymap('n', '<C-S-M>', "<CMD>TroubleToggle<CR>", { noremap = true })
     end
   }, {
@@ -645,6 +652,16 @@ lvim.plugins = {
   }, {
     "mbbill/undotree",
     cmd = { "UndotreeToggle" }
+  }, {
+    "p00f/clangd_extensions.nvim",
+    ft = { "c", "cpp" },
+    config = function()
+      require("clangd_extensions").setup({
+        server = {
+          cmd = { "clangd", "--clang-tidy", "--enable-config" }
+        }
+      })
+    end
   }
 }
 
