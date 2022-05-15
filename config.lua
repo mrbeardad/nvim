@@ -16,7 +16,7 @@ lvim.format_on_save = true
 -- GUI
 ----------------------------------------
 vim.opt.guicursor = 'n:block-blinkon10,i-ci:ver15-blinkon10,c:hor15-blinkon10,v-sm:block,ve:ver15,r-cr-o:hor10'
-vim.opt.guifont = "NerdCodePro Font:h10"
+vim.opt.guifont = "NerdCodePro Font:h13"
 vim.g.neovide_cursor_vfx_mode = "ripple"
 vim.g.neovide_cursor_animation_length = 0.01
 
@@ -173,6 +173,8 @@ vim.api.nvim_set_keymap('n', '<M-.>', '<CMD>lua vim.lsp.buf.code_action()<CR>', 
 vim.api.nvim_set_keymap('n', '<C-.>', '<CMD>lua vim.lsp.buf.code_action()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-_>', 'gcc', {})
 vim.api.nvim_set_keymap('i', '<C-_>', '<CMD>normal gcc<CR>', {})
+vim.api.nvim_set_keymap('n', '<C-/>', 'gcc', {})
+vim.api.nvim_set_keymap('i', '<C-/>', '<CMD>normal gcc<CR>', {})
 vim.api.nvim_set_keymap('n', '<C-t>', '<CMD>Telescope lsp_workspace_symbols<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '[e', "<CMD>lua vim.diagnostic.goto_prev()<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', ']e', "<CMD>lua vim.diagnostic.goto_next()<CR>", { noremap = true })
@@ -246,7 +248,7 @@ lvim.builtin.notify.active = true
 
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.shell = "/bin/bash"
-lvim.builtin.terminal.open_mapping = "<M-`>"
+lvim.builtin.terminal.open_mapping = "<C-Space>"
 
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 1
