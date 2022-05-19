@@ -51,14 +51,14 @@ vim.api.nvim_set_keymap('c', '<M-W>', "\\<\\><Left><Left>", { noremap = true })
 vim.api.nvim_set_keymap('c', '<M-r>', "\\v", { noremap = true })
 vim.api.nvim_set_keymap('c', '<M-c>', "\\C", { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-f>', '<CMD>Telescope current_buffer_fuzzy_find<CR>', { noremap = true })
--- HACK: terminal map: ctrl+shift+f -> alt+f
+-- NOTE: terminal map: ctrl+shift+f -> alt+f
 vim.api.nvim_set_keymap('n', '<M-f>', '<CMD>Telescope live_grep<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-S-F>', '<CMD>Telescope live_grep<CR>', { noremap = true })
 
 ----------------------------------------
 -- 标签跳转: vim-bookmarks, telescope-vim-bookmarks
 ----------------------------------------
--- HACK: terminal map: ctrl+i -> alt+shift+i
+-- NOTE: terminal map: ctrl+i -> alt+shift+i
 vim.api.nvim_set_keymap('n', '<M-I>', '<C-i>', { noremap = true })
 vim.api.nvim_set_keymap('n', '[h', "<CMD>Gitsigns next_hunk<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', ']h', "<CMD>Gitsigns prev_hunk<CR>", { noremap = true })
@@ -68,12 +68,12 @@ vim.api.nvim_set_keymap('n', ']h', "<CMD>Gitsigns prev_hunk<CR>", { noremap = tr
 ----------------------------------------
 vim.api.nvim_set_keymap('n', '<', '<<', { noremap = true })
 vim.api.nvim_set_keymap('n', '>', '>>', { noremap = true })
--- HACK: terminal map: ctrl+shift+j -> alt+shift+j
+-- NOTE: terminal map: ctrl+shift+j -> alt+shift+j
 vim.api.nvim_set_keymap('i', '<M-J>', '<CMD>m .+1<CR><Cmd>normal ==<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<M-J>', '<CMD>m .+1<CR><Cmd>normal ==<CR>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-S-J>', '<CMD>m .+1<CR><Cmd>normal ==<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-S-J>', '<CMD>m .+1<CR><Cmd>normal ==<CR>', { noremap = true })
--- HACK: terminal map: ctrl+shift+k -> alt+shift+k
+-- NOTE: terminal map: ctrl+shift+k -> alt+shift+k
 vim.api.nvim_set_keymap('i', '<M-K>', '<CMD>m .-2<CR><Cmd>normal ==<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<M-K>', '<CMD>m .-2<CR><Cmd>normal ==<CR>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-S-K>', '<CMD>m .-2<CR><Cmd>normal ==<CR>', { noremap = true })
@@ -82,7 +82,7 @@ vim.api.nvim_set_keymap('i', '<C-j>', '<End><CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-j>', '<CMD>put =repeat(nr2char(10), v:count1)<CR>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-k>', "repeat('<Del>', strchars(getline('.')) - getcurpos()[2] + 1)", { noremap = true, expr = true })
 vim.api.nvim_set_keymap('c', '<C-k>', "repeat('<Del>', strchars(getcmdline()) - getcmdpos() + 1)", { noremap = true, expr = true })
-vim.api.nvim_set_keymap('i', '<C-l>', '<Esc>ea', { noremap = true })
+vim.api.nvim_set_keymap('i', '<C-l>', '<CMD>call C_Right()<CR><Right>', { noremap = true })
 vim.api.nvim_set_keymap('c', '<C-l>', '<C-Right>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-z>', '<CMD>undo<CR>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-r><C-r>', '<CMD>redo<CR>', { noremap = true })
@@ -125,7 +125,7 @@ vim.api.nvim_set_keymap('n', '<C-k>n', '<CMD>enew<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-k>r', '<CMD>Telescope oldfiles<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-p>', '<CMD>Telescope find_files<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-s>', '<CMD>w<CR>', { noremap = true })
--- HACK: terminal map: ctrl+shift+s -> alt+shift+s
+-- NOTE: terminal map: ctrl+shift+s -> alt+shift+s
 vim.api.nvim_set_keymap('n', '<M-S>', ":saveas <C-r>=fnamemodify('.',':p')<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-S-S>', ":saveas <C-r>=fnamemodify('.',':p')<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-k>s', '<CMD>wa<CR>', { noremap = true })
@@ -133,7 +133,7 @@ vim.api.nvim_set_keymap('n', '<C-k>x', '<CMD>BufferKill<CR>', { noremap = true }
 vim.api.nvim_set_keymap('n', '<C-k>u', ':try | %bd | catch | endtry<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<C-k>w', '<CMD>%bd<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<Tab>', '<CMD>wincmd w<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<S-Tab>', '<CMD>wincmd p<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<S-Tab>', '<CMD>wincmd W<CR>', { noremap = true })
 lvim.builtin.which_key.mappings["q"] = { "<CMD>call SmartClose()<CR>", "Quit Cleverly" }
 
 ----------------------------------------
@@ -143,20 +143,20 @@ lvim.builtin.cmp.mapping["<C-j>"] = nil
 lvim.builtin.cmp.mapping["<C-k>"] = nil
 lvim.builtin.cmp.mapping["<C-e>"] = nil
 lvim.builtin.cmp.mapping["<C-d>"] = nil
-lvim.builtin.cmp.mapping["<CR>"] = nil
+-- lvim.builtin.cmp.mapping["<CR>"] = nil
 lvim.builtin.cmp.confirm_opts.select = true
 local cmp = require("cmp")
 local luasnip = require("luasnip")
 local lccm = require("lvim.core.cmp").methods
--- HACK: terminal map: ctrl+i -> alt+shift+i
+-- NOTE: terminal map: ctrl+i -> alt+shift+i
 lvim.builtin.cmp.mapping["<M-I>"] = cmp.mapping.complete()
 lvim.builtin.cmp.mapping["<Tab>"] = cmp.mapping(function(fallback)
   if luasnip.expandable() then
     luasnip.expand()
-  elseif lccm.jumpable() then
-    luasnip.jump(1)
   elseif cmp.visible() then
     cmp.confirm(lvim.builtin.cmp.confirm_opts)
+  elseif lccm.jumpable() then
+    luasnip.jump(1)
   elseif lccm.check_backspace() then
     fallback()
   elseif lccm.is_emmet_active() then
@@ -166,10 +166,11 @@ lvim.builtin.cmp.mapping["<Tab>"] = cmp.mapping(function(fallback)
   end
 end, { "i", "s", }
 )
+vim.api.nvim_set_keymap('n', '<M-LeftMouse>', '<CMD>lua vim.lsp.buf.definition()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<M-F>', '<CMD>lua require("lvim.lsp.utils").format()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<M-F>', '<CMD>lua require("lvim.lsp.utils").format()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<F2>', "<CMD>lua vim.lsp.buf.rename()<CR>", { noremap = true })
--- HACK: terminal map: ctrl+. -> alt+.
+-- NOTE: terminal map: ctrl+. -> alt+.
 vim.api.nvim_set_keymap('n', '<M-.>', '<CMD>lua vim.lsp.buf.code_action()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-.>', '<CMD>lua vim.lsp.buf.code_action()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-_>', 'gcc', {})
@@ -183,13 +184,13 @@ vim.api.nvim_set_keymap('n', ']e', "<CMD>lua vim.diagnostic.goto_next()<CR>", { 
 ----------------------------------------
 -- 其它按键: vim-translator, Calc, ...
 ----------------------------------------
--- HACK: terminal map: ctrl+shift+e -> alt+shift+e
+-- NOTE: terminal map: ctrl+shift+e -> alt+shift+e
 vim.api.nvim_set_keymap('n', '<M-E>', "<CMD>NvimTreeToggle<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-S-E>', "<CMD>NvimTreeToggle<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<M-e>', "<CMD>call Open_file_in_explorer()<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<M-z>', "<CMD>let &wrap=!&wrap<CR>", { noremap = true })
-lvim.builtin.which_key.mappings["sn"] = { "<CMD>lua require('telescope').extensions.notify.notify(<opts>)<CR>", "Notifications" }
--- HACK: terminal map: ctrl+shift+p -> alt+shift+p
+lvim.builtin.which_key.mappings["sn"] = { "<CMD>lua require('telescope').extensions.notify.notify()<CR>", "Notifications" }
+-- NOTE: terminal map: ctrl+shift+p -> alt+shift+p
 vim.api.nvim_set_keymap('n', '<M-P>', "<CMD>Telescope commands<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-S-P>', "<CMD>Telescope commands<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-k><C-s>', "<CMD>Telescope keymaps<CR>", { noremap = true })
@@ -539,7 +540,7 @@ lvim.plugins = {
         position = 'right',
         width = 20,
       }
-      -- HACK: terminal map: ctrl+shift+o -> alt+shift+o
+      -- NOTE: terminal map: ctrl+shift+o -> alt+shift+o
       vim.api.nvim_set_keymap('n', '<M-O>', '<CMD>SymbolsOutline<CR>', { noremap = true })
       vim.api.nvim_set_keymap('n', '<C-S-O>', '<CMD>SymbolsOutline<CR>', { noremap = true })
     end
@@ -547,7 +548,7 @@ lvim.plugins = {
     "folke/trouble.nvim",
     cmd = { "Trouble*" },
     setup = function()
-      -- HACK: terminal map: ctrl+shift+m -> alt+shift+m
+      -- NOTE: terminal map: ctrl+shift+m -> alt+shift+m
       vim.api.nvim_set_keymap('n', '<M-M>', "<CMD>TroubleToggle<CR>", { noremap = true })
       vim.api.nvim_set_keymap('n', '<C-S-M>', "<CMD>TroubleToggle<CR>", { noremap = true })
     end
@@ -625,7 +626,7 @@ lvim.plugins = {
       ]]
     end,
     config = function()
-      -- HACK: terminal map: ctrl+shift+l -> alt+shift+l
+      -- NOTE: terminal map: ctrl+shift+l -> alt+shift+l
       vim.api.nvim_set_keymap('n', '<M-L>', '<Plug>(VM-Select-All)', {})
       vim.api.nvim_set_keymap('v', '<M-L>', '<Plug>(VM-Visual-All)', {})
       vim.api.nvim_set_keymap('n', '<C-S-L>', '<Plug>(VM-Select-All)', {})
@@ -658,7 +659,11 @@ lvim.plugins = {
     config = function()
       require("clangd_extensions").setup({
         server = {
-          cmd = { "clangd", "--clang-tidy", "--enable-config" }
+          cmd = { "clangd", "--clang-tidy", "--enable-config" },
+          on_attach = require("lvim.lsp").common_on_attach,
+          on_init = require("lvim.lsp").common_on_init,
+          on_exit = require("lvim.lsp").common_on_exit,
+          capabilities = require("lvim.lsp").common_capabilities(),
         }
       })
     end
@@ -677,6 +682,16 @@ lvim.plugins = {
 --   endf
 -- ]]
 vim.cmd [[
+function! C_Right() abort
+  let left_text = getline('.')[getcurpos()[2]-1:]
+  if left_text =~ '^\W*\s+$'
+    normal $ge
+  elseif left_text =~ '^\W*$'
+    normal $
+  else
+    normal e
+  endif
+endf
 function! SmartClose() abort
   if &bt ==# 'nofile' || &bt ==# 'quickfix'
     quit
@@ -727,4 +742,5 @@ endf
 ]]
 lvim.autocommands.custom_groups = {
   -- { "WinEnter", "*", [[call AutoOpenMinimap()]] }
+  { "FileType", "c,cpp", [[nnoremap <buffer><M-o> <CMD>ClangdSwitchSourceHeader<CR>]] }
 }
