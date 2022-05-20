@@ -96,6 +96,7 @@ vim.api.nvim_set_keymap('n', 'S', 'i<CR><Esc>', { noremap = true })
 -- 复制粘贴
 ----------------------------------------
 vim.opt.clipboard = '' -- lunarvim use system clipboard as default register, reset it
+vim.api.nvim_set_keymap('i', '<C-v>', '<C-r>+', { noremap = true })
 vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true })
 vim.api.nvim_set_keymap('v', '=p', '"0p', { noremap = true })
 vim.api.nvim_set_keymap('n', '=p', '"0p', { noremap = true })
@@ -185,8 +186,8 @@ vim.api.nvim_set_keymap('n', ']e', "<CMD>lua vim.diagnostic.goto_next()<CR>", { 
 -- 其它按键: vim-translator, Calc, ...
 ----------------------------------------
 -- NOTE: terminal map: ctrl+shift+e -> alt+shift+e
-vim.api.nvim_set_keymap('n', '<M-E>', "<CMD>NvimTreeToggle<CR>", { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-S-E>', "<CMD>NvimTreeToggle<CR>", { noremap = true })
+vim.api.nvim_set_keymap('n', '<M-E>', "<CMD>NvimTreeFocus<CR>", { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-S-E>', "<CMD>NvimTreeFocus<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<M-e>', "<CMD>call Open_file_in_explorer()<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<M-z>', "<CMD>let &wrap=!&wrap<CR>", { noremap = true })
 lvim.builtin.which_key.mappings["sn"] = { "<CMD>lua require('telescope').extensions.notify.notify()<CR>", "Notifications" }
@@ -742,5 +743,6 @@ endf
 ]]
 lvim.autocommands.custom_groups = {
   -- { "WinEnter", "*", [[call AutoOpenMinimap()]] }
+  { "BufWinEnter", "NvimTree_1", [[nunmap <buffer><Tab>]] },
   { "FileType", "c,cpp", [[nnoremap <buffer><M-o> <CMD>ClangdSwitchSourceHeader<CR>]] }
 }
