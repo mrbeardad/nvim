@@ -11,7 +11,18 @@ M.config = function()
 		{
 			" ",
 			type = "stl",
+			-- color = { fg = "#b3e1a3" },
 		},
+		-- {
+		-- 	"",
+		-- 	type = "stl",
+		-- 	color = { fg = "#e697a7" },
+		-- },
+		-- {
+		-- 	"",
+		-- 	type = "stl",
+		-- 	color = { fg = "#a4b9ef" },
+		-- },
 	}
 	lvim.builtin.lualine.sections.lualine_b = {
 		{
@@ -85,7 +96,7 @@ M.config = function()
 					if size <= 0 then
 						return ""
 					end
-					local sufixes = { "b", "k", "m", "g" }
+					local sufixes = { "B", "K", "M", "G" }
 					local i = 1
 					while size > 1024 do
 						size = size / 1024

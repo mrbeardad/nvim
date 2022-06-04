@@ -14,37 +14,24 @@ M.config = function()
 		text = {
 			spinner = {
 				" ",
-				" ",
 				" ",
-				" ",
 				" ",
-				" ",
 				" ",
-				" ",
 				" ",
-				" ",
 				" ",
-				" ",
 				" ",
-				" ",
 				" ",
-				" ",
 				" ",
-				" ",
 				" ",
-				" ",
 				" ",
-				" ",
 				" ",
-				" ",
 				" ",
-				" ",
 				" ",
 				" ",
 			},
-			done = "", -- character shown when all tasks are complete
-			commenced = " ", -- message shown when task starts
-			completed = " ", -- message shown when task completes
+			done = " ", -- character shown when all tasks are complete
+			commenced = " ", -- message shown when task starts
+			completed = " ", -- message shown when task completes
 		},
 		align = {
 			bottom = true, -- align fidgets along bottom edge of buffer

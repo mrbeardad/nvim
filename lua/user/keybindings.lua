@@ -34,8 +34,8 @@ M.config = function()
 	map("n", "<M-I>", "<C-i>")
 	map("n", "mm", "<Plug>BookmarkToggle", { noremap = false })
 	map("n", "mi", "<Plug>BookmarkAnnotate", { noremap = false })
-	map("n", "mn", "<Plug>BookmarkNext", { noremap = false })
-	map("n", "mp", "<Plug>BookmarkPrev", { noremap = false })
+	map("n", "]m", "<Plug>BookmarkNext", { noremap = false })
+	map("n", "[m", "<Plug>BookmarkPrev", { noremap = false })
 	map("n", "mc", "<Plug>BookmarkClear", { noremap = false })
 	map("n", "mC", "<Plug>BookmarkClearAll", { noremap = false })
 	map("n", "mjj", "<Plug>BookmarkMoveDown", { noremap = false })
@@ -117,17 +117,28 @@ M.config = function()
 	--------------
 	-- 语言服务 --
 	--------------
+	-- plugin: fidget.nvim
 	-- plugin: lsp_signature.nvim
 	-- plugin: telescope-luasnip.nvim
 	-- plugin: clangd_extensions.nvim
-	lvim.builtin.cmp.mapping["<C-j>"] = nil
-	lvim.builtin.cmp.mapping["<C-k>"] = nil
-	lvim.builtin.cmp.mapping["<C-d>"] = nil
+	-- plugin: nvim-ts-qutotag
 	lvim.builtin.cmp.confirm_opts.select = true
 	local cmp = require("cmp")
 	local luasnip = require("luasnip")
 	local lccm = require("lvim.core.cmp").methods
-	lvim.builtin.cmp.mapping["<M-I>"] = cmp.mapping.complete()
+	lvim.builtin.cmp.mapping["<C-j>"] = nil
+	lvim.builtin.cmp.mapping["<C-k>"] = nil
+	lvim.builtin.cmp.mapping["<C-f>"] = nil
+	lvim.builtin.cmp.mapping["<C-d>"] = nil
+	lvim.builtin.cmp.mapping["<C-e>"] = cmp.mapping.scroll_docs(2)
+	lvim.builtin.cmp.mapping["<C-y>"] = cmp.mapping.scroll_docs(-2)
+	lvim.builtin.cmp.mapping["<M-I>"] = cmp.mapping(function()
+		if cmp.visible() then
+			cmp.abort()
+		else
+			cmp.complete()
+		end
+	end)
 	lvim.builtin.cmp.mapping["<Tab>"] = cmp.mapping(function(fallback)
 		if cmp.visible() then
 			if luasnip.expandable() and cmp.get_active_entry() == nil then
@@ -153,9 +164,10 @@ M.config = function()
 	map("n", "<F2>", "<CMD>lua vim.lsp.buf.rename()<CR>")
 	map("n", "<M-.>", "<CMD>lua vim.lsp.buf.code_action()<CR>")
 	map("n", "<C-.>", "<CMD>lua vim.lsp.buf.code_action()<CR>")
-	map("n", "<C-_>", "<CMD>normal gcc<CR>", { noremap = false })
+	map("n", "<C-_>", "gcc", { noremap = false })
 	map("v", "<C-_>", "<Plug>(comment_toggle_linewise_visual)", { noremap = false })
 	map("i", "<C-_>", "<CMD>normal gcc<CR>")
+	map("n", "<C-S-O>", "<CMD>Telescope lsp_document_symbols<CR>")
 	map("n", "<C-t>", "<CMD>Telescope lsp_workspace_symbols<CR>")
 	map("n", "<M-LeftMouse>", "<LeftMouse><CMD>lua vim.lsp.buf.definition()<CR>")
 	map("n", "[e", "<CMD>lua vim.diagnostic.goto_prev()<CR>")
@@ -203,8 +215,6 @@ M.config = function()
 	-- plugin: trouble.nvim
 	-- plugin: nvim-bqf
 	map("n", "<C-S-E>", "<CMD>NvimTreeFindFile<CR>")
-	map("n", "<C-S-O>", "<CMD>SymbolsOutline<CR>")
-	map("n", "<C-S-T>", "<CMD>TodoTrouble<CR>")
 	map("n", "<C-S-M>", "<CMD>Trouble workspace_diagnostics<CR>")
 	map("n", "<C-S-U>", "<CMD>lua require('telescope').extensions.notify.notify()<CR>")
 	lvim.builtin.which_key.mappings["a"] = {

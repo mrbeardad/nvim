@@ -22,6 +22,7 @@ M.config = function()
 			ts_rainbow = true,
 		},
 	})
+	vim.g.catppuccin_flavour = "macchiato"
 end
 
 return M

@@ -1,8 +1,8 @@
 local M = {}
 
 M.config = function()
-	vim.cmd([[hi link BookmarkSign TodoFgTodo]])
-	vim.cmd([[hi link BookmarkAnnotationSign TodoFgTodo]])
+	vim.cmd([[hi link BookmarkSign TodoSignTODO]])
+	vim.cmd([[hi link BookmarkAnnotationSign TodoSignTODO]])
 end
 
 return M

@@ -48,15 +48,7 @@ M.config = function()
 	vim.opt.ttimeoutlen = 10
 	vim.opt.redrawtime = 1500
 
-	vim.wo.foldmethod = "expr"
-	vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
-	vim.wo.foldlevel = 4
-	vim.wo.foldtext =
-		[[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend)) . ' (' . (v:foldend - v:foldstart + 1) . ' lines)']]
-	vim.wo.foldnestmax = 3
-	vim.wo.foldminlines = 1
-
-	vim.opt.pumblend = 10
+	-- vim.opt.pumblend = 10
 	vim.opt.confirm = true -- make vim prompt me to save before doing destructive things
 	if vim.fn.has("nvim-0.7") ~= 0 then
 		vim.opt.fillchars = {

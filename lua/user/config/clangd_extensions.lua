@@ -3,17 +3,21 @@ local M = {}
 M.config = function()
 	require("clangd_extensions").setup({
 		server = {
-			cmd = { "clangd", "--clang-tidy", "--enable-config" },
-			on_attach = require("lvim.lsp").common_on_attach,
+			cmd = { "clangd", "--clang-tidy", "--enable-config", "--function-arg-placeholders=0" },
+			on_attach = function(client, bufnr)
+				require("lvim.lsp").common_on_attach(client, bufnr)
+				require("lsp_signature").on_attach(require("user.config.lsp_signature").config_table)
+				vim.keymap.set("n", "<M-o>", "<CMD>ClangdSwitchSourceHeader<CR>", { noremap = true, buffer = bufnr })
+			end,
 			on_init = require("lvim.lsp").common_on_init,
-			on_exit = require("lvim.lsp").common_on_exit,
 			capabilities = require("lvim.lsp").common_capabilities(),
 		},
+		extensions = {
+			inlay_hints = {
+				other_hints_prefix = " ",
+			},
+		},
 	})
-	vim.api.nvim_create_autocmd(
-		"FileType",
-		{ pattern = "c,cpp", command = [[nnoremap <buffer><M-o> <CMD>ClangdSwitchSourceHeader<CR>]] }
-	)
 end
 
 return M

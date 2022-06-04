@@ -7,7 +7,7 @@ M.config = function()
 		line_sep = "╰─────────────────────────────────────────────────────────",
 		mapping = {
 			["run_replace"] = {
-				map = "<C-S-CR>",
+				map = "<M-C-CR>",
 				cmd = "<CMD>lua require('spectre.actions').run_replace()<CR>",
 				desc = "replace all",
 			},

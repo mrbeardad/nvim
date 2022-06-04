@@ -128,7 +128,6 @@ M.config = function()
 		},
 		{
 			"nvim-treesitter/nvim-treesitter-textobjects",
-			after = "nvim-treesitter",
 		},
 		{
 			"tpope/vim-repeat",
@@ -141,8 +140,15 @@ M.config = function()
 		-- 语言服务 --
 		--------------
 		{
+			"j-hui/fidget.nvim",
+			event = "BufRead",
+			config = function()
+				require("user.config.fidget").config()
+			end,
+		},
+		{
 			"ray-x/lsp_signature.nvim",
-			event = "InsertEnter",
+			event = "BufRead",
 			config = function()
 				require("user.config.lsp_signature").config()
 			end,
@@ -156,16 +162,13 @@ M.config = function()
 		},
 		{
 			"p00f/clangd_extensions.nvim",
-			ft = { "c", "cpp" },
+			ft = { "c", "cpp", "objc", "objcpp" },
 			config = function()
 				require("user.config.clangd_extensions").config()
 			end,
 		},
 		{
-			"j-hui/fidget.nvim",
-			config = function()
-				require("user.config.fidget").config()
-			end,
+			"windwp/nvim-ts-autotag",
 		},
 		--------------
 		-- 文件操作 --
@@ -185,13 +188,6 @@ M.config = function()
 		--------------
 		-- 界面元素 --
 		--------------
-		{
-			"stevearc/dressing.nvim",
-			event = "BufWinEnter",
-			config = function()
-				require("user.config.dressing").config()
-			end,
-		},
 		{
 			"petertriho/nvim-scrollbar",
 			config = function()
@@ -237,6 +233,13 @@ M.config = function()
 				require("user.config.bqf").config()
 			end,
 		},
+		{
+			"stevearc/dressing.nvim",
+			event = "BufWinEnter",
+			config = function()
+				require("user.config.dressing").config()
+			end,
+		},
 		--------------
 		-- 界面美化 --
 		--------------
@@ -258,15 +261,7 @@ M.config = function()
 		{
 			"norcalli/nvim-colorizer.lua",
 			config = function()
-				require("colorizer").setup({ "*" }, {
-					RGB = true, -- #RGB hex codes
-					RRGGBB = true, -- #RRGGBB hex codes
-					RRGGBBAA = true, -- #RRGGBBAA hex codes
-					rgb_fn = true, -- CSS rgb() and rgba() functions
-					hsl_fn = true, -- CSS hsl() and hsla() functions
-					css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-					css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
-				})
+				require("user.config.colorizer").config()
 			end,
 		},
 		{
