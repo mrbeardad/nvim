@@ -130,8 +130,16 @@ M.config = function()
 	lvim.builtin.cmp.mapping["<C-k>"] = nil
 	lvim.builtin.cmp.mapping["<C-f>"] = nil
 	lvim.builtin.cmp.mapping["<C-d>"] = nil
+	lvim.builtin.cmp.mapping["<C-d>"] = nil
 	lvim.builtin.cmp.mapping["<C-e>"] = cmp.mapping.scroll_docs(2)
 	lvim.builtin.cmp.mapping["<C-y>"] = cmp.mapping.scroll_docs(-2)
+	lvim.builtin.cmp.mapping["<CR>"] = cmp.mapping(function(fallback)
+		if cmp.visible() then
+			cmp.confirm(lvim.builtin.cmp.confirm_opts)
+		else
+			fallback()
+		end
+	end)
 	lvim.builtin.cmp.mapping["<M-I>"] = cmp.mapping(function()
 		if cmp.visible() then
 			cmp.abort()

@@ -148,7 +148,6 @@ M.config = function()
 		},
 		{
 			"ray-x/lsp_signature.nvim",
-			event = "BufRead",
 			config = function()
 				require("user.config.lsp_signature").config()
 			end,

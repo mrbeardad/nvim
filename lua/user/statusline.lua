@@ -56,7 +56,7 @@ M.config = function()
 				local buf_clients = vim.lsp.buf_get_clients()
 				if next(buf_clients) == nil then
 					if type(msg) == "boolean" or #msg == 0 then
-						return " [LS Inactive]"
+						return "[LS Inactive]"
 					end
 					return msg
 				end
@@ -80,9 +80,9 @@ M.config = function()
 				local supported_linters = linters.list_registered(buf_ft)
 				vim.list_extend(buf_client_names, supported_linters)
 
-				return "  " .. table.concat(buf_client_names, ", ")
+				return table.concat(buf_client_names, ", ")
 			end,
-			color = { gui = "bold" },
+			icon = { " ", color = { fg = "#ddd" } },
 			cond = require("lvim.core.lualine.conditions").hide_in_width,
 		},
 		components.filetype,

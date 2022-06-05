@@ -9,15 +9,13 @@ require("user.statusline").config()
 
 require("user.alpha").config()
 
-require("user.treesitter").config()
-
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.shell = "/bin/bash"
 lvim.builtin.terminal.open_mapping = "<C-Space>"
 lvim.builtin.nvimtree.setup.view.mappings.list = {
 	{ key = { "<Tab>" }, action = nil },
-	{ key = { "l", "<CR>", "o" }, action = "edit", mode = "n" },
+	{ key = { "l", "<CR>" }, action = "edit", mode = "n" },
 	{ key = "h", action = "close_node" },
 	{ key = "v", action = "vsplit" },
 }
@@ -36,6 +34,8 @@ lvim.builtin.telescope.defaults.mappings = {
 	-- for normal mode
 	n = {},
 }
+
+require("user.treesitter").config()
 
 -- ---WARN: configure a server manually. !!Requires `:LvimCacheReset` to take effect!!
 -- ---see the full default list `:lua print(vim.inspect(lvim.lsp.automatic_configuration.skipped_servers))`
