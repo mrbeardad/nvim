@@ -102,7 +102,11 @@ M.config = function()
 						size = size / 1024
 						i = i + 1
 					end
-					return string.format("%.1f%s", size, sufixes[i])
+					local fmt = "%.1f%s"
+					if i == 1 then
+						fmt = "%d%s"
+					end
+					return string.format(fmt, size, sufixes[i])
 				end
 
 				local file = vim.fn.expand("%:p")

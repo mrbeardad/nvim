@@ -160,6 +160,13 @@ M.config = function()
 			end,
 		},
 		{
+			"tamago324/cmp-zsh",
+			config = function()
+				require("user.config.cmp_zsh").config()
+			end,
+			requires = { "Shougo/deol.nvim" },
+		},
+		{
 			"p00f/clangd_extensions.nvim",
 			ft = { "c", "cpp", "objc", "objcpp" },
 			config = function()
