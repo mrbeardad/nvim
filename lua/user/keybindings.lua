@@ -167,8 +167,8 @@ M.config = function()
 		end
 	end, { "i", "s" })
 
-	map("n", "<M-F>", '<CMD>lua require("lvim.lsp.utils").format()<CR>')
-	map("i", "<M-F>", '<CMD>lua require("lvim.lsp.utils").format()<CR>')
+	map("n", "<M-F>", '<CMD>lua require("lvim.lsp.utils").format({timeout_ms= 2000})<CR>')
+	map("i", "<M-F>", '<CMD>lua require("lvim.lsp.utils").format({timeout_ms= 2000})<CR>')
 	map("n", "<F2>", "<CMD>lua vim.lsp.buf.rename()<CR>")
 	map("n", "<M-.>", "<CMD>lua vim.lsp.buf.code_action()<CR>")
 	map("n", "<C-.>", "<CMD>lua vim.lsp.buf.code_action()<CR>")
