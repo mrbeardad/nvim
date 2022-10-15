@@ -21,7 +21,7 @@ M.config = function()
 	-- plugin: hop.nvim
 	-- plugin: vim-matchup
 	map("c", "<C-a>", "<C-b>", { noremap = true })
-	map("", ";", "<CMD>HopChar1<CR>")
+	map("", ";", "<CMD>HopChar2<CR>")
 	map("", ",", "<CMD>HopLineStartMW<CR>")
 
 	--------------
@@ -34,8 +34,8 @@ M.config = function()
 	map("n", "<M-I>", "<C-i>")
 	map("n", "mm", "<Plug>BookmarkToggle", { noremap = false })
 	map("n", "mi", "<Plug>BookmarkAnnotate", { noremap = false })
-	map("n", "]m", "<Plug>BookmarkNext", { noremap = false })
-	map("n", "[m", "<Plug>BookmarkPrev", { noremap = false })
+	map("n", "mn", "<Plug>BookmarkNext", { noremap = false })
+	map("n", "mp", "<Plug>BookmarkPrev", { noremap = false })
 	map("n", "mc", "<Plug>BookmarkClear", { noremap = false })
 	map("n", "mC", "<Plug>BookmarkClearAll", { noremap = false })
 	map("n", "mjj", "<Plug>BookmarkMoveDown", { noremap = false })
@@ -54,7 +54,7 @@ M.config = function()
 	map("n", "n", "'Nn'[v:searchforward]", { expr = true })
 	map("n", "N", "'nN'[v:searchforward]", { expr = true })
 	map("n", "<C-l>", "<CMD>nohl<CR><C-l>")
-	map("c", "<M-b>", "\\<\\><Left><Left>")
+	map("c", "<M-W>", "\\<\\><Left><Left>")
 	map("c", "<M-r>", "\\v")
 	map("c", "<M-c>", "\\C")
 	map("n", "<C-f>", "<CMD>Telescope current_buffer_fuzzy_find<CR>")
@@ -76,7 +76,7 @@ M.config = function()
 	map("i", "<C-l>", "<CMD>call C_Right()<CR><Right>")
 	map("c", "<C-l>", "<C-Right>")
 	map("i", "<C-z>", "<CMD>undo<CR>")
-	map("i", "<C-r><C-r>", "<CMD>redo<CR>")
+	map("i", "<C-S-z>", "<CMD>redo<CR>")
 
 	--------------
 	-- 普通模式 --
@@ -188,6 +188,8 @@ M.config = function()
 	-- plugin: persistence.nvim
 	lvim.builtin.which_key.mappings["<Tab>"] = { ":try | b# | catch | endtry<CR>", "Switch Buffer" }
 	lvim.keys.normal_mode["<C-k>"] = false
+	map("n", "L", "<CMD>BufferLineCycleNext<CR>")
+	map("n", "H", "<CMD>BufferLineCyclePrev<CR>")
 	map("n", "<C-k><C-o>", "<CMD>Telescope projects<CR>")
 	map("n", "<C-k>o", ":e <C-r>=fnamemodify(expand('%:p'), ':p:h')<CR>/")
 	map("n", "<C-k>n", "<CMD>enew<CR>")
