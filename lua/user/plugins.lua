@@ -210,8 +210,8 @@ M.config = function()
 		{
 			"simrat39/symbols-outline.nvim",
 			cmd = "SymbolsOutline*",
-			setup = function()
-				require("user.setup.symbols-outline").setup()
+			config = function()
+				require("user.config.symbols-outline").config()
 			end,
 		},
 		{
