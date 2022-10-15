@@ -86,7 +86,7 @@ lvim/
 
 有两个颜色主题，[catppuccin](https://github.com/catppuccin/nvim)和[tokyonight](https://github.com/folke/tokyonight.nvim)，根据启动时间选择其中一款加载。
 
-![catppuccin](https://github.com/catppuccin/nvim/raw/main/assets/demo.png "官方图")
+![catppuccin](https://user-images.githubusercontent.com/56817415/193099598-a5482fa9-bc22-42e8-ad61-ad73303f781f.png "官方图")
 
 ![tokyonight](https://user-images.githubusercontent.com/292349/115295095-3a9e5080-a10e-11eb-9aed-6054488c46ce.png "官方图")
 
