@@ -11,27 +11,86 @@ M.config = function()
 			hl = "Comment",
 		},
 	}
-	lvim.builtin.alpha.dashboard.section.buttons.entries[1][1] = "Ctrl+K n"
-	lvim.builtin.alpha.dashboard.section.buttons.entries[1][2] = "  New File"
-	lvim.builtin.alpha.dashboard.section.buttons.entries[1][3] = "<CMD>ene!<CR>"
-	lvim.builtin.alpha.dashboard.section.buttons.entries[2][1] = "Ctrl+P"
-	lvim.builtin.alpha.dashboard.section.buttons.entries[2][2] = "  Find File"
-	lvim.builtin.alpha.dashboard.section.buttons.entries[2][3] = "<CMD>Telescope find_files<CR>"
-	lvim.builtin.alpha.dashboard.section.buttons.entries[3][1] = "Ctrl+K Ctrl+O"
-	lvim.builtin.alpha.dashboard.section.buttons.entries[3][2] = "  Recent Projects "
-	lvim.builtin.alpha.dashboard.section.buttons.entries[3][3] = "<CMD>Telescope projects<CR>"
-	lvim.builtin.alpha.dashboard.section.buttons.entries[4][1] = "Ctrl+K r"
-	lvim.builtin.alpha.dashboard.section.buttons.entries[4][2] = "  Recently Used Files"
-	lvim.builtin.alpha.dashboard.section.buttons.entries[4][3] = "<CMD>Telescope oldfiles<CR>"
-	lvim.builtin.alpha.dashboard.section.buttons.entries[5][1] = "SPC S l"
-	lvim.builtin.alpha.dashboard.section.buttons.entries[5][2] = "  Restore Session"
-	lvim.builtin.alpha.dashboard.section.buttons.entries[5][3] =
-		"<CMD>lua require('persistence').load({ last = true })<CR>"
+	local status_ok, dashboard = pcall(require, "alpha.themes.dashboard")
+	if status_ok then
+		local function button(sc, txt, keybind, keybind_opts)
+			local b = dashboard.button(sc, txt, keybind, keybind_opts)
+			b.opts.hl_shortcut = "Macro"
+			return b
+		end
+		table.insert(
+			lvim.builtin.alpha.dashboard.section.buttons.val,
+			0,
+			button("l", "  Restore Session", "<CMD>lua require('persistence').load({ last = true })<CR>")
+		)
+	end
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[1][1] = "Ctrl+K n"
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[1][2] = "  New File"
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[1][3] = "<CMD>ene!<CR>"
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[2][1] = "Ctrl+P"
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[2][2] = "  Find File"
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[2][3] = "<CMD>Telescope find_files<CR>"
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[3][1] = "Ctrl+K Ctrl+O"
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[3][2] = "  Recent Projects "
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[3][3] = "<CMD>Telescope projects<CR>"
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[4][1] = "Ctrl+K r"
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[4][2] = "  Recently Used Files"
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[4][3] = "<CMD>Telescope oldfiles<CR>"
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[5][1] = "SPC S l"
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[5][2] = "  Restore Session"
+	--lvim.builtin.alpha.dashboard.section.buttons.entries[5][3] =
+	--"<CMD>lua require('persistence').load({ last = true })<CR>"
 end
 
 M.dashboard = function()
 	math.randomseed(os.time())
 	local headers = {
+		{
+			"                ⢀⣀⣤⣤⣤⣶⣶⣶⣶⣶⣶⣤⣤⣤⣀⡀                ",
+			"             ⣀⣤⣶⣿⠿⠟⠛⠉⠉⠉⠁⠈⠉⠉⠉⠛⠛⠿⣿⣷⣦⣀             ",
+			"          ⢀⣤⣾⡿⠛⠉                ⠉⠛⢿⣷⣤⡀          ",
+			"         ⣴⣿⡿⠃                      ⠙⠻⣿⣦         ",
+			" ⢀⣠⣤⣤⣤⣤⣤⣾⣿⣉⣀⡀                        ⠙⢻⣷⡄       ",
+			"⣼⠋⠁   ⢠⣿⡟ ⠉⠉⠉⠛⠛⠶⠶⣤⣄⣀    ⣀⣀      ⢠⣤⣤⡄   ⢻⣿⣆      ",
+			"⢻⡄   ⢰⣿⡟        ⢠⣿⣿⣿⠉⠛⠲⣾⣿⣿⣷    ⢀⣾⣿⣿⠁    ⢻⣿⡆     ",
+			" ⠹⣦⡀ ⣿⣿⠁        ⢸⣿⣿⡇   ⠻⣿⣿⠟⠳⠶⣤⣀⣸⣿⣿⠇      ⣿⣷     ",
+			"   ⠙⢷⣿⡇         ⣸⣿⣿⠃          ⢸⣿⣿⢷⣤⡀     ⢸⣿⡆    ",
+			"    ⢸⣿⠇         ⣿⣿⣿     ⣿⣿⣷  ⢠⣿⣿⡏ ⠈⠙⠳⢦⣄  ⠈⣿⡇    ",
+			"    ⢸⣿⡆        ⢸⣿⣿⡇     ⣿⣿⣿ ⢀⣿⣿⡟      ⠈⠙⠷⣤⣿⡇    ",
+			"    ⠘⣿⡇        ⣼⣿⣿⠁     ⣿⣿⣿ ⣼⣿⣿⠃         ⢸⣿⠷⣄⡀  ",
+			"     ⣿⣿        ⣿⣿⡿      ⣿⣿⣿⢸⣿⣿⠃          ⣾⡿ ⠈⠻⣆ ",
+			"     ⠸⣿⣧      ⢸⣿⣿⣇⣀⣀⣀⣀⣀⣀⣸⣿⣿⣿⣿⠇          ⣼⣿⠇   ⠘⣧",
+			"      ⠹⣿⣧     ⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏          ⣼⣿⠏    ⣠⡿",
+			"       ⠘⢿⣷⣄   ⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉         ⢠⣼⡿⠛⠛⠛⠛⠛⠛⠉ ",
+			"         ⠻⣿⣦⣄                      ⣀⣴⣿⠟         ",
+			"          ⠈⠛⢿⣶⣤⣀                ⣀⣤⣶⡿⠛⠁          ",
+			"             ⠉⠻⢿⣿⣶⣤⣤⣀⣀⡀  ⢀⣀⣀⣠⣤⣶⣿⡿⠟⠋             ",
+			"                ⠈⠉⠙⠛⠻⠿⠿⠿⠿⠿⠿⠟⠛⠋⠉⠁                ",
+		},
+		{
+			"⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+			"⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠟⠛⠛⠉⠉⠉⠉⠉⠉⠛⠛⠻⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+			"⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠉⠀⣀⣤⣴⣶⣶⣾⣿⣿⣷⣶⣶⣦⣤⣀⠀⠉⠛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+			"⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⢀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠈⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+			"⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+			"⣿⣿⠿⠟⠛⠛⠛⠛⠛⠁⠀⠾⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠈⢻⣿⣿⣿⣿⣿⣿⣿⣿",
+			"⣿⠁⣴⣾⣿⣿⣿⡟⠀⣰⣿⣶⣶⣶⣤⣤⣉⣉⠛⠛⠿⠿⣿⣿⡿⠿⠿⣿⣿⣿⣿⣿⣿⡟⠛⠛⢛⣿⣿⣿⣆⠀⢻⣿⣿⣿⣿⣿⣿⣿",
+			"⣿⡄⠻⣿⣿⣿⡟⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⣦⣤⡈⠀⠀⠀⠈⣿⣿⣿⣿⡿⠁⠀⠀⣾⣿⣿⣿⣿⡄⠀⢻⣿⣿⣿⣿⣿⣿",
+			"⣿⣿⣄⠙⠿⣿⠁⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⢸⣿⣿⣿⣄⠀⠀⣠⣄⣉⠛⠻⠃⠀⠀⣼⣿⣿⣿⣿⣿⣿⡀⠈⣿⣿⣿⣿⣿⣿",
+			"⣿⣿⣿⣷⣦⡈⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠆⠀⠀⡀⠛⠿⣿⣿⣿⣿⣿⡇⠀⢻⣿⣿⣿⣿⣿",
+			"⣿⣿⣿⣿⣿⡇⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⢀⣿⣿⣿⣿⡇⠀⠀⠘⣿⣿⡟⠀⠀⢰⣿⣷⣦⣌⡙⠻⢿⣿⣷⠀⢸⣿⣿⣿⣿⣿",
+			"⣿⣿⣿⣿⣿⡇⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⢸⣿⣿⣿⣿⣿⠀⠀⠀⣿⡿⠀⠀⢀⣿⣿⣿⣿⣿⣿⣷⣤⣈⠛⠀⢸⣿⣿⣿⣿⣿",
+			"⣿⣿⣿⣿⣿⣧⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⣾⣿⣿⣿⣿⣿⠀⠀⠀⣿⠁⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⡈⠻⢿⣿⣿⣿",
+			"⣿⣿⣿⣿⣿⣿⡀⠈⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⢀⣿⣿⣿⣿⣿⣿⠀⠀⠀⠃⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⢀⣿⣶⣄⠙⣿⣿",
+			"⣿⣿⣿⣿⣿⣿⣧⠀⠘⣿⣿⣿⣿⣿⣿⡇⠀⠀⠸⠿⠿⠿⠿⠿⠿⠇⠀⠀⠀⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀⣼⣿⣿⣿⣦⠘⣿",
+			"⣿⣿⣿⣿⣿⣿⣿⣧⠀⠹⣿⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⣼⣿⣿⣿⡿⠟⢀⣿",
+			"⣿⣿⣿⣿⣿⣿⣿⣿⣧⡀⠈⢿⣿⣿⣿⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⢀⣤⣤⣤⣤⣤⣴⣶⣿⣿",
+			"⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+			"⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠈⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⢀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+			"⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⣀⠀⠉⠛⠻⠿⠿⢿⣿⣿⡿⠿⠿⠟⠛⠉⠀⣀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+			"⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⣤⣤⣀⣀⣀⣀⣀⣀⣤⣤⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+			"⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+		},
 		{
 			"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
 			"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
