@@ -11,7 +11,7 @@ M.config = function()
 			hl = "Comment",
 		},
 	}
-	local status_ok, dashboard = pcall(require, "alpha.themes.dashboard")
+	local status_ok = pcall(require, "alpha.themes.dashboard")
 	if status_ok then
 		table.insert(
 			lvim.builtin.alpha.dashboard.section.buttons.entries,
