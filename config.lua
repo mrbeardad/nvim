@@ -2,14 +2,8 @@ require("user.neovim").config()
 
 require("user.alpha").config()
 
--- In order to disable lunarvim's default colorscheme
-lvim.colorscheme = "default"
-
-lvim.builtin.bufferline.options.always_show_bufferline = true
-
 require("user.statusline").config()
 
-lvim.builtin.terminal.active = true
 lvim.builtin.terminal.shell = "/bin/bash"
 lvim.builtin.terminal.open_mapping = "<C-Space>" -- ctrl+`
 lvim.builtin.nvimtree.setup.view.mappings.list = {
@@ -18,12 +12,6 @@ lvim.builtin.nvimtree.setup.view.mappings.list = {
 	{ key = "h", action = "close_node" },
 	{ key = "v", action = "vsplit" },
 }
-
-----------------------------------------
--- Telescope
-----------------------------------------
--- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
--- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
 local _, actions = pcall(require, "telescope.actions")
 lvim.builtin.telescope.defaults.mappings = {
 	-- for input mode

@@ -1,29 +1,7 @@
 local M = {}
 
 M.config = function()
-	lvim.builtin.lualine.options = {
-		globalstatus = true,
-		section_separators = { left = "", right = "" },
-	}
-
 	local components = require("lvim.core.lualine.components")
-	lvim.builtin.lualine.sections.lualine_a = {
-		{
-			" ",
-			type = "stl",
-			-- color = { fg = "#b3e1a3" },
-		},
-		-- {
-		-- 	"",
-		-- 	type = "stl",
-		-- 	color = { fg = "#e697a7" },
-		-- },
-		-- {
-		-- 	"",
-		-- 	type = "stl",
-		-- 	color = { fg = "#a4b9ef" },
-		-- },
-	}
 	lvim.builtin.lualine.sections.lualine_b = {
 		{
 			function()
@@ -38,7 +16,7 @@ M.config = function()
 				if not vim.bo.readonly or not vim.bo.modifiable then
 					return ""
 				end
-				return "" -- """
+				return ""
 			end,
 			color = { fg = "#f7768e" },
 		},
@@ -48,43 +26,11 @@ M.config = function()
 	lvim.builtin.lualine.sections.lualine_x = {
 		components.diagnostics,
 	}
+	components.lsp.icon = { " ", color = { fg = "#ddd" } }
 	lvim.builtin.lualine.sections.lualine_y = {
 		components.treesitter,
-		{
-			function(msg)
-				msg = msg or "LS Inactive"
-				local buf_clients = vim.lsp.buf_get_clients()
-				if next(buf_clients) == nil then
-					if type(msg) == "boolean" or #msg == 0 then
-						return "[LS Inactive]"
-					end
-					return msg
-				end
-				local buf_ft = vim.bo.filetype
-				local buf_client_names = {}
-
-				-- add client
-				for _, client in pairs(buf_clients) do
-					if client.name ~= "null-ls" then
-						table.insert(buf_client_names, client.name)
-					end
-				end
-
-				-- add formatter
-				local formatters = require("lvim.lsp.null-ls.formatters")
-				local supported_formatters = formatters.list_registered(buf_ft)
-				vim.list_extend(buf_client_names, supported_formatters)
-
-				-- add linter
-				local linters = require("lvim.lsp.null-ls.linters")
-				local supported_linters = linters.list_registered(buf_ft)
-				vim.list_extend(buf_client_names, supported_linters)
-
-				return table.concat(buf_client_names, ", ")
-			end,
-			icon = { " ", color = { fg = "#ddd" } },
-			cond = require("lvim.core.lualine.conditions").hide_in_width,
-		},
+		components.lsp,
+		components.spaces,
 		components.filetype,
 		{ "fileformat", color = { fg = "#c2e7f0" } },
 	}

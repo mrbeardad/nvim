@@ -26,21 +26,13 @@
 自从 NeoVim 支持[LSP](https://microsoft.github.io/language-server-protocol/)并转用[Lua](https://www.lua.org/about.html)作为首席插件语言代替又丑又慢 VimL 后，使用体验直接翻倍。
 [LunarVim](https://github.com/LunarVim/LunarVim)就是基于全新 Neovim Lua 生态打造的配置集合，旨在将 Neovim 打造成高性能的 IDE。迁移到 LunarVim 后，nvim 的启动时间也大幅降低。
 
+> **这个项目其实做了过多的适用于我个人的定制化，同时因为上游总是提交不兼容更新而我维护也不是很及时，所以其实本仓库更大的价值是用来学习和摘抄。**
+
 ## 安装
 
-首先你需要安装[LunarVim](https://www.lunarvim.org/01-installing.html#installation)，安装依赖包括:
+首先你需要安装[LunarVim](https://www.lunarvim.org/docs/installation)
 
-1. [neovim-0.7](https://github.com/neovim/neovim/releases)或以上版本
-2. [git](https://git-scm.com/downloads)
-3. [python pip](https://pip.pypa.io/en/stable/installation/)
-4. [nodejs npm](https://www.npmjs.com/)
-5. [rust cargo](https://www.rust-lang.org/)(可选，你可以手动安装 ripgrep 和 fd-find)
-
-```sh
-bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh)
-```
-
-如上，官方的安装脚本会提示你是否需要自动安装依赖，可能会有如下问题:
+官方的安装脚本会提示你是否需要自动安装依赖，可能会有如下问题:
 
 1. 记得挂梯子 [(✿◡‿◡)](## "真的会谢")
 2. 记得设置 npm 的 prefix 以设置可访问的全局安装路径
