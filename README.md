@@ -1,3 +1,9 @@
+<div align="center">
+
+## [LunarVim master 支持见 MyIDE](https://github.com/mrbeardad/MyIDE#vscode-neovim)
+
+</div>
+
 # LunarVim: Code on Neovim
 
 [English Doc](README.en.md)
@@ -27,8 +33,6 @@
 [LunarVim](https://github.com/LunarVim/LunarVim)就是基于全新 Neovim Lua 生态打造的配置集合，旨在将 Neovim 打造成高性能的 IDE。迁移到 LunarVim 后，nvim 的启动时间也大幅降低。
 
 > **这个项目其实做了过多的适用于我个人的定制化，同时因为上游总是提交不兼容更新而我维护也不是很及时，所以其实本仓库更大的价值是用来学习和摘抄。**
-
-## [LunarVim master 支持见](https://github.com/mrbeardad/MyIDE#vscode-neovim)
 
 ## 安装
 
