@@ -30,7 +30,7 @@
 
 ## 安装
 
-首先你需要安装[LunarVim](https://www.lunarvim.org/docs/installation)
+首先你需要安装 nightly 版本的[LunarVim](https://www.lunarvim.org/docs/installation)
 
 官方的安装脚本会提示你是否需要自动安装依赖，可能会有如下问题:
 
@@ -43,13 +43,26 @@
 
 3. 你可能需要将 _~/.cargo/bin_ 加入你的环境变量`PATH`
 
-然后，安装本配置:
+4. 然后，安装本配置:
+
+- Linux
 
 ```sh
 # backup original config
 mv ~/.config/lvim{,.bak}
-# install my config
+# install config
 git clone https://github.com/mrbeardad/MyLunarVim ~/.config/lvim
+# install all plugins
+lvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+```
+
+- Windows
+
+```sh
+# backup original config
+mv %USERPROFILE%\AppData\Local\lvim %USERPROFILE%\AppData\Local\lvim.bak
+# install config
+git clone https://github.com/mrbeardad/MyLunarVim %USERPROFILE%\AppData\Local\lvim
 # install all plugins
 lvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 ```
