@@ -1,9 +1,3 @@
-<div align="center">
-
-## [LunarVim master 支持见 MyIDE](https://github.com/mrbeardad/MyIDE#vscode-neovim)
-
-</div>
-
 # LunarVim: Code on Neovim
 
 [English Doc](README.en.md)
