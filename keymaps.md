@@ -1,84 +1,77 @@
 # Keymaps
 
 - [Keymaps](#keymaps)
-  - [Search](#search)
-  - [Navigation](#navigation)
+  - [Editor](#editor)
   - [Scroll](#scroll)
+  - [Search](#search)
   - [Motion](#motion)
+  - [Navigation](#navigation)
+  - [Selection](#selection)
   - [Edit](#edit)
   - [Register](#register)
   - [Language](#language)
-  - [File](#file)
   - [Misc](#misc)
 
-## Search
+## Editor
 
-<!-- HACK: In most of terminals, <C-S-*> and <C-*> have the same key sequence.
--- To distinguish them, map ctrl+shift+* to send <C-S-*> key sequence in your terminal setting.
--- Detail: https://www.reddit.com/r/neovim/comments/mbj8m5/how_to_setup_ctrlshiftkey_mappings_in_neovim_and/ -->
+| Neovim Keys | VSCode Keys        | Mode       | Description            |
+| ----------- | ------------------ | ---------- | ---------------------- |
+| `Space e`   | `Ctrl`+`Shift`+`E` | **N**      | Open or focus explorer |
+| `[[`        |                    | _Explorer_ | Parent                 |
+| `j`         | `j`                | _Explorer_ | Up                     |
+| `k`         | `k`                | _Explorer_ | Down                   |
+| `h`         | `h`                | _Explorer_ | Collapse               |
+| `l`         | `l`                | _Explorer_ | Expand or open         |
+| `o`         |                    | _Explorer_ | Open by system         |
+| `a`         | `a`                | _Explorer_ | Add new file           |
+| `A`         | `A`                | _Explorer_ | Add new directory      |
+| `r`         | `r`                | _Explorer_ | Rename                 |
+| `x`         | `x`                | _Explorer_ | Cut                    |
+| `d`         | `d`                | _Explorer_ | Delete                 |
+| `y`         | `y`                | _Explorer_ | Copy                   |
+| `p`         | `p`                | _Explorer_ | Paste                  |
 
-Use **Search** when the target position is unknown but the content there is known.
+| Neovim Keys    | VSCode Keys  | Mode  | Description   |
+| -------------- | ------------ | ----- | ------------- |
+| `H`            | `H`          | **N** | Previous file |
+| `L`            | `L`          | **N** | Next file     |
+| `Space Tab`    | `Ctrl`+`Tab` | **N** | Switch file   |
+| `` Space `  `` | -            | **N** | Pick file     |
+| `Ctrl`+`S`     | `Ctrl`+`S`   | **N** | Save file     |
+| `Space bd`     | `Ctrl+W` `q` | **N** | Close file    |
 
-| Key                | Mode        | Description                                                           | Comment    |
-| ------------------ | ----------- | --------------------------------------------------------------------- | ---------- |
-| `/`                | **N** **V** | Search forward                                                        |            |
-| `?`                | **N** **V** | Search backward                                                       |            |
-| `*`                | **N** **V** | Search forward for the word nearest to the cursor (Match whole word)  |            |
-| `#`                | **N** **V** | Search backward for the word nearest to the cursor (Match whole word) |            |
-| `g*`               | **N** **V** | Search forward for the word nearest to the cursor                     |            |
-| `g#`               | **N** **V** | Search backward for the word nearest to the cursor                    |            |
-| `n`                | **N** **V** | Repeat last search in forward direction                               | Non-native |
-| `N`                | **N** **V** | Repeat last search in backward direction                              | Non-native |
-| `Ctrl`+`Shift`+`F` | **N** **V** | Search in workspace                                                   | Non-native |
-| `Ctrl`+`Shift`+`O` | **N**       | Search symbols in file                                                | Non-native |
-| `Ctrl`+`T`         | **N**       | Search symbols in workspace                                           | Non-native |
-| `Ctrl`+`P`         | **N**       | Search files in workspace                                             | Non-native |
-| `Ctrl`+`K` `R`     | **N**       | Search files that recently opened                                     | Non-native |
-| `m/`               | **N**       | Search marks                                                          | Non-native |
-| `Space` `t`        | **N**       | Search TODOs                                                          | Non-native |
+| Neovim Keys    | VSCode Keys    | Mode  | Description                                 |
+| -------------- | -------------- | ----- | ------------------------------------------- |
+| `Tab`          | `Tab`          | **N** | Next window                                 |
+| `Shift`+`Tab`  | `Shift`+`Tab`  | **N** | Previous window                             |
+| `Ctrl`+`W` `s` | `Ctrl`+`W` `s` | **N** | Horizontal split window                     |
+| `Ctrl`+`W` `v` | `Ctrl`+`W` `v` | **N** | Vertical split window                       |
+| `Ctrl`+`W` `=` | `Ctrl`+`W` `=` | **N** | Resize windows                              |
+| `Ctrl`+`W` `q` | `Ctrl`+`W` `q` | **N** | Close `{count}`-th windows, default current |
 
 > Tips:
 >
-> 1. For details of vim regular expression, see [`:h pattern`](https://neovim.io/doc/user/pattern.html#search-pattern)
-> 2. For fzf fuzzy search syntax, see [`:h telescope-fzf-native.nvim`](https://github.com/nvim-telescope/telescope-fzf-native.nvim#telescope-fzf-nativenvim)
-
-## Navigation
-
-Use **Navigation** when the location of your destination is unknown but its semantics is known.
-
-| Key  | Mode        | Description                           | Comment    |
-| ---- | ----------- | ------------------------------------- | ---------- |
-| `gd` | **N**       | Go to definition                      | Non-native |
-| `gt` | **N**       | Go to type definition                 | Non-native |
-| `gr` | **N**       | Go to reference                       | Non-native |
-| `gi` | **N**       | Go to implementation                  | Non-native |
-| `[[` | **N** **V** | Go to previous start of scope         | Non-native |
-| `]]` | **N** **V** | Go to next start of scope             | Non-native |
-| `[m` | **N** **V** | Go to previous start of method        | Non-native |
-| `]m` | **N** **V** | Go to next start of method            | Non-native |
-| `]e` | **N**       | Go to next error, warning or info     | Non-native |
-| `[e` | **N**       | Go to previous error, warning or info | Non-native |
-| `]c` | **N**       | Go to next change                     | Non-native |
-| `[c` | **N**       | Go to previous change                 | Non-native |
+> 1. The `buffer` in Neovim is similar to the `editor` in VSCode.
+> 2. The `window` in Neovim is similar to the `editor group` in VSCode.
 
 ## Scroll
 
-Use **Scroll** when the location of your destination is known but outside the screen.
-
-| Key        | Mode        | Description                                      | Comment               |
-| ---------- | ----------- | ------------------------------------------------ | --------------------- |
-| `Ctrl`+`D` | **N** **V** | Scroll half a screen down                        |                       |
-| `Ctrl`+`U` | **N** **V** | Scroll half a screen up                          |                       |
-| `Ctrl`+`F` | **N** **V** | Scroll full screen down                          |                       |
-| `Ctrl`+`B` | **N** **V** | Scroll full screen up                            |                       |
-| `zz`       | **N** **V** | Scroll to leave current line at center of screen |                       |
-| `zt`       | **N** **V** | Scroll to leave current line at top of screen    |                       |
-| `zb`       | **N** **V** | Scroll to leave current line at bottom of screen |                       |
-| `zh`       | **N** **V** | Scroll left                                      |                       |
-| `zl`       | **N** **V** | Scroll right                                     |                       |
-| `zH`       | **N** **V** | Scroll half a screen left                        | Unspported for VSCode |
-| `zL`       | **N** **V** | Scroll half a screen right                       | Unspported for VSCode |
-| `zs`       | **N** **V** | Scroll to leave current column at left of screen | Unspported for VSCode |
+| Neovim Keys | VSCode Keys | Mode        | Description                                      |
+| ----------- | ----------- | ----------- | ------------------------------------------------ |
+| `Ctrl`+`D`  | `Ctrl`+`D`  | **N** **V** | Scroll half a screen down                        |
+| `Ctrl`+`U`  | `Ctrl`+`U`  | **N** **V** | Scroll half a screen up                          |
+| `Ctrl`+`F`  | `Ctrl`+`F`  | **N** **V** | Scroll full screen down                          |
+| `Ctrl`+`B`  | `Ctrl`+`B`  | **N** **V** | Scroll full screen up                            |
+| `zz`        | `zz`        | **N** **V** | Scroll to leave current line at center of screen |
+| `zt`        | `zt`        | **N** **V** | Scroll to leave current line at top of screen    |
+| `zb`        | `zb`        | **N** **V** | Scroll to leave current line at bottom of screen |
+| `zh`        | `zh`        | **N** **V** | Scroll left                                      |
+| `zl`        | `zl`        | **N** **V** | Scroll right                                     |
+| `zH`        | -           | **N** **V** | Scroll half a screen left                        |
+| `zL`        | -           | **N** **V** | Scroll half a screen right                       |
+| `zs`        | -           | **N** **V** | Scroll to leave current column at left of screen |
+| `gg`        | `gg`        | **N** **V** | Go to first line                                 |
+| `G`         | `G`         | **N** **V** | Go to `{count}`-th line , default last line      |
 
 <!-- TODO: 条件独立事件与制表 -->
 <!-- TODO: 分支的处理，用if-else还是return短路 -->
@@ -86,42 +79,67 @@ Use **Scroll** when the location of your destination is known but outside the sc
 <!-- TODO: vscode xmap c for <c-v> mode -->
 <!-- TODO: highlight theme for vscode-plugin nvim-plugin pwsh-highlight -->
 <!-- TODO: 间隔-1、距离、数量+1 -->
+<!-- HACK: In most of terminals, <C-S-*> and <C-*> have the same key sequence.
+-- To distinguish them, map ctrl+shift+* to send <C-S-*> key sequence in your terminal setting.
+-- Detail: https://www.reddit.com/r/neovim/comments/mbj8m5/how_to_setup_ctrlshiftkey_mappings_in_neovim_and/ -->
+
+## Search
+
+| Neovim Key | VSCode Key         | Mode        | Description                                                                   |
+| ---------- | ------------------ | ----------- | ----------------------------------------------------------------------------- |
+| `/`        | `/`                | **N** **V** | Search forward in file                                                        |
+| `?`        | `?`                | **N** **V** | Search backward in file                                                       |
+| `*`        | `*`                | **N** **V** | Search forward for the word nearest to the cursor in file (match whole word)  |
+| `#`        | `#`                | **N** **V** | Search backward for the word nearest to the cursor in file (match whole word) |
+| `g*`       | `g*`               | **N** **V** | Search forward for the word nearest to the cursor in file                     |
+| `g#`       | `g#`               | **N** **V** | Search backward for the word nearest to the cursor in file                    |
+| `n`        | `n`                | **N** **V** | Search forwar for last pattern in file                                        |
+| `N`        | `N`                | **N** **V** | Search backward for last pattern in file                                      |
+| `Space /`  | `Ctrl`+`Shift`+`F` | **N** **V** | Search in workspace                                                           |
+| `Space sw` | -                  | **N** **V** | Search based on word in workspace                                             |
+| `Space ff` | `Ctrl`+`P`         | **N**       | Search files in workspace                                                     |
+| `Space fr` | `Ctrl`+`K` `R`     | **N**       | Search recently opened files                                                  |
+| `Space sm` | Side Bar           | **N**       | Search marks                                                                  |
+| `Space st` | Side Bar           | **N**       | Search todos                                                                  |
+| `Space ss` | `Ctrl`+`Shift`+`O` | **N**       | Search symbols in file                                                        |
+| `Space sS` | `Ctrl`+`T`         | **N**       | Search symbols in workspace                                                   |
+| `gd`       | `gd`               | **N**       | Go to definition                                                              |
+| `gt`       | `gt`               | **N**       | Go to type definition                                                         |
+| `gr`       | `gr`               | **N**       | Go to reference                                                               |
+| `gi`       | `gi`               | **N**       | Go to implementation                                                          |
+
+> Tips:
+>
+> 1. For details of vim regular expression, see [`:h pattern`](https://neovim.io/doc/user/pattern.html#search-pattern)
+> 2. For fzf fuzzy search syntax, see [`:h telescope-fzf-native.nvim`](https://github.com/nvim-telescope/telescope-fzf-native.nvim#telescope-fzf-nativenvim)
+> 3. In neovim, if the root workspace of the buffer is not detected, search in the current working directory instead.
 
 ## Motion
 
-Use **Motion** when your target location is known.
-
-| Key          | Mode        | Description                                   | Comment                               |
-| ------------ | ----------- | --------------------------------------------- | ------------------------------------- |
-| `h`          | **N** **V** | Move Left                                     |                                       |
-| `l`          | **N** **V** | Move Right                                    |                                       |
-| `j`          | **N** **V** | Move Up                                       | `gj` for display lines                |
-| `k`          | **N** **V** | Move Down                                     | `gk` for display lines                |
-| `w`          | **N** **V** | Move to the next start of word                | `W` for WORD                          |
-| `b`          | **N** **V** | Move to the previous start of word            | `B` for WORD                          |
-| `e`          | **N** **V** | Move to the next end of word                  | `E` for WORD                          |
-| `0`          | **N** **V** | Move to the start of the line                 | `g0` for display lines                |
-| `$`          | **N** **V** | Move to the end of the line                   | `g$` for display lines                |
-| `f` `{char}` | **N** **V** | Jump to the next position of `{char}`         | Non-native                            |
-| `F` `{char}` | **N** **V** | Jump to the previous position of `{char}`     | Non-native                            |
-| `t` `{char}` | **N** **V** | Jump to the next position before `{char}`     | Non-native                            |
-| `T` `{char}` | **N** **V** | Jump to the previous position before `{char}` | Non-native                            |
-| `;`          | **N** **V** | Repeat last `f` `F` `t` `T`                   | Non-native                            |
-| `,`          | **N** **V** | Repeat last `f` `F` `t` `T`                   | Non-native                            |
-| `%`          | **N** **V** | Jump to matching word                         | Non-native                            |
-| `[%`         | **N** **V** | Jump to previous outter open word             | Non-native                            |
-| `]%`         | **N** **V** | Jump to next outter close word                | Non-native                            |
-| `{`          | **N** **V** | Jump to previous empty line                   |                                       |
-| `}`          | **N** **V** | Jump to next empty line                       |                                       |
-| `gg`         | **N** **V** | Jump to first line of file                    |                                       |
-| `G`          | **N** **V** | Jump to last line of file                     |                                       |
-| `{num}` `G`  | **N** **V** | Jump to the `{num}`-th line of file           |                                       |
-| `m` `{mark}` | **N**       | Set mark at cursor position                   | `[a-z]` for local, `[A-Z]` for global |
-| `'` `{mark}` | **N**       | Jump to mark                                  | Non-native, map to `g'`               |
-| `Ctrl`+`O`   | **N**       | Go to older cursor position in jump list      | Not a motion command                  |
-| `Ctrl`+`I`   | **N**       | Go to newer cursor position in jump list      | Not a motion command                  |
-| `g;`         | **N**       | Go to older cursor position in change list    | Not a motion command                  |
-| `g,`         | **N**       | Go to newer cursor position in change list    | Not a motion command                  |
+| Key              | Mode        | Description                                   |
+| ---------------- | ----------- | --------------------------------------------- |
+| `h`              | **N** **V** | Move Left                                     |
+| `l`              | **N** **V** | Move Right                                    |
+| `j`              | **N** **V** | Move Up                                       |
+| `k`              | **N** **V** | Move Down                                     |
+| `w`              | **N** **V** | Move to the next start of word                |
+| `b`              | **N** **V** | Move to the previous start of word            |
+| `e`              | **N** **V** | Move to the next end of word                  |
+| `ge`             | **N** **V** | Move to the previous end of word              |
+| `0`              | **N** **V** | Move to the start of the line                 |
+| `$`              | **N** **V** | Move to the end of the line                   |
+| `f` `{char}`     | **N** **V** | Jump to the next position of `{char}`         |
+| `F` `{char}`     | **N** **V** | Jump to the previous position of `{char}`     |
+| `t` `{char}`     | **N** **V** | Jump to the next position before `{char}`     |
+| `T` `{char}`     | **N** **V** | Jump to the previous position before `{char}` |
+| `;`              | **N** **V** | Repeat last `f` `F` `t` `T`                   |
+| `,`              | **N** **V** | Repeat last `f` `F` `t` `T`                   |
+| `m` `{mark}`     | **N**       | Set mark at cursor position                   |
+| `` ` `` `{mark}` | **N**       | Jump to mark                                  |
+| `Ctrl`+`O`       | **N**       | Go to older cursor position in jump list      |
+| `Ctrl`+`I`       | **N**       | Go to newer cursor position in jump list      |
+| `g;`             | **N**       | Go to older cursor position in change list    |
+| `g,`             | **N**       | Go to newer cursor position in change list    |
 
 > Tips:
 >
@@ -129,40 +147,76 @@ Use **Motion** when your target location is known.
 >   If you make the cursor "jump", the position of the cursor before the jump is remembered in jump list.
 >   For details, see [`:h jump-motions`](https://neovim.io/doc/user/motion.html#jump-motions)
 
+## Navigation
+
+| Neovim Keys | VSCode Keys | Mode  | Description                        |
+| ----------- | ----------- | ----- | ---------------------------------- |
+| `]t`        | `]t`        | **N** | Go to next type definition         |
+| `[t`        | `[t`        | **N** | Go to previous type definition     |
+| `]f`        | `]f`        | **N** | Go to next function definition     |
+| `[f`        | `[f`        | **N** | Go to previous function definition |
+| `[[`        | `[[`        | **N** | Go to previous outter scope        |
+| `]]`        | `]]`        | **N** | Go to next outter scope            |
+| `]d`        | `]d`        | **N** | Go to next diagnostic              |
+| `[d`        | `[d`        | **N** | Go to previous diagnostic          |
+| `]e`        | `]e`        | **N** | Go to next error diagnostic        |
+| `[e`        | `[e`        | **N** | Go to previous error diagnostic    |
+| `]w`        | `]w`        | **N** | Go to next warning diagnostic      |
+| `[w`        | `[w`        | **N** | Go to previous warning diagnostic  |
+| `]c`        | `]c`        | **N** | Go to next change                  |
+| `[c`        | `[c`        | **N** | Go to previous change              |
+
+## Selection
+
+| Text Object (omit `a`/`i`) | Description                             |
+| -------------------------- | --------------------------------------- |
+| `w`                        | word                                    |
+| `W`                        | WORD                                    |
+| `p`                        | Paragraph                               |
+| `{` and `}`                | `{block}`                               |
+| `[` and `]`                | `[block]`                               |
+| `(` and `)`                | `(block)`                               |
+| `<` and `>`                | `<block>`                               |
+| `b`                        | `{block}` or `[block]` or `(block)`     |
+| `'` and `'`                | `'quote'`                               |
+| `"` and `"`                | `"quote"`                               |
+| `` ` `` and `` ` ``        | `` `quote` ``                           |
+| `q`                        | `'quote'` or `"quote"` or `` `quote` `` |
+| `t`                        | `<tag> </tag>`                          |
+| `[[:punct:][:digit:]]`     |                                         |
+| `t`                        | Type                                    |
+| `f`                        | Function                                |
+| `a`                        | Argument                                |
+| `o`                        | Block                                   |
+
+| Visual Keys | Mode        | Description                                                               |
+| ----------- | ----------- | ------------------------------------------------------------------------- |
+| `v`         | **N** **V** | Start charwise visual, or expand selection                                |
+| `V`         | **N** **V** | Start linewise visual, or shrink selection                                |
+| `Ctrl`+`V`  | **N**       | Start blockwise visual                                                    |
+| `{textobj}` | **V**       | Expand selection to fit outter text object, else move to next text object |
+
+| `I` | **V** | Insert to start of selection on all lines |
+| `A` | **V** | Insert to start of selection on all lines |
+| `mc` | **N** **V** | Mulple cursor |
+
 ## Edit
+
+> Tips:
+>
+> - Operator + `[count]` Motion = Do operator for all text from the start position to the end position
+> - Operator + `[count]` + Text-Object = Do operator for all text in text object
+> - `{Visual}` Operator = Do operator for visual selected text
 
 | Operator | Mode        | Description           | Comment                                    |
 | -------- | ----------- | --------------------- | ------------------------------------------ |
 | `gu`     | **N** **V** | Make text lowercase   | `guu`=`0gu$`, shortcut `u` for visual mode |
 | `gU`     | **N** **V** | Make text uppercase   | `gUU`=`0gU$`, shortcut `U` for visual mode |
 | `g~`     | **N** **V** | Switch case of text   | `g~~`=`0g~$`, shortcut `~` for visual mode |
-| `d`      | **N** **V** | Delete text           | `dd`=`0v$d`, `D`=`d$`, `x`=`dl`, `X`=`dh`  |
 | `c`      | **N** **V** | Change text           | `cc`=`0c$`, `C`=`c$`, `s`=`cl`             |
+| `d`      | **N** **V** | Delete text           | `dd`=`0v$d`, `D`=`d$`, `x`=`dl`, `X`=`dh`  |
 | `y`      | **N** **V** | Yank (Copy) text      | `yy`=`0v$y`, `Y`=`y$`                      |
 | `v`      | **N**       | Start charwise visual | `v$` will cover the EOL                    |
-
-| Text Object         | Description                            | Comment    |
-| ------------------- | -------------------------------------- | ---------- |
-| `w`                 | word                                   |            |
-| `W`                 | WORD                                   |            |
-| `{` and `}`         | `{block}`                              |            |
-| `[` and `]`         | `[block]`                              |            |
-| `(` and `)`         | `(block)`                              |            |
-| `<` and `>`         | `<block>`                              |            |
-| `'` and `'`         | `'string'`                             |            |
-| `"` and `"`         | `"string"`                             |            |
-| `` ` `` and `` ` `` | `` `string` ``                         |            |
-| `t`                 | `<tag>block</tag>`                     |            |
-| `,`                 | Parameter, `param1, param2, ...`       | Non-native |
-| `b`                 | Block scope, support many languages    | Non-native |
-| `f`                 | Function scope, support many languages | Non-native |
-| `c`                 | Class scope, support many languages    | Non-native |
-
-> Tips:
->
-> - `[count]` Operator + `[count]` Motion = Do operator for all text from the start position to the end position
-> - Operator + `[a|i]` + Text-Object = Do operator for all text in text object, `a` for inclusive, `i` for exclusive
-> - `{Visual}` Operator = Do operator for all visual selected text
 
 | Normal Key                           | Mode                | Description                                              | Comment              |
 | ------------------------------------ | ------------------- | -------------------------------------------------------- | -------------------- |
@@ -182,17 +236,6 @@ Use **Motion** when your target location is known.
 | `U`                                  | **N**               | Undo all latest changes on the line                      | As a change command  |
 | `Ctrl`+`R`                           | **N**               | Redo                                                     | Not a change command |
 | `Space` `u`                          | **N**               | Open undo history                                        | Non-native           |
-
-| Visual Key | Mode        | Description                               | Comment                                                                                                                                                                          |
-| ---------- | ----------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `v`        | **N**       | Start charwise visual                     |                                                                                                                                                                                  |
-| `V`        | **N**       | Start linewise visual                     |                                                                                                                                                                                  |
-| `Ctrl`+`V` | **N**       | Start blockwise visual                    |                                                                                                                                                                                  |
-| `v`        | **V**       | Smart expand selection range              |                                                                                                                                                                                  |
-| `V`        | **V**       | Smart shrink selection range              |                                                                                                                                                                                  |
-| `I`        | **V**       | Insert to start of selection on all lines | Non-native                                                                                                                                                                       |
-| `A`        | **V**       | Insert to start of selection on all lines | Non-native                                                                                                                                                                       |
-| `mc`       | **N** **V** | Mulple cursor                             | see [vscode-multi-cursor.nvim](https://github.com/vscode-neovim/vscode-multi-cursor.nvim) and [multiple-cursors.nvim](https://github.com/brenton-leighton/multiple-cursors.nvim) |
 
 | Insert Key | Mode  | Description                                    | Comment    |
 | ---------- | ----- | ---------------------------------------------- | ---------- |
@@ -258,61 +301,18 @@ Use **Motion** when your target location is known.
 
 ## Language
 
-| Key                | Mode              | Description                                                                              | Comment    |
-| ------------------ | ----------------- | ---------------------------------------------------------------------------------------- | ---------- |
-| `Ctrl`+`I`         | **I**             | Toggle completion list                                                                   | Non-native |
-| `Ctrl`+`N`         | **I**             | Select next item                                                                         | Non-native |
-| `Ctrl`+`P`         | **I**             | Select previous item                                                                     | Non-native |
-| `Tab`              | **I**             | Confirm selected item, or expand snippet, or jump to next snippet placeholder            | Non-native |
-| `Shift`+`Tab`      | **I**             | Confirm selected item and replace exist content，or jump to previous snippet placeholder | Non-native |
-| `K`                | **N**             | Hover infomation                                                                         | Non-native |
-| `F2`               | **N**             | Rename symbol                                                                            | Non-native |
-| `Ctrl`+`.`         | **N**             | Code Action                                                                              | Non-native |
-| `Ctrl`+`/`         | **I** **N** **V** | Comment code                                                                             | Non-native |
-| `Alt`+`Shift`+`F`  | **I** **N** **V** | Format code                                                                              | Non-native |
-| `Ctrl`+`Shift`+`M` | **N**             | Show diagnostic                                                                          | Non-native |
-| `Space`+`E`        | **N**             | Show files and outlines                                                                  | Non-native |
-
-## File
-
-| Explorer Key | Description       | Comment                                                   |
-| ------------ | ----------------- | --------------------------------------------------------- |
-| `j`          | Up                | Non-native                                                |
-| `k`          | Down              | Non-native                                                |
-| `h`          | Collapse          | Non-native                                                |
-| `l`          | Expand or select  | Non-native                                                |
-| `a`          | Add new file      | Non-native, end with `/` or `\` means directory in Neovim |
-| `A`          | Add new directory | Non-native                                                |
-| `r`          | Rename            | Non-native                                                |
-| `d`          | Delete            | Non-native                                                |
-| `x`          | Cut               | Non-native                                                |
-| `y`          | Copy              | Non-native                                                |
-| `p`          | Paste             | Non-native                                                |
-
-| Key                | Mode  | Description         | Comment                               |
-| ------------------ | ----- | ------------------- | ------------------------------------- |
-| `H`                | **N** | Go to previous file | Non-native                            |
-| `L`                | **N** | Go to next file     | Non-native                            |
-| `Space` `Tab`      | **N** | Switch file         | Non-native, `Ctrl`+`Tab` for VSCode   |
-| `Ctrl`+`S`         | **N** | Save file           | Non-native                            |
-| `Ctrl`+`Shift`+`S` | **N** | Save file as        | Non-native                            |
-| `Space` `c`        | **N** | Close file          | Non-native, `Ctrl`+`W` `q` for VSCode |
-
-| Key            | Mode  | Description                  | Comment                            |
-| -------------- | ----- | ---------------------------- | ---------------------------------- |
-| `Ctrl`+`W` `v` | **N** | Vertical split window        |                                    |
-| `Ctrl`+`W` `s` | **N** | Horizontal split window      |                                    |
-| `Ctrl`+`W` `=` | **N** | Resize windows               |                                    |
-| `Tab`          | **N** | Go to next window            | Non-native                         |
-| `Shift`+`Tab`  | **N** | Go to previous window        | Non-native                         |
-| `Space` `q`    | **N** | Close current window or quit | Non-native, Not support for VSCode |
-
-> Tips:
->
-> 1. The `buffer` in Neovim is similar to the `editor` in VSCode.
-> 2. The `window` in Neovim is similar to the `editor group` in VSCode.
-> 3. In Neovim, buffer keymaps are prefix with `Space b`, search keymaps are prefix with `Space s`
-> 4. In VSCode, press `Ctrl`+`1` to refocus editor when you lose it.
+| Key               | Mode              | Description                                                                              | Comment    |
+| ----------------- | ----------------- | ---------------------------------------------------------------------------------------- | ---------- |
+| `Ctrl`+`I`        | **I**             | Toggle completion list                                                                   | Non-native |
+| `Ctrl`+`N`        | **I**             | Select next item                                                                         | Non-native |
+| `Ctrl`+`P`        | **I**             | Select previous item                                                                     | Non-native |
+| `Tab`             | **I**             | Confirm selected item, or expand snippet, or jump to next snippet placeholder            | Non-native |
+| `Shift`+`Tab`     | **I**             | Confirm selected item and replace exist content，or jump to previous snippet placeholder | Non-native |
+| `K`               | **N**             | Hover infomation                                                                         | Non-native |
+| `F2`              | **N**             | Rename symbol                                                                            | Non-native |
+| `Ctrl`+`.`        | **N**             | Code Action                                                                              | Non-native |
+| `Ctrl`+`/`        | **I** **N** **V** | Comment code                                                                             | Non-native |
+| `Alt`+`Shift`+`F` | **I** **N** **V** | Format code                                                                              | Non-native |
 
 ## Misc
 
