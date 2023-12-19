@@ -64,6 +64,5 @@ vim.opt.splitkeep = "screen"
 
 -- ui: global
 vim.opt.mouse = "a" -- enable mouse in all mode
-vim.opt.laststatus = 0 -- disable statusline during startup, then statusline plugin will reset it
 vim.opt.showmode = false -- show mode in statusline
 vim.opt.termguicolors = true -- true color support

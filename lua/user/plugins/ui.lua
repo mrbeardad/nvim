@@ -7,6 +7,10 @@ return {
   {
     "goolord/alpha-nvim",
     event = "VimEnter",
+    init = function()
+      -- disable statusline during startup, then statusline plugin will reset it
+      vim.opt.laststatus = 0
+    end,
     opts = function()
       local dashboard = require("alpha.themes.dashboard")
       math.randomseed(os.time())
@@ -18,11 +22,7 @@ return {
         dashboard.button("f", "󰈞  Find File", "<Cmd>Telescope find_files<CR>"),
         dashboard.button("r", "  Recent Files", "<Cmd>Telescope oldfiles<CR>"),
         dashboard.button("c", "  Config Files", "<Cmd>exe 'Telescope find_files cwd='.stdpath('config')<CR>"),
-        dashboard.button(
-          "s",
-          "󰦛  Restore Session",
-          "<Cmd>let g:minianimate_disable=v:true<Bar>lua require('persistence').load()<CR>]]"
-        ),
+        dashboard.button("s", "󰦛  Restore Session", "<Cmd>lua require('persistence').load()<CR>]]"),
         dashboard.button("l", "  Plugins", "<Cmd>Lazy<CR>"),
         dashboard.button("q", "  Quit", "<Cmd>qa<CR>"),
       }
@@ -33,11 +33,26 @@ return {
       dashboard.section.header.opts.hl = "AlphaHeader"
       dashboard.section.buttons.opts.hl = "AlphaButtons"
       dashboard.section.footer.opts.hl = "AlphaFooter"
-      -- center banner
+      -- center the banner
       local remain_height = vim.api.nvim_win_get_height(0) - #banner - #dashboard.section.buttons.val * 2 - 2
       remain_height = remain_height > 0 and remain_height or 0
       dashboard.opts.layout[1].val = math.ceil(remain_height / 2)
       dashboard.opts.layout[3].val = math.floor(remain_height / 2)
+      vim.api.nvim_create_autocmd("UIEnter", {
+        once = true,
+        callback = function()
+          local stats = require("lazy").stats()
+          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+          dashboard.section.footer.val = "⚡ Neovim loaded "
+            .. stats.loaded
+            .. "/"
+            .. stats.count
+            .. " plugins in "
+            .. ms
+            .. "ms"
+          pcall(vim.cmd.AlphaRedraw)
+        end,
+      })
       return dashboard
     end,
     config = function(_, dashboard)
@@ -54,22 +69,6 @@ return {
       end
 
       require("alpha").setup(dashboard.opts)
-
-      vim.api.nvim_create_autocmd("UIEnter", {
-        once = true,
-        callback = function()
-          local stats = require("lazy").stats()
-          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-          dashboard.section.footer.val = "⚡ Neovim loaded "
-            .. stats.loaded
-            .. "/"
-            .. stats.count
-            .. " plugins in "
-            .. ms
-            .. "ms"
-          pcall(vim.cmd.AlphaRedraw)
-        end,
-      })
     end,
   },
 
@@ -389,18 +388,8 @@ return {
           prompt_prefix = " ",
           selection_caret = " ",
           file_ignore_patterns = {},
-          -- open files in the first window that is an actual file.
-          -- use the current window if no other window is available.
           get_selection_window = function()
-            local wins = vim.api.nvim_list_wins()
-            table.insert(wins, 1, vim.api.nvim_get_current_win())
-            for _, win in ipairs(wins) do
-              local buf = vim.api.nvim_win_get_buf(win)
-              if vim.bo[buf].buftype == "" then
-                return win
-              end
-            end
-            return 0
+            return vim.g.last_normal_win
           end,
           mappings = {
             i = {

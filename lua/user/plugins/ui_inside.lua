@@ -174,7 +174,7 @@ return {
   -- the highlighting.
   {
     "echasnovski/mini.indentscope",
-    event = "User LazyFdile",
+    event = "User LazyFile",
     init = function()
       vim.api.nvim_create_autocmd("User", {
         pattern = "BufTypeSpecial",
@@ -191,26 +191,9 @@ return {
 
   {
     "echasnovski/mini.animate",
-    event = "VeryLazy",
-    init = function()
-      vim.api.nvim_create_autocmd("SessionLoadPost", {
-        callback = function()
-          vim.g.minianimate_disable = false
-        end,
-      })
-      vim.api.nvim_create_autocmd("InsertEnter", {
-        callback = function()
-          vim.g.minianimate_disable = true
-        end,
-      })
-      vim.api.nvim_create_autocmd("InsertLeave", {
-        callback = function()
-          vim.g.minianimate_disable = false
-        end,
-      })
-    end,
+    event = "User LazyFile",
     opts = function()
-      -- don't use anima=te when scrolling with the mouse
+      -- don't use animate when scrolling with the mouse
       local mouse_scrolled = false
       for _, scroll in ipairs({ "Up", "Down" }) do
         local key = "<ScrollWheel" .. scroll .. ">"
@@ -239,6 +222,20 @@ return {
           }),
         },
       }
+    end,
+    config = function(_, opts)
+      -- disable when loading session, else case wrong cursor position
+      if vim.v.this_session ~= "" then
+        vim.g.minianimate_disable = true
+        vim.api.nvim_create_autocmd("SessionLoadPost", {
+          callback = function()
+            vim.schedule(function()
+              vim.g.minianimate_disable = false
+            end)
+          end,
+        })
+      end
+      require("mini.animate").setup(opts)
     end,
   },
 

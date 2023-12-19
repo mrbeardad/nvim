@@ -42,7 +42,7 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "BufAdd" }, {
 vim.api.nvim_create_autocmd("BufEnter", {
   group = augroup("CheckBufType"),
   callback = function()
-    -- HACK: schedule the mapping since buftype could be set by other BufEnter autocmd
+    -- HACK: schedule the function since the buftype may haven't be set yet
     vim.schedule(function()
       local bufnr = vim.api.nvim_get_current_buf()
       if utils.is_real_file(bufnr) then
@@ -58,7 +58,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("CheckBufTypeOnce"),
   callback = function()
-    -- HACK: schedule the mapping since buftype could be set by other BufEnter autocmd
+    -- HACK: schedule the function since the buftype may haven't be set yet
     vim.schedule(function()
       local bufnr = vim.api.nvim_get_current_buf()
       if utils.is_real_file(bufnr) then
@@ -154,7 +154,9 @@ vim.api.nvim_create_autocmd("User", {
       not vim.tbl_contains(exclude, vim.bo.filetype)
       and vim.fn.line("'\"") > 1
       and vim.fn.line("'\"") <= vim.fn.line("$")
+      and not vim.b.has_jumped_to_last_position
     then
+      vim.b.has_jumped_to_last_position = true
       vim.cmd('normal! g`"zz')
     end
   end,

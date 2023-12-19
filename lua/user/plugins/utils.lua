@@ -10,7 +10,6 @@ return {
       {
         "<leader>qs",
         function()
-          vim.g.minianimate_disable = true
           require("persistence").load()
         end,
         desc = "Restore Session",
@@ -18,7 +17,6 @@ return {
       {
         "<leader>ql",
         function()
-          vim.g.minianimate_disable = true
           require("persistence").load({ last = true })
         end,
         desc = "Restore Last Session",
