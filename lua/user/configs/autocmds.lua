@@ -54,8 +54,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
-<<<<<<< HEAD
-=======
 -- trigger event BufTypeNormal/BufTypeSpecial
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("CheckBufTypeOnce"),
@@ -72,7 +70,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
->>>>>>> c3d2f4a (refactor(all): ui complete all most)
 -- auto create dir when saving a file, in case some intermediate directory does not exist
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   group = augroup("AutoCreateDir"),
@@ -99,20 +96,12 @@ vim.api.nvim_create_autocmd("WinLeave", {
 
 -- close special windows with <q>
 vim.api.nvim_create_autocmd("User", {
-<<<<<<< HEAD
-  pattern = "BufEnterSpecial",
-  group = augroup("EasyCloseSpecialWin"),
-  callback = function()
-    if not vim.b.have_mapped_easy_close then
-      vim.b.have_mapped_easy_close = true
-=======
   pattern = "BufTypeSpecial",
   group = augroup("EasyCloseSpecialWin"),
   callback = function()
     -- q maps to qall in startup page
     local exclude = { "alpha", "dashboard" }
     if not vim.tbl_contains(exclude, vim.bo.filetype) then
->>>>>>> c3d2f4a (refactor(all): ui complete all most)
       vim.keymap.set("n", "q", function()
         local win = vim.api.nvim_get_current_win()
         pcall(vim.api.nvim_set_current_win, vim.g.last_normal_win)
@@ -126,13 +115,8 @@ vim.api.nvim_create_autocmd("User", {
 vim.api.nvim_create_autocmd("User", {
   pattern = "BufEnterNormal",
   group = augroup("AutoChdir"),
-<<<<<<< HEAD
-  callback = function()
-    local root = utils.workspace_root()
-=======
   callback = function(ev)
     local root = utils.workspace_root(ev.buf)
->>>>>>> c3d2f4a (refactor(all): ui complete all most)
     if root ~= vim.loop.cwd() then
       vim.fn.chdir(root)
     end
@@ -140,16 +124,10 @@ vim.api.nvim_create_autocmd("User", {
 })
 vim.api.nvim_create_autocmd("BufWritePost", {
   group = augroup("AutoChdir"),
-<<<<<<< HEAD
-  callback = function()
-    if utils.is_real_file(nil, true) then
-      local root = utils.workspace_root(vim.api.nvim_get_current_buf(), true)
-=======
   callback = function(ev)
     local bufnr = ev.buf
     if utils.is_real_file(bufnr, true) then
       local root = utils.workspace_root(bufnr, true)
->>>>>>> c3d2f4a (refactor(all): ui complete all most)
       if root ~= vim.loop.cwd() then
         vim.fn.chdir(root)
       end
@@ -167,24 +145,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- go to last position when opening a buffer
-<<<<<<< HEAD
-vim.api.nvim_create_autocmd("BufRead", {
-  group = augroup("LastPositionJump"),
-  callback = function()
-    vim.api.nvim_create_autocmd("FileType", {
-      buffer = 0,
-      once = true,
-      callback = function()
-        if
-          not vim.bo.ft:find("commit|rebase")
-          and vim.fn.line("'\"") > 1
-          and vim.fn.line("'\"") <= vim.fn.line("$")
-        then
-          vim.cmd('normal! g`"zz')
-        end
-      end,
-    })
-=======
 vim.api.nvim_create_autocmd("User", {
   pattern = "BufTypeNormal",
   group = augroup("LastPositionJump"),
@@ -197,7 +157,6 @@ vim.api.nvim_create_autocmd("User", {
     then
       vim.cmd('normal! g`"zz')
     end
->>>>>>> c3d2f4a (refactor(all): ui complete all most)
   end,
 })
 
@@ -222,11 +181,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- wrap and check for spell in text filetypes
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("WrapSpell"),
-<<<<<<< HEAD
-  pattern = { "gitcommit", "markdown" },
-=======
   pattern = { "gitcommit", "gitrebase", "markdown" },
->>>>>>> c3d2f4a (refactor(all): ui complete all most)
   callback = function()
     vim.opt_local.wrap = true
     vim.opt_local.spell = true

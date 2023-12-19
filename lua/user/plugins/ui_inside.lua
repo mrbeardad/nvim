@@ -55,12 +55,12 @@ return {
         local function goto_change(next)
           return function()
             if vim.wo.diff then
-              return next and "]c" or "[c"
+              vim.cmd("normal! " .. (next and "]c" or "[c"))
+            else
+              vim.schedule(function()
+                require("gitsigns")[next and "next_hunk" or "prev_hunk"]()
+              end)
             end
-            vim.schedule(function()
-              require("gitsigns")[next and "next_hunk" or "prev_hunk"]()
-            end)
-            return "<Ignore>"
           end
         end
 
@@ -174,7 +174,7 @@ return {
   -- the highlighting.
   {
     "echasnovski/mini.indentscope",
-    event = "User LazyFile",
+    event = "User LazyFdile",
     init = function()
       vim.api.nvim_create_autocmd("User", {
         pattern = "BufTypeSpecial",
