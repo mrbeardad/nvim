@@ -6,14 +6,33 @@ return {
   {
     "folke/persistence.nvim",
     event = "BufReadPre",
-    opts = { options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" } },
-    -- stylua: ignore
     keys = {
-      { "<leader>qs", function() require("persistence").load() end,                desc = "Restore Session" },
-      { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
-      { "<leader>qQ", function() require("persistence").stop() vim.cmd.qall() end, desc = "Quit Without Saving Session" },
+      {
+        "<leader>qs",
+        function()
+          vim.g.minianimate_disable = true
+          require("persistence").load()
+        end,
+        desc = "Restore Session",
+      },
+      {
+        "<leader>ql",
+        function()
+          vim.g.minianimate_disable = true
+          require("persistence").load({ last = true })
+        end,
+        desc = "Restore Last Session",
+      },
+      {
+        "<leader>qQ",
+        function()
+          require("persistence").stop()
+          vim.cmd.qall()
+        end,
+        desc = "Quit Without Saving Session",
+      },
     },
-    --cond = false,
+    opts = {},
   },
 
   {

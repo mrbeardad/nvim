@@ -12,6 +12,7 @@ vim.keymap.set("n", "<Leader><Tab><Tab>", "<Cmd>try<Bar>b#<Bar>catch<Bar>endtry<
 -- buffers: save
 vim.keymap.set("n", "<C-s>", "<Cmd>silent! update<Bar>redraw<CR>", { desc = "Save" })
 vim.keymap.set({ "i", "x" }, "<C-s>", "<Esc><Cmd>silent! update<Bar>redraw<CR>", { desc = "Save" })
+vim.keymap.set("n", "<Leader>bw", "<Cmd>noautocmd w<CR>", { desc = "Save Without Format" })
 
 -- windows: switch
 vim.keymap.set("n", "<Tab>", keymap.switch_window(true), { desc = "Next Window" })
@@ -108,9 +109,9 @@ vim.keymap.set("c", "<C-k>", function()
     vim.fn.setcmdline(text:sub(1, col - 1))
   end
 end)
-vim.keymap.set("i", ",", ",<C-g>u")
-vim.keymap.set("i", ".", ".<C-g>u")
-vim.keymap.set("i", ";", ";<C-g>u")
+-- vim.keymap.set("i", ",", ",<C-g>u")
+-- vim.keymap.set("i", ".", ".<C-g>u")
+-- vim.keymap.set("i", ";", ";<C-g>u")
 vim.keymap.set("i", "<C-j>", "<C-g>u<End><CR>")
 vim.keymap.set("i", "<C-k>", '<C-g>u<Cmd>normal! "_d$<CR><Right>')
 vim.keymap.set("i", "<C-z>", "<Cmd>undo<CR>")

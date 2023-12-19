@@ -5,51 +5,71 @@ local banners = require("user.utils.banners")
 return {
   -- startup page
   {
-    "nvimdev/dashboard-nvim",
+    "goolord/alpha-nvim",
     event = "VimEnter",
     opts = function()
+      local dashboard = require("alpha.themes.dashboard")
       math.randomseed(os.time())
-      local banner = banners[math.random(#banners)]
-      local opts = {
-        theme = "doom",
-        config = {
-          header = vim.split(banner, "\n"),
-          -- stylua: ignore
-          center = {
-            { action = "ene | startinsert",                                 desc = " New File",        icon = " ", key = "n" },
-            { action = "Telescope find_files",                              desc = " Find File",       icon = " ", key = "f" },
-            { action = "Telescope oldfiles",                                desc = " Recent Files",    icon = " ", key = "r" },
-            { action = "exe 'Telescope find_files cwd='.stdpath('config')", desc = " Config Files",    icon = " ", key = "c" },
-            { action = "Telescope egrepify",                                desc = " Search Text",     icon = "󱎸 ", key = "/" },
-            { action = 'lua require("persistence").load()',                 desc = " Restore Session", icon = "󰦛 ", key = "s" },
-            { action = "Lazy",                                              desc = " Plugins",         icon = " ", key = "p" },
-            { action = "qa",                                                desc = " Quit",            icon = " ", key = "q" },
-          },
-          footer = function()
-            local stats = require("lazy").stats()
-            local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-            return { "⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms" }
-          end,
-        },
+      local banner = vim.split(banners[math.random(#banners)], "\n")
+      dashboard.section.header.val = banner
+      dashboard.section.buttons.val = {
+        dashboard.button("n", "  New File", "<Cmd>ene<Bar>startinsert<CR>"),
+        dashboard.button("/", "󱎸  Find Text", "<Cmd>Telescope egrepify<CR>"),
+        dashboard.button("f", "󰈞  Find File", "<Cmd>Telescope find_files<CR>"),
+        dashboard.button("r", "  Recent Files", "<Cmd>Telescope oldfiles<CR>"),
+        dashboard.button("c", "  Config Files", "<Cmd>exe 'Telescope find_files cwd='.stdpath('config')<CR>"),
+        dashboard.button(
+          "s",
+          "󰦛  Restore Session",
+          "<Cmd>let g:minianimate_disable=v:true<Bar>lua require('persistence').load()<CR>]]"
+        ),
+        dashboard.button("l", "  Plugins", "<Cmd>Lazy<CR>"),
+        dashboard.button("q", "  Quit", "<Cmd>qa<CR>"),
       }
-
-      for _, button in ipairs(opts.config.center) do
-        button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
-        button.key_format = "  %s"
+      for _, button in ipairs(dashboard.section.buttons.val) do
+        button.opts.hl = "AlphaButtons"
+        button.opts.hl_shortcut = "AlphaShortcut"
       end
-
+      dashboard.section.header.opts.hl = "AlphaHeader"
+      dashboard.section.buttons.opts.hl = "AlphaButtons"
+      dashboard.section.footer.opts.hl = "AlphaFooter"
+      -- center banner
+      local remain_height = vim.api.nvim_win_get_height(0) - #banner - #dashboard.section.buttons.val * 2 - 2
+      remain_height = remain_height > 0 and remain_height or 0
+      dashboard.opts.layout[1].val = math.ceil(remain_height / 2)
+      dashboard.opts.layout[3].val = math.floor(remain_height / 2)
+      return dashboard
+    end,
+    config = function(_, dashboard)
       -- close Lazy and re-open when the dashboard is ready
       if vim.o.filetype == "lazy" then
         vim.cmd.close()
         vim.api.nvim_create_autocmd("User", {
-          pattern = "DashboardLoaded",
+          once = true,
+          pattern = "AlphaReady",
           callback = function()
             require("lazy").show()
           end,
         })
       end
 
-      return opts
+      require("alpha").setup(dashboard.opts)
+
+      vim.api.nvim_create_autocmd("UIEnter", {
+        once = true,
+        callback = function()
+          local stats = require("lazy").stats()
+          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+          dashboard.section.footer.val = "⚡ Neovim loaded "
+            .. stats.loaded
+            .. "/"
+            .. stats.count
+            .. " plugins in "
+            .. ms
+            .. "ms"
+          pcall(vim.cmd.AlphaRedraw)
+        end,
+      })
     end,
   },
 
@@ -58,9 +78,7 @@ return {
     "nvim-neo-tree/neo-tree.nvim",
     event = "User LazyDir",
     cmd = "Neotree",
-    keys = {
-      { "<Leader>e", "<Cmd>Neotree<CR>", desc = "Explorer" },
-    },
+    keys = { { "<Leader>e", "<Cmd>Neotree<CR>", desc = "Explorer" } },
     opts = {
       sources = {
         "filesystem",
@@ -131,6 +149,13 @@ return {
             ["]c"] = "prev_git_modified",
             ["i"] = "noop",
             ["K"] = "show_file_details",
+            ["Y"] = {
+              function(state)
+                local node = state.tree:get_node()
+                vim.fn.setreg("+", node.path)
+              end,
+              desc = "yank_path",
+            },
             ["O"] = {
               function(state)
                 local node = state.tree:get_node()
@@ -144,7 +169,7 @@ return {
                   vim.notify("Unsupported System")
                 end
               end,
-              desc = "Open by System",
+              desc = "open_by_system",
             },
           },
         },
@@ -160,8 +185,12 @@ return {
       { "H", "<Cmd>BufferLineCyclePrev<CR>", desc = "Prev Buffer" },
       { "L", "<Cmd>BufferLineCycleNext<CR>", desc = "Next Buffer" },
       { "<Leader>`", "<Cmd>BufferLinePick<CR>", desc = "Pick Buffer" },
-      { "<Leader>bP", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
-      { "<Leader>bD", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-pinned Buffers" },
+      { "<Leader>bH", "<Cmd>BufferLineMovePrev<CR>", desc = "Move Buffer To Prev" },
+      { "<Leader>bL", "<Cmd>BufferLineMoveNext<CR>", desc = "Move Buffer To Next" },
+      { "<Leader>bD", "<Cmd>BufferLineSortByDirectory<CR>", desc = "Sort By Directory" },
+      { "<Leader>be", "<Cmd>BufferLineSortByExtension<CR>", desc = "Sort By Extensions" },
+      { "<Leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
+      { "<Leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-pinned Buffers" },
       { "<Leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete Other Buffers" },
       { "<Leader>bl", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete Buffers To The Right" },
       { "<Leader>bh", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete Buffers To The Left" },
@@ -261,6 +290,7 @@ return {
   -- show keymaps when press
   {
     "folke/which-key.nvim",
+    event = "VeryLazy",
     opts = {},
     config = function(_, opts)
       require("which-key").setup(opts)
@@ -268,9 +298,13 @@ return {
         ["<Tab>"] = { name = "Switch Buffer" },
         b = { name = "Buffer" },
         f = { name = "File" },
+        g = { name = "Git" },
         l = { name = "Language" },
         p = { name = "Package Managers" },
+        q = { name = "Quit/Session" },
+        s = { name = "Search" },
         t = { name = "Tab" },
+        u = { name = "UI Toggle" },
       }, { prefix = "<Leader>" })
     end,
   },
@@ -287,7 +321,11 @@ return {
     cmd = "Telescope",
     keys = {
       -- buffers
-      { "<Leader><Tab>", "<Cmd>Telescope buffers sort_mru=true sort_lastused=true<CR>", desc = "Switch Buffers" },
+      {
+        "<Leader><Tab>",
+        "<Cmd>Telescope buffers sort_mru=true sort_lastused=true theme=dropdown<CR>",
+        desc = "Switch Buffers",
+      },
       -- files
       { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Files" },
       { "<Leader>fr", "<Cmd>Telescope oldfiles<CR>", desc = "Recent Files" },
@@ -376,6 +414,23 @@ return {
             },
           },
         },
+        extensions = {
+          egrepify = {
+            AND = false,
+            prefixes = {
+              ["!"] = {
+                flag = "invert-match",
+              },
+            },
+            mappings = {
+              i = {
+                ["<C-z>"] = false,
+                ["<C-a>"] = false,
+                ["<C-r>"] = false,
+              },
+            },
+          },
+        },
       }
     end,
     config = function(_, opts)
@@ -385,201 +440,11 @@ return {
   },
   {
     "fdschmidt93/telescope-egrepify.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
     keys = {
       { "<leader>/", "<Cmd>Telescope egrepify<CR>", desc = "Search Text" },
     },
     config = function()
       require("telescope").load_extension("egrepify")
     end,
-  },
-
-  {
-    "petertriho/nvim-scrollbar",
-    event = "User LazyFile",
-    opts = {
-      handlers = {
-        cursor = false,
-        diagnostic = true,
-        gitsigns = true, -- Requires gitsigns
-        search = true, -- Requires hlslens
-      },
-    },
-  },
-
-  -- git signs highlights text that has changed since the list
-  -- git commit, and also lets you interactively stage & unstage
-  -- hunks in a commit.
-  {
-    "lewis6991/gitsigns.nvim",
-    event = "User LazyFile",
-    opts = {
-      signs = {
-        add = { text = "▎" },
-        change = { text = "▎" },
-        delete = { text = "" },
-        topdelete = { text = "" },
-        changedelete = { text = "▎" },
-        untracked = { text = "▎" },
-      },
-      on_attach = function(buffer)
-        local gs = package.loaded.gitsigns
-
-        local function map(mode, l, r, desc)
-          vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
-        end
-
-        local function goto_change(next)
-          return function()
-            if vim.wo.diff then
-              return next and "]c" or "[c"
-            end
-            vim.schedule(function()
-              require("gitsigns")[next and "next_hunk" or "prev_hunk"]()
-            end)
-            return "<Ignore>"
-          end
-        end
-
-        -- stylua: ignore start
-        map("n", "]c", goto_change(true), "Next Hunk")
-        map("n", "[c", goto_change(), "Prev Hunk")
-        map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
-        map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
-        map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
-        map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
-        map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
-        map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
-        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
-        map("n", "<leader>ghd", gs.diffthis, "Diff This")
-        map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
-        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
-      end,
-    },
-  },
-
-  {
-    "kevinhwang91/nvim-hlslens",
-    event = "CmdlineEnter",
-    keys = {
-      {
-        "n",
-        [[<Cmd>execute("normal! " . v:count1 . "Nn"[v:searchforward])<CR><Cmd>lua require("hlslens").start()<CR>]],
-        mode = { "n", "x" },
-        desc = "Repeat last search in forward direction",
-      },
-      {
-        "N",
-        [[<Cmd>execute("normal! " . v:count1 . "nN"[v:searchforward])<CR><Cmd>lua require("hlslens").start()<CR>]],
-        mode = { "n", "x" },
-        desc = "Repeat last search in backward direction",
-      },
-      {
-        "*",
-        [[*<Cmd>lua require("hlslens").start()<CR>]],
-        desc = "Search forward for nearest word (match word)",
-      },
-      {
-        "#",
-        [[#<Cmd>lua require("hlslens").start()<CR>]],
-        desc = "Search forward for nearest word (match word)",
-      },
-      {
-        "g*",
-        [[g*<Cmd>lua require("hlslens").start()<CR>]],
-        mode = { "n", "x" },
-        desc = "Search forward for nearest word",
-      },
-      {
-        "g#",
-        [[g#<Cmd>lua require("hlslens").start()<CR>]],
-        mode = { "n", "x" },
-        desc = "Search backward for nearest word",
-      },
-    },
-    opts = {
-      calm_down = true,
-      override_lens = function(render, posList, nearest, idx, relIdx)
-        local sfw = vim.v.searchforward == 1
-        local indicator, text, chunks
-        local absRelIdx = math.abs(relIdx)
-        if absRelIdx > 1 then
-          indicator = ("%d%s"):format(absRelIdx, sfw ~= (relIdx > 1) and "▲" or "▼")
-        elseif absRelIdx == 1 then
-          indicator = sfw ~= (relIdx == 1) and "▲" or "▼"
-        else
-          indicator = ""
-        end
-        local lnum, col = unpack(posList[idx])
-        if nearest then
-          local cnt = #posList
-          if indicator ~= "" then
-            text = ("[%s %d/%d]"):format(indicator, idx, cnt)
-          else
-            text = ("[%d/%d]"):format(idx, cnt)
-          end
-          chunks = { { " ", "Ignore" }, { text, "HlSearchLensNear" } }
-        else
-          text = ("[%s %d]"):format(indicator, idx)
-          chunks = { { " ", "Ignore" }, { text, "HlSearchLens" } }
-        end
-        render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
-      end,
-    },
-    config = function(_, opts)
-      require("hlslens").setup(opts)
-      if vim.g.vscode then
-        -- To clear and redraw in vscode
-        require("hlslens.lib.event"):on("LensUpdated", function()
-          vim.cmd("mode")
-        end, {})
-        -- TODO: vscode colorscheme
-        vim.cmd("hi HlSearchLensNear guibg=#40bf6a guifg=#062e32")
-        vim.cmd("hi HlSearchLens guibg=#0a5e69 guifg=#b2cac3")
-      end
-    end,
-  },
-
-  -- indent guides for Neovim
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
-    event = "User LazyFile",
-    opts = {
-      indent = {
-        char = "│",
-        tab_char = "│",
-      },
-      scope = { enabled = false },
-      exclude = {},
-    },
-  },
-
-  -- Active indent guide and indent text objects. When you're browsing
-  -- code, this highlights the current level of indentation, and animates
-  -- the highlighting.
-  {
-    "echasnovski/mini.indentscope",
-    event = "User LazyFile",
-    opts = {
-      symbol = "│",
-      options = { try_as_border = true },
-    },
-    init = function()
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "BufEnterSpecial",
-        callback = function()
-          vim.b.miniindentscope_disable = true
-        end,
-      })
-    end,
-  },
-
-  -- highlight word under cursor
-  {
-    "echasnovski/mini.cursorword",
-    opts = {
-      delay = vim.o.timeoutlen,
-    },
   },
 }

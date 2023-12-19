@@ -2,6 +2,7 @@
 vim.opt.confirm = true -- confirm to save changes before exiting modified buffer
 vim.opt.autowrite = true -- enable auto write
 vim.opt.undofile = true -- enable persistent undo
+vim.opt.undolevels = 10000 -- increase undolevels since lots of undo breaks are set in insert mode
 vim.opt.updatetime = 300 -- save swap file and trigger CursorHold
 vim.opt.timeoutlen = 300 -- wait for a mapped sequence to complete.
 vim.opt.shortmess = "oOtTWIcCFS"
@@ -63,6 +64,6 @@ vim.opt.splitkeep = "screen"
 
 -- ui: global
 vim.opt.mouse = "a" -- enable mouse in all mode
-vim.opt.laststatus = 3 -- global statusline
+vim.opt.laststatus = 0 -- disable statusline during startup, then statusline plugin will reset it
 vim.opt.showmode = false -- show mode in statusline
 vim.opt.termguicolors = true -- true color support
