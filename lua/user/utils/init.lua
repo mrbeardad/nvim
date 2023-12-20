@@ -78,6 +78,23 @@ function M.workspace_root(bufnr, no_cache)
   return root, "buffer"
 end
 
+function M.on_load(name, fn)
+  local Config = require("lazy.core.config")
+  if Config.plugins[name] and Config.plugins[name]._.loaded then
+    fn(name)
+  else
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "LazyLoad",
+      callback = function(event)
+        if event.data == name then
+          fn(name)
+          return true
+        end
+      end,
+    })
+  end
+end
+
 function M.ensure_install_tools(tools)
   local mr = require("mason-registry")
   local function ensure_installed()

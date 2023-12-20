@@ -24,7 +24,7 @@ require("lazy").setup({
   spec = {
     { import = "user/plugins" },
     { import = "user/langs" },
-    --{ import = "user/debug" },
+    -- { import = "user/debug" },
   },
   defaults = {
     -- do not lazy load plugins by default
@@ -50,8 +50,8 @@ require("lazy").setup({
     rtp = {
       disabled_plugins = {
         "gzip",
-        -- "matchit",
-        -- "matchparen",
+        "matchit",
+        "matchparen",
         "netrwPlugin",
         "tarPlugin",
         "tohtml",

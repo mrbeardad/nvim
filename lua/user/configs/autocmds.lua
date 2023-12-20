@@ -71,7 +71,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- auto create dir when saving a file, in case some intermediate directory does not exist
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+vim.api.nvim_create_autocmd("BufWritePre", {
   group = augroup("AutoCreateDir"),
   callback = function(ev)
     if ev.match:match("^%w%w+://") then
@@ -98,15 +98,15 @@ vim.api.nvim_create_autocmd("WinLeave", {
 vim.api.nvim_create_autocmd("User", {
   pattern = "BufTypeSpecial",
   group = augroup("EasyCloseSpecialWin"),
-  callback = function()
+  callback = function(ev)
     -- q maps to qall in startup page
     local exclude = { "alpha", "dashboard" }
-    if not vim.tbl_contains(exclude, vim.bo.filetype) then
+    if not vim.tbl_contains(exclude, vim.bo[ev.buf].filetype) then
       vim.keymap.set("n", "q", function()
         local win = vim.api.nvim_get_current_win()
         pcall(vim.api.nvim_set_current_win, vim.g.last_normal_win)
         pcall(vim.api.nvim_win_close, win, false)
-      end, { buffer = true, desc = "Quit Window" })
+      end, { buffer = ev.buf, desc = "Quit Window" })
     end
   end,
 })
@@ -148,15 +148,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.api.nvim_create_autocmd("User", {
   pattern = "BufTypeNormal",
   group = augroup("LastPositionJump"),
-  callback = function()
+  callback = function(ev)
     local exclude = { "gitcommit", "gitrebase" }
-    if
-      not vim.tbl_contains(exclude, vim.bo.filetype)
-      and vim.fn.line("'\"") > 1
-      and vim.fn.line("'\"") <= vim.fn.line("$")
-      and not vim.b.has_jumped_to_last_position
-    then
-      vim.b.has_jumped_to_last_position = true
+    if vim.tbl_contains(exclude, vim.bo[ev.buf].filetype) or vim.b[ev.buf].has_jumped_to_last_position then
+      return
+    end
+    vim.b.has_jumped_to_last_position = true
+    if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
       vim.cmd('normal! g`"zz')
     end
   end,
@@ -172,13 +170,13 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
   end,
 })
 
--- highlight on yank
-vim.api.nvim_create_autocmd("TextYankPost", {
-  group = augroup("HighlightYank"),
-  callback = function()
-    vim.highlight.on_yank({ higroup = "Search" })
-  end,
-})
+-- highlight on yank, do it by yanky
+-- vim.api.nvim_create_autocmd("TextYankPost", {
+--   group = augroup("HighlightYank"),
+--   callback = function()
+--     vim.highlight.on_yank({ higroup = "Search" })
+--   end,
+-- })
 
 -- wrap and check for spell in text filetypes
 vim.api.nvim_create_autocmd("FileType", {

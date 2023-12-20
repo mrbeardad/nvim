@@ -1,37 +1,37 @@
 return {
-  -- scrollbar
+  -- Scrollbar
   {
     "petertriho/nvim-scrollbar",
     event = "User LazyFile",
     opts = {
-      --show_in_active_only = true,
+      -- show_in_active_only = true,
       hide_if_all_visible = true,
       handle = {
         highlight = "ScrollbarHandle",
       },
       handlers = {
-        cursor = false,
+        cursor = true,
         diagnostic = true,
         gitsigns = true, -- Requires gitsigns
         search = false, -- Requires hlslens
       },
       marks = {
+        Cursor = { text = "—" },
         Search = { text = { "—", "󰇼" } },
         Error = { text = { "—", "󰇼" } },
         Warn = { text = { "—", "󰇼" } },
         Info = { text = { "—", "󰇼" } },
         Hint = { text = { "—", "󰇼" } },
         Misc = { text = { "—", "󰇼" } },
-        -- GitAdd = { text = "▐" },
-        -- GitChange = { text = "▐" },
+        GitAdd = { text = "▎" },
+        GitChange = { text = "▎" },
         GitDelete = { text = "▁" },
       },
     },
   },
 
-  -- git signs highlights text that has changed since the list
-  -- git commit, and also lets you interactively stage & unstage
-  -- hunks in a commit.
+  -- Git signs highlights text that has changed since the last git commit,
+  -- and also lets you interactively stage & unstage hunks in a commit.
   {
     "lewis6991/gitsigns.nvim",
     event = "User LazyFile",
@@ -52,23 +52,11 @@ return {
           vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
         end
 
-        local function goto_change(next)
-          return function()
-            if vim.wo.diff then
-              vim.cmd("normal! " .. (next and "]c" or "[c"))
-            else
-              vim.schedule(function()
-                require("gitsigns")[next and "next_hunk" or "prev_hunk"]()
-              end)
-            end
-          end
-        end
-
         -- stylua: ignore start
-        map("n", "]c", goto_change(true), "Next Change")
-        map("n", "[c", goto_change(), "Prev Change")
-        map({ "o", "x" }, "ic", ":<C-u>Gitsigns select_hunk<CR>", "Select Change Hunk")
-        map({ "o", "x" }, "ac", ":<C-u>Gitsigns select_hunk<CR>", "Select Change Hunk")
+        map("n", "]g", gs.next_hunk, "Next Git Hunk")
+        map("n", "[g", gs.prev_hunk, "Prev Git Hunk")
+        map({ "o", "x" }, "ig", ":<C-u>Gitsigns select_hunk<CR>", "Select Git Hunk")
+        map({ "o", "x" }, "ag", ":<C-u>Gitsigns select_hunk<CR>", "Select Git Hunk")
         map({ "n", "x" }, "<leader>gs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
         map({ "n", "x" }, "<leader>gr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
         map("n", "<leader>gS", gs.stage_buffer, "Stage Buffer")
@@ -82,7 +70,7 @@ return {
     },
   },
 
-  -- show search info
+  -- Display search info after match results
   {
     "kevinhwang91/nvim-hlslens",
     event = "CmdlineEnter",
@@ -154,7 +142,7 @@ return {
     cond = false,
   },
 
-  -- indent guides for Neovim
+  -- Indent guides
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
@@ -169,9 +157,7 @@ return {
     },
   },
 
-  -- Active indent guide and indent text objects. When you're browsing
-  -- code, this highlights the current level of indentation, and animates
-  -- the highlighting.
+  -- Active indent guide and indent text objects.
   {
     "echasnovski/mini.indentscope",
     event = "User LazyFile",
@@ -193,7 +179,7 @@ return {
     "echasnovski/mini.animate",
     event = "User LazyFile",
     opts = function()
-      -- don't use animate when scrolling with the mouse
+      -- Don't use animate when scrolling with the mouse
       local mouse_scrolled = false
       for _, scroll in ipairs({ "Up", "Down" }) do
         local key = "<ScrollWheel" .. scroll .. ">"
@@ -223,23 +209,9 @@ return {
         },
       }
     end,
-    config = function(_, opts)
-      -- disable when loading session, else case wrong cursor position
-      if vim.v.this_session ~= "" then
-        vim.g.minianimate_disable = true
-        vim.api.nvim_create_autocmd("SessionLoadPost", {
-          callback = function()
-            vim.schedule(function()
-              vim.g.minianimate_disable = false
-            end)
-          end,
-        })
-      end
-      require("mini.animate").setup(opts)
-    end,
   },
 
-  -- highlight word under cursor
+  -- Highlight word under cursor
   {
     "echasnovski/mini.cursorword",
     event = "User LazyFile",
@@ -256,45 +228,28 @@ return {
     },
   },
 
-  -- Treesitter is a new parser generator tool that we can
-  -- use in Neovim to power faster and more accurate
-  -- syntax highlighting.
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    event = "User LazyFile",
-    cmd = { "TSInstall", "TSUpdate", "TSUpdateSync" },
-    opts = {
-      ensure_installed = {
-        "c",
-        "lua",
-        "luadoc",
-        "luap",
-        "vim",
-        "vimdoc",
-        "query",
-        "diff",
-        "regex",
-        "comment",
-        "markdown_inline",
-      },
-      highlight = { enable = true },
-      indent = { enable = true },
-    },
-    config = function(plugin, opts)
-      -- add nvim-treesitter queries to the rtp and it's custom query predicates early
-      -- This is needed because a bunch of plugins no longer `require("nvim-treesitter")`, which
-      -- no longer trigger the **nvim-treeitter** module to be loaded in time.
-      -- Luckily, the only thins that those plugins need are the custom queries, which we make available
-      -- during startup.
-      require("lazy.core.loader").add_to_rtp(plugin)
-      require("nvim-treesitter.query_predicates")
-      require("nvim-treesitter.configs").setup(opts)
-    end,
-  },
-
+  -- Highlight different level brackets with different color
   {
     "HiPhish/rainbow-delimiters.nvim",
     event = "User LazyFile",
+  },
+
+  -- Highlight matched bracket
+  {
+    "monkoose/matchparen.nvim",
+    event = "User LazyFile",
+    opts = {},
+  },
+
+  -- Highlight undo/redo change
+  {
+    "tzachar/highlight-undo.nvim",
+    keys = { "u", "<C-r>" },
+    opts = {
+      -- Same as highlight on yank
+      duration = 150,
+      undo = { hlgroup = "Search" },
+      redo = { hlgroup = "Search" },
+    },
   },
 }
