@@ -1,26 +1,14 @@
 local utils = require("user.utils")
 
-local augroups = {}
-local function augroup(suffix)
-  local name = "User" .. suffix
-  local id = augroups[name]
-  if id then
-    return augroups[name]
-  end
-  id = vim.api.nvim_create_augroup(name, { clear = true })
-  augroups[name] = id
-  return id
-end
-
--- trigger event LazyDir
+-- Trigger event LazyDir
 vim.api.nvim_create_autocmd("BufEnter", {
-  group = augroup("LazyDir"),
+  group = utils.augroup("LazyDir"),
   nested = true,
   callback = function(ev)
     local bufname = vim.api.nvim_buf_get_name(ev.buf)
     local stat = vim.loop.fs_stat(bufname)
     if stat and stat.type == "directory" then
-      vim.api.nvim_del_augroup_by_id(augroup("LazyDir"))
+      vim.api.nvim_del_augroup_by_id(utils.augroup("LazyDir"))
       vim.api.nvim_exec_autocmds("User", { pattern = "LazyDir" })
       -- trigger BufEnter again for DirOpened handlers
       vim.api.nvim_exec_autocmds(ev.event, { buffer = ev.buf, data = ev.data })
@@ -28,19 +16,19 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
--- trigger event LazyFile
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "BufAdd" }, {
-  group = augroup("LazyFile"),
+-- Trigger event LazyFile
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "BufAdd", "BufWritePre" }, {
+  group = utils.augroup("LazyFile"),
   nested = true,
   callback = function()
-    vim.api.nvim_del_augroup_by_id(augroup("LazyFile"))
+    vim.api.nvim_del_augroup_by_id(utils.augroup("LazyFile"))
     vim.api.nvim_exec_autocmds("User", { pattern = "LazyFile" })
   end,
 })
 
--- trigger event BufEnterNormal/BufEnterSpecial
+-- Trigger event BufEnterNormal/BufEnterSpecial
 vim.api.nvim_create_autocmd("BufEnter", {
-  group = augroup("CheckBufType"),
+  group = utils.augroup("CheckBufType"),
   callback = function()
     -- HACK: schedule the function since the buftype may haven't be set yet
     vim.schedule(function()
@@ -54,9 +42,9 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
--- trigger event BufTypeNormal/BufTypeSpecial
+-- Trigger event BufTypeNormal/BufTypeSpecial
 vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("CheckBufTypeOnce"),
+  group = utils.augroup("CheckBufTypeOnce"),
   callback = function()
     -- HACK: schedule the function since the buftype may haven't be set yet
     vim.schedule(function()
@@ -70,9 +58,9 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- auto create dir when saving a file, in case some intermediate directory does not exist
+-- Auto create dir when saving a file, in case some intermediate directory does not exist
 vim.api.nvim_create_autocmd("BufWritePre", {
-  group = augroup("AutoCreateDir"),
+  group = utils.augroup("AutoCreateDir"),
   callback = function(ev)
     if ev.match:match("^%w%w+://") then
       return
@@ -82,10 +70,10 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
--- remenber the last normal winid
+-- Remenber the last normal winid
 vim.g.last_normal_win = 0
 vim.api.nvim_create_autocmd("WinLeave", {
-  group = augroup("LastNormalWin"),
+  group = utils.augroup("LastNormalWin"),
   callback = function()
     local winid = vim.api.nvim_get_current_win()
     if not utils.is_floating(winid) and utils.is_real_file() then
@@ -94,10 +82,10 @@ vim.api.nvim_create_autocmd("WinLeave", {
   end,
 })
 
--- close special windows with <q>
+-- Close special windows with <q>
 vim.api.nvim_create_autocmd("User", {
   pattern = "BufTypeSpecial",
-  group = augroup("EasyCloseSpecialWin"),
+  group = utils.augroup("EasyCloseSpecialWin"),
   callback = function(ev)
     -- q maps to qall in startup page
     local exclude = { "alpha", "dashboard" }
@@ -111,10 +99,10 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
--- change working directory
+-- Change working directory
 vim.api.nvim_create_autocmd("User", {
   pattern = "BufEnterNormal",
-  group = augroup("AutoChdir"),
+  group = utils.augroup("AutoChdir"),
   callback = function(ev)
     local root = utils.workspace_root(ev.buf)
     if root ~= vim.loop.cwd() then
@@ -123,46 +111,50 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 vim.api.nvim_create_autocmd("BufWritePost", {
-  group = augroup("AutoChdir"),
+  group = utils.augroup("AutoChdir"),
   callback = function(ev)
-    local bufnr = ev.buf
-    if utils.is_real_file(bufnr, true) then
-      local root = utils.workspace_root(bufnr, true)
-      if root ~= vim.loop.cwd() then
+    if utils.is_real_file(ev.buf, true) then
+      local root = utils.workspace_root(ev.buf, true)
+      if root ~= vim.loop.cwd() and ev.buf == vim.api.nvim_get_current_buf() then
         vim.fn.chdir(root)
       end
     end
   end,
 })
 vim.api.nvim_create_autocmd("LspAttach", {
-  group = augroup("AutoChdir"),
+  group = utils.augroup("AutoChdir"),
   callback = function(ev)
     local root = utils.workspace_root(ev.buf, true)
-    if root ~= vim.loop.cwd() then
+    if root ~= vim.loop.cwd() and ev.buf == vim.api.nvim_get_current_buf() then
       vim.fn.chdir(root)
     end
   end,
 })
 
--- go to last position when opening a buffer
-vim.api.nvim_create_autocmd("User", {
-  pattern = "BufTypeNormal",
-  group = augroup("LastPositionJump"),
+-- Go to last position when opening a buffer
+vim.api.nvim_create_autocmd("BufRead", {
+  group = utils.augroup("LastPositionJump"),
   callback = function(ev)
-    local exclude = { "gitcommit", "gitrebase" }
-    if vim.tbl_contains(exclude, vim.bo[ev.buf].filetype) or vim.b[ev.buf].has_jumped_to_last_position then
-      return
-    end
-    vim.b.has_jumped_to_last_position = true
-    if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
-      vim.cmd('normal! g`"zz')
-    end
+    vim.api.nvim_create_autocmd("FileType", {
+      buffer = ev.buf,
+      once = true,
+      callback = function(evt)
+        local exclude = { "gitcommit", "gitrebase" }
+        if
+          not vim.tbl_contains(exclude, vim.bo[evt.buf].filetype)
+          and vim.fn.line("'\"") > 1
+          and vim.fn.line("'\"") <= vim.fn.line("$")
+        then
+          vim.cmd('normal! g`"zz')
+        end
+      end,
+    })
   end,
 })
 
--- resize splits if window got resized
+-- Resize splits if window got resized
 vim.api.nvim_create_autocmd({ "VimResized" }, {
-  group = augroup("ResizeSplits"),
+  group = utils.augroup("ResizeSplits"),
   callback = function()
     local current_tab = vim.fn.tabpagenr()
     vim.cmd("tabdo wincmd =")
@@ -170,7 +162,7 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
   end,
 })
 
--- highlight on yank, do it by yanky
+-- Highlight on yank, do it by yanky
 -- vim.api.nvim_create_autocmd("TextYankPost", {
 --   group = augroup("HighlightYank"),
 --   callback = function()
@@ -178,9 +170,9 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
 --   end,
 -- })
 
--- wrap and check for spell in text filetypes
+-- Wrap and check for spell in text filetypes
 vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("WrapSpell"),
+  group = utils.augroup("WrapSpell"),
   pattern = { "gitcommit", "gitrebase", "markdown" },
   callback = function()
     vim.opt_local.wrap = true

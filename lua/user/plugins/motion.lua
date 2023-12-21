@@ -2,16 +2,14 @@ local utils = require("user.utils")
 local flash_utils = require("user.utils.flash")
 
 return {
-  -- Treesitter is a new parser generator tool that we can
-  -- use in Neovim to power faster and more accurate syntax highlighting.
+  -- Parse code to AST, and use it to highlight, move, select, etc.
   {
     "nvim-treesitter/nvim-treesitter",
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
         config = function()
-          -- When in diff mode, we want to use the default
-          -- vim text objects c & C instead of the treesitter ones.
+          -- Fallback to builtin [c and ]c in diff mode
           local move = require("nvim-treesitter.textobjects.move")
           local configs = require("nvim-treesitter.configs")
           for name, fn in pairs(move) do
@@ -38,6 +36,13 @@ return {
     cmd = { "TSInstall", "TSUpdate", "TSUpdateSync" },
     opts = {
       ensure_installed = {
+        "c",
+        "bash",
+        "lua",
+        "vim",
+        "vimdoc",
+        "query",
+        -- Ensure to install all the parser above
         "regex",
         "diff",
         "git_config",
@@ -48,21 +53,20 @@ return {
       },
       highlight = { enable = true },
       indent = { enable = true },
-      incremental_selection = {
-        -- Use flash treeitter instead
-        enable = false,
-      },
       textobjects = {
         move = {
           enable = true,
-          goto_next_start = { ["]a"] = "@parameter.outer", ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
-          goto_next_end = { ["]A"] = "@parameter.outer", ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
-          goto_previous_start = { ["[a"] = "@parameter.outer", ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
-          goto_previous_end = { ["[A"] = "@parameter.outer", ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
+          goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
+          goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
+          goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
+          goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
         },
       },
     },
     config = function(plugin, opts)
+      -- Duplicate parser will cause problem
+      opts.ensure_installed = utils.tbl_unique(opts.ensure_installed)
+
       -- Add nvim-treesitter queries to the rtp and its custom query predicates early.
       -- This is needed because a bunch of plugins no longer `require("nvim-treesitter")`,
       -- which no longer trigger the **nvim-treeitter** module to be loaded in time.
@@ -74,7 +78,7 @@ return {
     end,
   },
 
-  -- Show flag around positions and choose them to jump
+  -- Show flag around target positions and choose them to jump
   {
     "folke/flash.nvim",
     event = "CmdlineEnter",
@@ -83,8 +87,6 @@ return {
       { "F", mode = { "n", "x", "o" } },
       { "t", mode = { "n", "x", "o" } },
       { "T", mode = { "n", "x", "o" } },
-      -- { ";", mode = { "n", "x", "o" } },
-      -- { ",", mode = { "n", "x", "o" } },
       { "r", "<Cmd>lua require('flash').remote({restore=true})<CR>", mode = "o", desc = "Flash Remote" },
       { "S", "<Cmd>lua require('flash').treesitter()<CR>", mode = { "n", "o", "x" }, desc = "Flash Treesitter" },
       {
@@ -124,6 +126,7 @@ return {
           end,
         },
         treesitter = {
+          -- Extra exclude `o`
           label = { exclude = "ryiopasdhjklxcvYPSDJKXCV" },
         },
       },
@@ -157,28 +160,28 @@ return {
       local ai = require("mini.ai")
       return {
         mappings = {
-          around_last = "ap",
-          inside_last = "ip",
+          around_last = "aN",
+          inside_last = "iN",
         },
-        n_lines = 1000,
+        n_lines = 250,
         custom_textobjects = {
-          a = ai.gen_spec.treesitter({ a = "@parameter.outer", i = "@parameter.inner" }, {}),
+          -- Line
+          l = { "^.*$", "^%s*().*()%s*$" },
+          -- Entire buffer
+          e = function()
+            return {
+              from = { line = 1, col = 1 },
+              ---@diagnostic disable-next-line
+              to = { line = vim.fn.line("$"), col = math.max(vim.fn.getline("$"):len(), 1) },
+            }
+          end,
+          -- a = ai.gen_spec.treesitter({ a = "@parameter.outer", i = "@parameter.inner" }, {}),
+          F = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
           c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
-          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
           o = ai.gen_spec.treesitter({
             a = { "@block.outer", "@conditional.outer", "@loop.outer" },
             i = { "@block.inner", "@conditional.inner", "@loop.inner" },
           }, {}),
-          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
-          -- Entire buffer
-          e = function()
-            local from = { line = 1, col = 1 }
-            local to = {
-              line = vim.fn.line("$"),
-              col = math.max(vim.fn.getline("$"):len(), 1),
-            }
-            return { from = from, to = to }
-          end,
         },
       }
     end,
@@ -186,7 +189,6 @@ return {
       -- Register all text objects with which-key
       utils.on_load("which-key.nvim", function()
         local i = {
-          [" "] = "Whitespace",
           ['"'] = 'Balanced "',
           ["'"] = "Balanced '",
           ["`"] = "Balanced `",
@@ -199,14 +201,16 @@ return {
           ["}"] = "Balanced } including white-space",
           ["{"] = "Balanced {",
           ["?"] = "User Prompt",
-          _ = "Underscore",
-          a = "Argument",
-          b = "Balanced ), ], }",
-          c = "Class",
-          f = "Function",
-          o = "Block/Conditional/loop",
           q = "Quote `, \", '",
+          b = "Balanced ), ], }",
           t = "Tag",
+          l = "Line",
+          e = "Entire Buffer",
+          a = "Argument",
+          f = "Function Call",
+          F = "Function",
+          c = "Class",
+          o = "Block/Conditional/loop",
         }
         local a = vim.deepcopy(i)
         for k, v in pairs(a) do
@@ -215,8 +219,10 @@ return {
 
         local ic = vim.deepcopy(i)
         local ac = vim.deepcopy(a)
-        for key, name in pairs({ n = "Next", l = "Last" }) do
+        for key, name in pairs({ n = "Next", N = "Previous" }) do
+          ---@diagnostic disable-next-line
           i[key] = vim.tbl_extend("force", { name = "Inside " .. name .. " textobject" }, ic)
+          ---@diagnostic disable-next-line
           a[key] = vim.tbl_extend("force", { name = "Around " .. name .. " textobject" }, ac)
         end
         require("which-key").register({
@@ -226,38 +232,5 @@ return {
         })
       end)
     end,
-  },
-
-  -- Modify surround bracket, quote and others
-  {
-    "kylechui/nvim-surround",
-    keys = {
-      { "ds", mode = "n" },
-      { "cs", mode = "n" },
-      { "cS", mode = "n" },
-      { "ys", mode = "n" },
-      { "yss", mode = "n" },
-      { "yS", mode = "n" },
-      { "ySS", mode = "n" },
-      { "gs", mode = "x" },
-      { "gS", mode = "x" },
-      { "<C-g>s", mode = "i" },
-      { "<C-g>S", mode = "i" },
-    },
-    opts = {
-      keymaps = {
-        insert = "<C-g>s",
-        insert_line = "<C-g>S",
-        normal = "ys",
-        normal_cur = "yss",
-        normal_line = "yS",
-        normal_cur_line = "ySS",
-        visual = "gs",
-        visual_line = "gS",
-        delete = "ds",
-        change = "cs",
-        change_line = "cS",
-      },
-    },
   },
 }

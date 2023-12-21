@@ -4,7 +4,7 @@ return {
     "petertriho/nvim-scrollbar",
     event = "User LazyFile",
     opts = {
-      -- show_in_active_only = true,
+      -- show_in_active_only = true, -- This will cause blink
       hide_if_all_visible = true,
       handle = {
         highlight = "ScrollbarHandle",
@@ -30,8 +30,7 @@ return {
     },
   },
 
-  -- Git signs highlights text that has changed since the last git commit,
-  -- and also lets you interactively stage & unstage hunks in a commit.
+  -- Highlights text that `git diff` shows, and stage & unstage hunks interactively.
   {
     "lewis6991/gitsigns.nvim",
     event = "User LazyFile",
@@ -57,15 +56,15 @@ return {
         map("n", "[g", gs.prev_hunk, "Prev Git Hunk")
         map({ "o", "x" }, "ig", ":<C-u>Gitsigns select_hunk<CR>", "Select Git Hunk")
         map({ "o", "x" }, "ag", ":<C-u>Gitsigns select_hunk<CR>", "Select Git Hunk")
-        map({ "n", "x" }, "<leader>gs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
-        map({ "n", "x" }, "<leader>gr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
-        map("n", "<leader>gS", gs.stage_buffer, "Stage Buffer")
-        map("n", "<leader>gu", gs.undo_stage_hunk, "Undo Stage Hunk")
-        map("n", "<leader>gR", gs.reset_buffer, "Reset Buffer")
-        map("n", "<leader>gp", gs.preview_hunk, "Preview Hunk")
-        map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, "Blame Line")
-        map("n", "<leader>gd", gs.diffthis, "Diff This")
-        map("n", "<leader>gD", function() gs.diffthis("~") end, "Diff This ~")
+        map({ "n", "x" }, "<Leader>gs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+        map({ "n", "x" }, "<Leader>gr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
+        map("n", "<Leader>gS", gs.stage_buffer, "Stage Buffer")
+        map("n", "<Leader>gu", gs.undo_stage_hunk, "Undo Stage Hunk")
+        map("n", "<Leader>gR", gs.reset_buffer, "Reset Buffer")
+        map("n", "<Leader>gp", gs.preview_hunk, "Preview Hunk")
+        map("n", "<Leader>gb", function() gs.blame_line({ full = true }) end, "Blame Line")
+        map("n", "<Leader>gd", gs.diffthis, "Diff This")
+        map("n", "<Leader>gD", function() gs.diffthis("~") end, "Diff This ~")
       end,
     },
   },
@@ -157,15 +156,16 @@ return {
     },
   },
 
-  -- Active indent guide and indent text objects.
+  -- Indent guides animation
   {
     "echasnovski/mini.indentscope",
     event = "User LazyFile",
     init = function()
+      -- Disable in special buffer
       vim.api.nvim_create_autocmd("User", {
         pattern = "BufTypeSpecial",
-        callback = function()
-          vim.b.miniindentscope_disable = true
+        callback = function(ev)
+          vim.api.nvim_buf_set_var(ev.buf, "miniindentscope_disable", true)
         end,
       })
     end,
@@ -175,6 +175,7 @@ return {
     },
   },
 
+  -- Animate scrolling, window resize, open and close
   {
     "echasnovski/mini.animate",
     event = "User LazyFile",
@@ -211,15 +212,16 @@ return {
     end,
   },
 
-  -- Highlight word under cursor
+  -- Highlight the word under cursor
   {
     "echasnovski/mini.cursorword",
     event = "User LazyFile",
     init = function()
+      -- Disable in special buffer
       vim.api.nvim_create_autocmd("User", {
         pattern = "BufTypeSpecial",
-        callback = function()
-          vim.b.minicursorword_disable = true
+        callback = function(ev)
+          vim.api.nvim_buf_set_var(ev.buf, "minicursorword_disable", true)
         end,
       })
     end,

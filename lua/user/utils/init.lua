@@ -95,6 +95,33 @@ function M.on_load(name, fn)
   end
 end
 
+local augroups = {}
+function M.augroup(suffix)
+  local name = "User" .. suffix
+  local id = augroups[name]
+  if id then
+    return augroups[name]
+  end
+  id = vim.api.nvim_create_augroup(name, { clear = true })
+  augroups[name] = id
+  return id
+end
+
+function M.tbl_unique(t)
+  local uniqueElements = {}
+  for _, v in pairs(t) do
+    if not uniqueElements[v] then
+      uniqueElements[v] = true
+    end
+  end
+  local result = {}
+  for k, _ in pairs(uniqueElements) do
+    table.insert(result, k)
+  end
+
+  return result
+end
+
 function M.ensure_install_tools(tools)
   local mr = require("mason-registry")
   local function ensure_installed()

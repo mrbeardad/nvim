@@ -1,5 +1,7 @@
+local icons = require("user.utils.icons")
+
 return {
-  -- language tools manager (language server, debug adapter, linter, formatter)
+  -- Language tools manager (language server, debug adapter, linter, formatter)
   {
     "williamboman/mason.nvim",
     build = ":MasonUpdate",
@@ -8,47 +10,38 @@ return {
     opts = {},
   },
 
-  -- preset configurations for language server
+  -- Preset configurations for language server
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      -- configures lua-language-server for neovim
+      -- Configures lua-language-server for neovim
       { "folke/neodev.nvim", opts = {} },
-      -- load before mason.nvim and nvim-lspconfig
+      -- Load before mason.nvim and nvim-lspconfig
       "williamboman/mason.nvim",
-      -- PERF: disabled on startup
-      -- automatically install language server when it is setup, load before nvim-lspconfig
+      -- Automatically install language server when it is setup, load before nvim-lspconfig
       { "williamboman/mason-lspconfig.nvim", opts = { automatic_installation = true } },
     },
-    event = "BufReadPost",
+    event = "User LazyFile",
     keys = { { "<Leader>li", "<Cmd>LspInfo<CR>", desc = "Language Servers Info" } },
-    init = function()
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-        callback = function(ev)
-          -- buffer local mappings.
-          -- see `:help vim.lsp.*` for documentation on any of the below functions
-          local opts = { buffer = ev.buf }
-          -- use telescope instead
-          -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-          -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-          -- vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
-          -- vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-          -- vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-          vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-          vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-          vim.keymap.set("n", "<Leader>lr", vim.lsp.buf.rename, opts)
-          vim.keymap.set({ "n", "x" }, "<Leader>la", vim.lsp.buf.code_action, opts)
-        end,
-      })
-      vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError", numhl = "" })
-      vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticSignWarn", numhl = "" })
-      vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo", numhl = "" })
-      vim.fn.sign_define("DiagnosticSignHint", { text = "󰌵", texthl = "DiagnosticSignHint", numhl = "" })
-    end,
-    opts = { servers = {} },
-    -- load language servers setup options in langs directory
+    opts = {
+      servers = {},
+      on_attach = function(client, bufnr)
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "Hover" })
+        vim.keymap.set({ "n", "x" }, "<Leader>la", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Actions" })
+        if client.server_capabilities.inlayHintProvider then
+          vim.lsp.buf.inlay_hint(bufnr, true)
+        end
+      end,
+    },
     config = function(_, opts)
+      vim.fn.sign_define("DiagnosticSignError", { text = icons.diagnostics.error, texthl = "DiagnosticSignError" })
+      vim.fn.sign_define("DiagnosticSignWarn", { text = icons.diagnostics.warn, texthl = "DiagnosticSignWarn" })
+      vim.fn.sign_define("DiagnosticSignInfo", { text = icons.diagnostics.info, texthl = "DiagnosticSignInfo" })
+      vim.fn.sign_define("DiagnosticSignHint", { text = icons.diagnostics.hint, texthl = "DiagnosticSignHint" })
+
+      vim.diagnostic.config({ severity_sort = true })
+
+      -- Load language servers setup options in langs directory
       local lspconfig = require("lspconfig")
       for ls, lsopt in pairs(opts.servers) do
         lspconfig[ls].setup(lsopt)
@@ -56,10 +49,27 @@ return {
     end,
   },
 
-  -- better formating
+  -- Rename like :s to preview results
+  {
+    "smjonas/inc-rename.nvim",
+    cmd = { "IncRename" },
+    keys = {
+      {
+        "<Leader>lr",
+        function()
+          return ":IncRename " .. vim.fn.expand("<cword>")
+        end,
+        expr = true,
+        desc = "Rename",
+      },
+      { "<F2>", "<Leader>lr", remap = true, desc = "Rename" },
+    },
+    opts = {},
+  },
+
+  -- Better formating, avoid replacing entire buffer
   {
     "stevearc/conform.nvim",
-    dependencies = { "williamboman/mason.nvim" },
     event = "BufWritePre",
     keys = {
       {
@@ -104,8 +114,6 @@ return {
         injected = { options = { ignore_errors = true } },
       },
     },
-    -- TODO: install at startup by command
-    -- automatically install enabled formatters
     config = function(_, opts)
       local conform = require("conform")
       conform.setup(opts)
@@ -121,60 +129,26 @@ return {
     end,
   },
 
-  -- Fast and feature-rich surround actions. For text that includes
-  -- surrounding characters like brackets or quotes, this allows you
-  -- to select the text inside, change or modify the surrounding characters,
-  -- and more.
-  -- {
-  --   "echasnovski/mini.surround",
-  --   keys = function(_, keys)
-  --     -- Populate the keys based on the user's options
-  --     local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
-  --     local opts = require("lazy.core.plugin").values(plugin, "opts", false)
-  --     local mappings = {
-  --       { opts.mappings.add, desc = "Add surrounding", mode = { "n", "v" } },
-  --       { opts.mappings.delete, desc = "Delete surrounding" },
-  --       { opts.mappings.find, desc = "Find right surrounding" },
-  --       { opts.mappings.find_left, desc = "Find left surrounding" },
-  --       { opts.mappings.highlight, desc = "Highlight surrounding" },
-  --       { opts.mappings.replace, desc = "Replace surrounding" },
-  --       { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
-  --     }
-  --     mappings = vim.tbl_filter(function(m)
-  --       return m[1] and #m[1] > 0
-  --     end, mappings)
-  --     return vim.list_extend(mappings, keys)
-  --   end,
-  --   opts = {
-  --     mappings = {
-  --       add = "gsa", -- Add surrounding in Normal and Visual modes
-  --       delete = "gsd", -- Delete surrounding
-  --       find = "gsf", -- Find surrounding (to the right)
-  --       find_left = "gsF", -- Find surrounding (to the left)
-  --       highlight = "gsh", -- Highlight surrounding
-  --       replace = "gsr", -- Replace surrounding
-  --       update_n_lines = "gsn", -- Update `n_lines`
-  --     },
-  --   },
-  -- },
-
-  -- comments
-  --{
-  --  "JoosepAlviste/nvim-ts-context-commentstring",
-  --  lazy = true,
-  --  opts = {
-  --    enable_autocmd = false,
-  --  },
-  --},
-  --{
-  --  "echasnovski/mini.comment",
-  --  event = "VeryLazy",
-  --  opts = {
-  --    options = {
-  --      custom_commentstring = function()
-  --        return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
-  --      end,
-  --    },
-  --  },
-  --},
+  -- Comments
+  {
+    -- https://github.com/JoosepAlviste/nvim-ts-context-commentstring/wiki/Integrations
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    lazy = true,
+    opts = {
+      enable_autocmd = false,
+    },
+  },
+  {
+    "numToStr/Comment.nvim",
+    keys = {
+      { "<C-_>", "gcc", remap = true, desc = "Toggle Line Comment" },
+      { "<C-_>", "gc", mode = "x", remap = true, desc = "Toggle Comment" },
+      { "<C-_>", "<Cmd>normal gcc<CR>", mode = "i", desc = "Toggle Comment" },
+    },
+    opts = {
+      pre_hook = function(ctx)
+        return require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()(ctx)
+      end,
+    },
+  },
 }

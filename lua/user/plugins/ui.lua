@@ -1,6 +1,4 @@
-local utils = require("user.utils")
 local icons = require("user.utils.icons")
-local banners = require("user.utils.banners")
 
 return {
   -- Startup page
@@ -13,6 +11,7 @@ return {
     end,
     opts = function()
       local dashboard = require("alpha.themes.dashboard")
+      local banners = require("user.utils.banners")
       math.randomseed(os.time())
       local banner = vim.split(banners[math.random(#banners)], "\n")
       dashboard.section.header.val = banner
@@ -98,7 +97,7 @@ return {
         -- highlight_separator = "NeoTreeTabSeparatorInactive",
         -- highlight_separator_active = "NeoTreeTabSeparatorActive",
       },
-      open_files_do_not_replace_types = { "help", "nofile", "quickfix", "terminal", "prompt" },
+      open_files_do_not_replace_types = { "help", "quickfix", "terminal", "prompt" },
       default_component_configs = {
         indent = {
           with_expanders = true,
@@ -157,6 +156,7 @@ return {
             },
             ["O"] = {
               function(state)
+                local utils = require("user.utils")
                 local node = state.tree:get_node()
                 if utils.is_windows() then
                   os.execute("start " .. node.path)
@@ -176,7 +176,7 @@ return {
     },
   },
 
-  -- Show buffers and tabs
+  -- Show buffers and tabs at the top
   {
     "akinsho/bufferline.nvim",
     event = "User LazyFile",
@@ -188,7 +188,7 @@ return {
       { "<Leader>bL", "<Cmd>BufferLineMoveNext<CR>", desc = "Move Buffer To Next" },
       { "<Leader>bD", "<Cmd>BufferLineSortByDirectory<CR>", desc = "Sort By Directory" },
       { "<Leader>be", "<Cmd>BufferLineSortByExtension<CR>", desc = "Sort By Extensions" },
-      { "<Leader>bP", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
+      { "<Leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
       { "<Leader>bu", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete unpinned Buffers" },
       { "<Leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete Other Buffers" },
       { "<Leader>bl", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete Buffers To The Right" },
@@ -226,7 +226,7 @@ return {
     end,
   },
 
-  -- Statusline
+  -- Statusline at the bottom
   {
     "nvim-lualine/lualine.nvim",
     event = "User LazyFile",
@@ -356,7 +356,7 @@ return {
         function()
           local kf = require("user.utils.lsp").kind_filter
           kf = kf[vim.bo.filetype] or kf.default
-          require("telescope.builtin").lsp_workspace_symbols({
+          require("telescope.builtin").lsp_dynamic_workspace_symbols({
             symbols = kf,
           })
         end,
@@ -385,8 +385,14 @@ return {
         layout_config = {
           horizontal = {
             prompt_position = "top",
-            preview_width = 0.5,
+            -- mirror = true,
+            width = 0.9,
+            preview_width = 0.45,
           },
+        },
+        path_display = {
+          -- "smart",
+          "truncate",
         },
         prompt_prefix = " ",
         selection_caret = " ",
@@ -443,14 +449,6 @@ return {
     },
     config = function()
       require("telescope").load_extension("egrepify")
-    end,
-  },
-  -- Show undo history
-  {
-    "debugloop/telescope-undo.nvim",
-    keys = { { "<Leader>su", "<Cmd>Telescope undo<CR>", desc = "Undo History" } },
-    config = function()
-      require("telescope").load_extension("undo")
     end,
   },
 }

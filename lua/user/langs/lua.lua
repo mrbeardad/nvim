@@ -33,8 +33,11 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = { "lua", "luadoc", "luap" },
-    },
+    opts = function(_, opts)
+      table.insert(opts.ensure_installed, "lua")
+      table.insert(opts.ensure_installed, "luadoc")
+      table.insert(opts.ensure_installed, "luap")
+      return opts
+    end,
   },
 }
