@@ -127,6 +127,6 @@ return {
         end, opts("Leave"))
       end,
     },
-    --cond = false,
+    enabled = false,
   },
 }

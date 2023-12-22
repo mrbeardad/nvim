@@ -66,11 +66,35 @@ vim.keymap.set("t", "<M-j>", "<Down>", { desc = "Down" })
 vim.keymap.set("t", "<M-k>", "<Up>", { desc = "Up" })
 vim.keymap.set("t", "<M-l>", "<Right>", { desc = "Right" })
 
+-- Motion: mark
+vim.keymap.set("", "'", "`", { remap = true, desc = "Jump To Mark" })
+
 -- HACK: For historical reason, <Tab> and <C-i> have the same key sequence in most of terminals.
 -- To distinguish them, you could map another key, say <A-I>, to <C-i> in neovim,
 -- and then map ctrl+i to send <A-I> key sequence in your terminal setting.
 -- For more info `:h tui-modifyOtherKeys` and https://invisible-island.net/xterm/modified-keys.html
 vim.keymap.set({ "i", "c", "n", "x", "s" }, "<M-I>", "<C-i>", { desc = "<C-i>" })
+
+-- Motion: go to diagnostic
+local diagnostic_goto = function(next, severity)
+  local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
+  severity = severity and vim.diagnostic.severity[severity] or nil
+  return function()
+    go({ severity = severity })
+    if MiniAnimate then
+      MiniAnimate.execute_after("scroll", vim.diagnostic.open_float)
+    else
+      vim.diagnostic.open_float()
+    end
+  end
+end
+vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+vim.keymap.set("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
+vim.keymap.set("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
+vim.keymap.set("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
+vim.keymap.set("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
+vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
+vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
 -- Operation: better indenting
 vim.keymap.set("n", "<", "<<", { desc = "Deindent" })
@@ -116,23 +140,6 @@ vim.keymap.set("i", "<C-z>", "<Cmd>undo<CR>")
 vim.keymap.set("i", "<C-v>", "<C-g>u<C-r><C-p>+")
 vim.keymap.set("c", "<C-v>", "<C-r>+")
 
--- Diagnostic
-local diagnostic_goto = function(next, severity)
-  local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
-  severity = severity and vim.diagnostic.severity[severity] or nil
-  return function()
-    go({ severity = severity })
-    vim.diagnostic.open_float()
-  end
-end
-vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
-vim.keymap.set("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
-vim.keymap.set("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
-vim.keymap.set("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
-vim.keymap.set("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
-vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
-vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
-
 vim.keymap.set("n", "<Leader>qq", "<Cmd>qa<CR>", { desc = "Quit All" })
 
 -- Toggle UI options
@@ -154,22 +161,10 @@ vim.keymap.set("n", "<Leader>us", "<Cmd>setlocal spell!<CR>", { desc = "Toggle '
 vim.keymap.set("n", "<Leader>uw", "<Cmd>setlocal wrap!<CR>", { desc = "Toggle 'wrap'" })
 vim.keymap.set("n", "<A-z>", "<Cmd>setlocal wrap!<CR>", { desc = "Toggle 'wrap'" })
 
--- Lazygit
--- vim.keymap.set("n", "<Leader>gg", function() Util.terminal({ "lazygit" }, { cwd = Util.root(), esc_esc = false, ctrl_hjkl = false }) end, { desc = "Lazygit (root dir)" })
--- vim.keymap.set("n", "<Leader>gG", function() Util.terminal({ "lazygit" }, {esc_esc = false, ctrl_hjkl = false}) end, { desc = "Lazygit (cwd)" })
-
 -- Floating terminal
--- local lazyterm = function() Util.terminal(nil, { cwd = Util.root() }) end
--- vim.keymap.set("n", "<Leader>ft", lazyterm, { desc = "Terminal (root dir)" })
--- vim.keymap.set("n", "<Leader>fT", function() Util.terminal() end, { desc = "Terminal (cwd)" })
--- vim.keymap.set("n", "<c-/>", lazyterm, { desc = "Terminal (root dir)" })
--- vim.keymap.set("n", "<c-_>", lazyterm, { desc = "which_key_ignore" })
-
--- Terminal Mappings
+vim.keymap.set("n", "<A-`>", keymap.open_term, { desc = "Terminal" })
+vim.keymap.set("t", "<A-`>", keymap.open_term, { desc = "Terminal" })
 vim.keymap.set("t", "<Esc><Esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
-vim.keymap.set("t", "<C-h>", "<Cmd>wincmd h<CR>", { desc = "Go to left window" })
-vim.keymap.set("t", "<C-j>", "<Cmd>wincmd j<CR>", { desc = "Go to lower window" })
-vim.keymap.set("t", "<C-k>", "<Cmd>wincmd k<CR>", { desc = "Go to upper window" })
-vim.keymap.set("t", "<C-l>", "<Cmd>wincmd l<CR>", { desc = "Go to right window" })
-vim.keymap.set("t", "<C-/>", "<Cmd>close<CR>", { desc = "Hide Terminal" })
-vim.keymap.set("t", "<c-_>", "<Cmd>close<CR>", { desc = "which_key_ignore" })
+vim.keymap.set("n", "<Leader>gg", function()
+  keymap.open_term("lazygit")
+end, { desc = "Lazygit" })

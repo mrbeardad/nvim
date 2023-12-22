@@ -10,11 +10,13 @@ return {
       vim.opt.laststatus = 0
     end,
     opts = function()
+      -- Header
       local dashboard = require("alpha.themes.dashboard")
       local banners = require("user.utils.banners")
       math.randomseed(os.time())
       local banner = vim.split(banners[math.random(#banners)], "\n")
       dashboard.section.header.val = banner
+      -- Buttons
       dashboard.section.buttons.val = {
         dashboard.button("n", "  New File", "<Cmd>ene<Bar>startinsert<CR>"),
         dashboard.button("/", "󱎸  Find Text", "<Cmd>Telescope egrepify<CR>"),
@@ -25,6 +27,7 @@ return {
         dashboard.button("p", "  Plugins", "<Cmd>Lazy<CR>"),
         dashboard.button("q", "  Quit", "<Cmd>qa<CR>"),
       }
+      -- Footer
       vim.api.nvim_create_autocmd("UIEnter", {
         once = true,
         callback = function()
@@ -34,7 +37,12 @@ return {
           pcall(vim.cmd.AlphaRedraw)
         end,
       })
-      -- Set highlight
+      -- Vertical center the header
+      local remain_height = vim.api.nvim_win_get_height(0) - #banner - #dashboard.section.buttons.val * 2 - 2
+      remain_height = remain_height > 0 and remain_height or 0
+      dashboard.opts.layout[1].val = math.ceil(remain_height / 2)
+      dashboard.opts.layout[3].val = math.floor(remain_height / 2)
+      -- Highlight
       for _, button in ipairs(dashboard.section.buttons.val) do
         button.opts.hl = "AlphaButtons"
         button.opts.hl_shortcut = "AlphaShortcut"
@@ -42,11 +50,6 @@ return {
       dashboard.section.header.opts.hl = "AlphaHeader"
       dashboard.section.buttons.opts.hl = "AlphaButtons"
       dashboard.section.footer.opts.hl = "AlphaFooter"
-      -- Vertical center the banner
-      local remain_height = vim.api.nvim_win_get_height(0) - #banner - #dashboard.section.buttons.val * 2 - 2
-      remain_height = remain_height > 0 and remain_height or 0
-      dashboard.opts.layout[1].val = math.ceil(remain_height / 2)
-      dashboard.opts.layout[3].val = math.floor(remain_height / 2)
       return dashboard.opts
     end,
     config = function(_, opts)
@@ -83,19 +86,13 @@ return {
         "document_symbols",
       },
       source_selector = {
-        winbar = true,
+        winbar = false,
         show_scrolled_off_parent_node = true,
         sources = {
           { source = "filesystem" },
           { source = "git_status" },
           { source = "document_symbols" },
         },
-        -- TODO: Set winbar highlight
-        -- highlight_tab = "NeoTreeTabInactive",
-        -- highlight_tab_active = "NeoTreeTabActive",
-        -- highlight_background = "NeoTreeTabInactive",
-        -- highlight_separator = "NeoTreeTabSeparatorInactive",
-        -- highlight_separator_active = "NeoTreeTabSeparatorActive",
       },
       open_files_do_not_replace_types = { "help", "quickfix", "terminal", "prompt" },
       default_component_configs = {
@@ -269,6 +266,18 @@ return {
           },
         },
         lualine_x = {
+          -- stylua: ignore
+          {
+            function() return require("noice").api.status.command.get() end,
+            cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
+            -- color = Util.ui.fg("Statement"),
+          },
+          -- stylua: ignore
+          {
+            function() return require("noice").api.status.mode.get() end,
+            cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
+            -- color = Util.ui.fg("Constant"),
+          },
           {
             "diagnostics",
             symbols = {
@@ -445,10 +454,78 @@ return {
   {
     "fdschmidt93/telescope-egrepify.nvim",
     keys = {
-      { "<leader>/", "<Cmd>Telescope egrepify<CR>", desc = "Search Text" },
+      { "<Leader>/", "<Cmd>Telescope egrepify<CR>", desc = "Search Text" },
     },
     config = function()
       require("telescope").load_extension("egrepify")
     end,
+  },
+
+  -- Better `vim.notify()`
+  {
+    "rcarriga/nvim-notify",
+    keys = {
+      {
+        "<leader>un",
+        function()
+          require("notify").dismiss({ silent = true, pending = true })
+        end,
+        desc = "Dismiss all Notifications",
+      },
+    },
+    init = function()
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          vim.notify = require("notify")
+        end,
+      })
+    end,
+    opts = {
+      timeout = 3000,
+      max_height = function()
+        return math.floor(vim.o.lines * 0.75)
+      end,
+      max_width = function()
+        return math.floor(vim.o.columns * 0.75)
+      end,
+      on_open = function(win)
+        vim.api.nvim_win_set_config(win, { zindex = 100 })
+      end,
+    },
+  },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    -- stylua: ignore
+    keys = {
+      { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
+      { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
+      { "<leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
+      { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
+      { "<leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
+      { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
+      { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
+    },
+    init = function()
+      vim.opt.cmdheight = 0
+    end,
+    opts = {
+      override = {
+        -- override the default lsp markdown formatter with Noice
+        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+        -- override the lsp markdown formatter with Noice
+        ["vim.lsp.util.stylize_markdown"] = true,
+        -- override cmp documentation with Noice (needs the other options to work)
+        ["cmp.entry.get_documentation"] = true,
+      },
+      presets = {
+        bottom_search = false, -- use a classic bottom cmdline for search
+        command_palette = true, -- position the cmdline and popupmenu together
+        long_message_to_split = false, -- long messages will be sent to a split
+        inc_rename = true, -- enables an input dialog for inc-rename.nvim
+        lsp_doc_border = true, -- add a border to hover docs and signature help
+      },
+    },
   },
 }

@@ -1,4 +1,11 @@
 return {
+  -- Show context of the current function
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = "User LazyFile",
+    opts = { max_lines = 3 },
+  },
+
   -- Scrollbar
   {
     "petertriho/nvim-scrollbar",
@@ -246,7 +253,11 @@ return {
   -- Highlight undo/redo change
   {
     "tzachar/highlight-undo.nvim",
-    keys = { "u", "<C-r>" },
+    keys = {
+      { "u", desc = "Undo" },
+      { "<C-r>", desc = "Redo" },
+      { "<C-z>", "<Cmd>normal u<CR>", mode = "i", desc = "Undo" },
+    },
     opts = {
       -- Same as highlight on yank
       duration = 150,

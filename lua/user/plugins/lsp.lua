@@ -7,7 +7,33 @@ return {
     build = ":MasonUpdate",
     keys = { { "<Leader>pl", "<Cmd>Mason<CR>", desc = "Language Tools Manager" } },
     cmd = { "Mason", "MasonUpdate", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
-    opts = {},
+    opts = {
+      ensure_installed = {},
+    },
+    config = function(_, opts)
+      require("mason").setup(opts)
+      local mr = require("mason-registry")
+      mr:on("package:install:success", function()
+        vim.defer_fn(function()
+          -- trigger FileType event to possibly load this newly installed LSP server
+          vim.api.nvim_exec_autocmds("FileType", { buffer = vim.api.nvim_get_current_buf() })
+        end, 100)
+      end)
+      local function ensure_installed()
+        opts.ensure_installed = require("user.utils").tbl_unique(opts.ensure_installed)
+        for _, tool in ipairs(opts.ensure_installed) do
+          local p = mr.get_package(tool)
+          if not p:is_installed() then
+            p:install()
+          end
+        end
+      end
+      if mr.refresh then
+        mr.refresh(ensure_installed)
+      else
+        ensure_installed()
+      end
+    end,
   },
 
   -- Preset configurations for language server
@@ -67,6 +93,23 @@ return {
     opts = {},
   },
 
+  -- Linter
+  {
+    "mfussenegger/nvim-lint",
+    event = "User LazyFile",
+    opts = {
+      linters_by_ft = {},
+    },
+    config = function(_, opts)
+      require("lint").linters_by_ft = opts.linters_by_ft
+      vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+        callback = function()
+          require("lint").try_lint()
+        end,
+      })
+    end,
+  },
+
   -- Better formating, avoid replacing entire buffer
   {
     "stevearc/conform.nvim",
@@ -114,19 +157,6 @@ return {
         injected = { options = { ignore_errors = true } },
       },
     },
-    config = function(_, opts)
-      local conform = require("conform")
-      conform.setup(opts)
-      local formatters = {}
-      for _, fmt in ipairs(conform.list_all_formatters()) do
-        if not fmt.available then
-          table.insert(formatters, fmt.name)
-        end
-      end
-      if #formatters > 0 then
-        require("user.utils").ensure_install_tools(formatters)
-      end
-    end,
   },
 
   -- Comments
@@ -141,9 +171,12 @@ return {
   {
     "numToStr/Comment.nvim",
     keys = {
+      { "<C-/>", "gcc", remap = true, desc = "which_key_ignore" },
       { "<C-_>", "gcc", remap = true, desc = "Toggle Line Comment" },
-      { "<C-_>", "gc", mode = "x", remap = true, desc = "Toggle Comment" },
-      { "<C-_>", "<Cmd>normal gcc<CR>", mode = "i", desc = "Toggle Comment" },
+      { "<C-/>", "gc", mode = "x", remap = true, desc = "Toggle Comment" },
+      { "<C-_>", "gc", mode = "x", remap = true, desc = "which_key_ignore" },
+      { "<C-/>", "<Cmd>normal gcc<CR>", mode = "i", desc = "Toggle Comment" },
+      { "<C-_>", "<Cmd>normal gcc<CR>", mode = "i", desc = "which_key_ignore" },
     },
     opts = {
       pre_hook = function(ctx)

@@ -1,5 +1,5 @@
 return {
-  -- auto completion engine
+  -- Auto completion engine
   {
     "hrsh7th/nvim-cmp",
     event = { "InsertEnter", "CmdlineEnter" },
@@ -14,7 +14,7 @@ return {
       local cmp = require("cmp")
       return {
         completion = {
-          -- there are two completion styles:
+          -- There are two completion styles:
           -- `noinsert` means do not automatically insert the selected item, set it if you want to confirm item by manually pressing <cr>,
           -- `noselect` means do not automatically select the first item, set it if you want to pressing <cr>
           completeopt = "menu,menuone,noinsert",
@@ -106,31 +106,30 @@ return {
           end, { "i", "c" }),
         },
         formatting = {
-          -- TODO: icons
-          --format = function(_, item)
-          --  local icons = require("lazyvim.config").icons.kinds
-          --  if icons[item.kind] then
-          --    item.kind = icons[item.kind] .. item.kind
-          --  end
-          --  return item
-          --end,
+          format = function(_, item)
+            local icons = require("user.utils.icons").kinds
+            if icons[item.kind] then
+              item.kind = icons[item.kind] .. item.kind
+            end
+            return item
+          end,
         },
         experimental = {
           ghost_text = {
-            hl_group = "Comment",
+            hl_group = "CmpGhostText",
           },
         },
       }
     end,
     config = function(_, opts)
       local cmp = require("cmp")
-      -- basic setup
+      -- Basic setup
       cmp.setup(opts)
 
       -- `:` cmdline setup.
       cmp.setup.cmdline(":", {
         completion = {
-          -- do not automatically select the first item in cmdline since <cr> has special effect in cmdline
+          -- Do not automatically select the first item in cmdline since <cr> has special effect in cmdline
           completeopt = "menu,menuone,noselect",
         },
         sources = cmp.config.sources({
@@ -150,13 +149,13 @@ return {
         },
       })
 
-      -- history search
+      -- History search
       -- vim.keymap.set("c", "<C-n>", "<Down>", { desc = "History Forward Search" })
       -- vim.keymap.set("c", "<C-p>", "<Up>", { desc = "History Backward Search" })
     end,
   },
 
-  -- snippets
+  -- Snippets
   {
     "L3MON4D3/LuaSnip",
     build = not jit.os:find("Windows") and "make install_jsregexp",
@@ -168,7 +167,7 @@ return {
     },
     event = "InsertEnter",
     keys = {
-      -- do not use <tab> to expand snippets since it could conflict between jumps and expands,
+      -- Do not use <tab> to expand snippets since it could conflict between jumps and expands,
       -- just expand snippets by pressing <cr> in completion menu
       {
         "<Tab>",
@@ -195,12 +194,12 @@ return {
       },
     },
     opts = {
-      -- when to check if the current snippet was deleted
+      -- When to check if the current snippet was deleted
       delete_check_events = "TextChanged",
     },
   },
 
-  -- auto pairs
+  -- Auto pairs
   {
     "windwp/nvim-autopairs",
     dependencies = { "hrsh7th/nvim-cmp" },
@@ -222,7 +221,7 @@ return {
     },
     config = function(_, opts)
       require("nvim-autopairs").setup(opts)
-      -- insert `(` after select function or method item
+      -- Insert `(` after select function or method item
       require("cmp").event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done())
     end,
   },

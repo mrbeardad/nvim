@@ -17,7 +17,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 -- Trigger event LazyFile
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "BufAdd", "BufWritePre" }, {
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "BufAdd" }, {
   group = utils.augroup("LazyFile"),
   nested = true,
   callback = function()

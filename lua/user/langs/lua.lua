@@ -16,13 +16,32 @@ require("user.utils.lsp").kind_filter.lua = {
 
 return {
   {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function(_, opts)
+      vim.list_extend(opts.ensure_installed, { "lua", "luadoc", "luap" })
+    end,
+  },
+
+  {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        lua_ls = {},
+        lua_ls = {
+          settings = {
+            Lua = {
+              workspace = {
+                checkThirdParty = false,
+              },
+              completion = {
+                callSnippet = "Replace",
+              },
+            },
+          },
+        },
       },
     },
   },
+
   {
     "stevearc/conform.nvim",
     opts = {
@@ -31,13 +50,11 @@ return {
       },
     },
   },
+
   {
-    "nvim-treesitter/nvim-treesitter",
+    "williamboman/mason.nvim",
     opts = function(_, opts)
-      table.insert(opts.ensure_installed, "lua")
-      table.insert(opts.ensure_installed, "luadoc")
-      table.insert(opts.ensure_installed, "luap")
-      return opts
+      vim.list_extend(opts.ensure_installed, { "stylua" })
     end,
   },
 }

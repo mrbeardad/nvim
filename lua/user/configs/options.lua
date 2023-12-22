@@ -26,8 +26,6 @@ vim.opt.shiftwidth = 2 -- size of an indent
 vim.opt.shiftround = true -- round indent
 vim.opt.smartindent = true -- insert indents automatically
 vim.opt.formatoptions = "tcrqjnl"
-
--- Register
 vim.opt.clipboard = "unnamedplus" -- sync with system clipboard
 
 -- UI: inside window
@@ -61,9 +59,11 @@ vim.opt.pumblend = 10 -- popup blend
 vim.opt.pumheight = 10 -- maximum number of entries in a popup
 vim.opt.splitright = true -- put new windows right of current
 vim.opt.splitbelow = true -- put new windows below current
--- vim.opt.splitkeep = "screen"
+-- vim.opt.splitkeep = "screen" -- don't move cursorline to window center when split
 
--- UI: global
+-- UI: others
 vim.opt.mouse = "a" -- enable mouse in all mode
 vim.opt.showmode = false -- show mode in statusline
 vim.opt.termguicolors = true -- true color support
+-- Set shell after plugin load, else some plugins will use powershell that is slower than cmd on startup
+-- vim.opt.shell = vim.fn.executable("pwsh") and "pwsh.exe" or vim.opt.shell
