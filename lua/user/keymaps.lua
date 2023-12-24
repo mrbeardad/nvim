@@ -12,9 +12,9 @@ function M.switch_window(next)
     while true do
       local win = wins[idx + 1]
       idx = (idx + step) % #wins
-      if not start then
+      if not start then -- Iterate wins until cur_win
         start = win == cur_win
-      else
+      else -- Begin check when iterate to cur_win
         if win == cur_win then
           return
         end
@@ -47,11 +47,7 @@ end
 function M.toggle_search_pattern(flag)
   return function()
     local t = vim.fn.getcmdtype()
-    if
-      vim.api.nvim_get_mode().mode:sub(1, 1) ~= "c"
-      and t ~= "/"
-      and t ~= "?"
-    then
+    if vim.api.nvim_get_mode().mode:sub(1, 1) ~= "c" and t ~= "/" and t ~= "?" then
       return
     end
     local pattern = vim.fn.getcmdline()
@@ -114,14 +110,9 @@ function M.toggle_search_pattern(flag)
       w2_len = 0
     end
     pattern = flag_end and pattern:sub(flag_end, #pattern - w2_len) or ""
-    if
-      flag == "w" and (not flag_w1 or not flag_w2)
-      or flag ~= "w" and flag_w1 and flag_w2
-    then
+    if flag == "w" and (not flag_w1 or not flag_w2) or flag ~= "w" and flag_w1 and flag_w2 then
       w2_len = flag_r and 1 or 2
-      pattern = (flag_r and "<" or "\\<")
-        .. pattern
-        .. (flag_r and ">" or "\\>")
+      pattern = (flag_r and "<" or "\\<") .. pattern .. (flag_r and ">" or "\\>")
     else
       w2_len = 0
     end
@@ -143,13 +134,57 @@ function M.put_empty_line(put_above)
   -- - On second call it performs task: puts `v:count1` empty lines
   --   above/below current line.
   if type(put_above) == "boolean" then
-    vim.o.operatorfunc = "v:lua.require'user.utils.keymap'.put_empty_line"
+    vim.o.operatorfunc = "v:lua.require'user.keymaps'.put_empty_line"
     cache_empty_line = { put_above = put_above }
     return "g@l"
   end
 
   local target_line = vim.fn.line(".") - (cache_empty_line.put_above and 1 or 0)
   vim.fn.append(target_line, vim.fn["repeat"]({ "" }, vim.v.count1))
+end
+
+function M.flash_select()
+  local selected_labels = {}
+
+  local find_label = function(match)
+    for i, pos in ipairs(selected_labels) do
+      if pos[1] == match.pos[1] and pos[2] == match.pos[2] then
+        return i
+      end
+    end
+    return nil
+  end
+
+  require("flash").jump({
+    search = {
+      mode = "search",
+    },
+    jump = {
+      pos = "range",
+    },
+    label = {
+      format = function(opts)
+        return {
+          {
+            opts.match.label,
+            find_label(opts.match) and opts.hl_group or "FlashLabelUnselected",
+          },
+        }
+      end,
+    },
+    action = function(match, state)
+      local i = find_label(match)
+      if i then
+        table.remove(selected_labels, i)
+      else
+        table.insert(selected_labels, match.pos)
+      end
+      state:_update()
+      require("flash").jump({ continue = true })
+    end,
+  })
+
+  return selected_labels
 end
 
 return M

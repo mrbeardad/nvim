@@ -14,9 +14,6 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 require("lazy").setup({
   spec = {
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    -- { import = "lazyvim.plugins.extras.lang.typescript" },
-    -- { import = "lazyvim.plugins.extras.lang.json" },
-    -- { import = "lazyvim.plugins.extras.ui.mini-animate" },
     { import = "plugins" },
   },
   defaults = {
@@ -28,15 +25,15 @@ require("lazy").setup({
     version = false,
   },
   install = {
-    -- try to load one of these colorschemes when starting an installation during startup
-    colorscheme = { "catppuccin", "tokyonight", "habamax" },
+    -- Try to load one of these colorschemes when starting an installation during startup
+    colorscheme = { "tokyonight", "catppuccin", "habamax" },
   },
   checker = {
-    -- whether to automatically check for plugin updates
+    -- Whether to automatically check for plugin updates
     enabled = false,
   },
   change_detection = {
-    -- whether to automatically check for config file changes and reload the ui
+    -- Whether to automatically check for config file changes and reload the ui
     enabled = false,
   },
   performance = {

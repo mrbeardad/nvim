@@ -4,16 +4,16 @@
 vim.g.root_spec = {
   "lsp",
   ".git",
-  function(buf)
+  function(buf) -- Fallback to buffer dirctory
     local bufname = require("lazyvim.util").root.bufpath(buf)
     return bufname and vim.fs.dirname(bufname)
   end,
 }
 
-vim.opt.conceallevel = 0
+vim.opt.updatetime = 300 -- Save swap file and trigger CursorHold
+vim.opt.jumpoptions = "stack" -- Jump list work like browser
 vim.opt.formatoptions = "jcrqlnt"
-vim.opt.updatetime = 300 -- save swap file and trigger CursorHold
-vim.opt.jumpoptions = "stack" -- jump list work like browser
+vim.opt.conceallevel = 0 -- Don't hide text
 vim.opt.listchars = {
   tab = "→ ",
   eol = "↵",
@@ -21,7 +21,8 @@ vim.opt.listchars = {
   extends = "↷",
   precedes = "↶",
 }
-vim.opt.breakindent = true -- indent wrapped lines to match line start
-vim.opt.linebreak = true -- wrap long lines at 'breakat'
-vim.opt.colorcolumn = "100" -- hightlight column
-vim.opt.winblend = 10 -- floating blend
+vim.opt.breakindent = true -- Indent wrapped lines to match line start
+vim.opt.linebreak = true -- Wrap long lines at 'breakat'
+vim.opt.colorcolumn = "100" -- Hightlight column
+vim.opt.winblend = 10 -- Floating blend
+vim.opt.cmdheight = 0 -- Avoid blink on startup since noice will set it to 0

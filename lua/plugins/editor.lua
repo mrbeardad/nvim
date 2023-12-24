@@ -1,9 +1,9 @@
 local Util = require("lazyvim.util")
 
 return {
+  -- editor: file explorer
   {
     "nvim-neo-tree/neo-tree.nvim",
-    event = "User LazyDir",
     keys = {
       {
         "<leader>fe",
@@ -107,18 +107,19 @@ return {
     },
   },
 
+  -- ui: search and preview
   {
     "nvim-telescope/telescope.nvim",
     keys = {
       -- buffers
-      { "<Leader>,", false },
+      { "<leader>,", false },
       {
-        "<Leader><Tab>",
-        "<Cmd>Telescope buffers sort_mru=true sort_lastused=true theme=dropdown<CR>",
+        "<leader><tab>",
+        "<cmd>Telescope buffers sort_mru=true sort_lastused=true theme=dropdown<cr>",
         desc = "Switch Buffers",
       },
       -- use egrepify instead
-      { "<Leader>/", false },
+      { "<leader>/", false },
     },
     opts = {
       defaults = {
@@ -187,7 +188,7 @@ return {
   {
     "fdschmidt93/telescope-egrepify.nvim",
     keys = {
-      { "<Leader>/", "<Cmd>Telescope egrepify<CR>", desc = "Search Text" },
+      { "<leader>/", "<cmd>Telescope egrepify<cr>", desc = "Search Text" },
     },
     config = function()
       require("telescope").load_extension("egrepify")
@@ -201,6 +202,7 @@ return {
     end,
   },
 
+  -- motion: show flag around target position
   {
     "folke/flash.nvim",
     event = function()
@@ -257,9 +259,24 @@ return {
     },
   },
 
+  -- ui: show keymaps help
   {
     "folke/which-key.nvim",
     opts = {
+      presets = {
+        operators = false,
+      },
+      operators = {
+        d = "Delete",
+        c = "Change",
+        y = "Yank (copy)",
+        ["g~"] = "Toggle case",
+        ["gu"] = "Lowercase",
+        ["gU"] = "Uppercase",
+        ["zf"] = "Create fold",
+        ["!"] = "Filter through external program",
+        ["v"] = "Visual Character Mode",
+      },
       defaults = {
         ["g"] = { name = "+Goto" },
         ["gs"] = {},
@@ -268,9 +285,7 @@ return {
         ["<leader><tab>"] = { name = "+Switch Buffer" },
         ["<leader>t"] = { name = "+Tabs" },
         ["<leader>b"] = { name = "+Buffer" },
-        ["<leader>c"] = { name = "" },
-        ["<leader>l"] = { name = "+Language" },
-        ["<leader>p"] = { name = "+Package Managers" },
+        ["<leader>c"] = { name = "+Code" },
         ["<leader>f"] = { name = "+Files" },
         ["<leader>g"] = { name = "+Git" },
         ["<leader>q"] = { name = "+Quit/Session" },
@@ -282,9 +297,11 @@ return {
     },
   },
 
+  -- hl: show git status hunk and line balme
   {
     "lewis6991/gitsigns.nvim",
     opts = {
+      current_line_blame = true,
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
 
@@ -310,10 +327,27 @@ return {
     },
   },
 
+  -- hl: highlight all words that is smae as the word under cursor
   {
     "RRethy/vim-illuminate",
     opts = {
       delay = vim.o.timeoutlen,
+    },
+  },
+
+  -- hl: highlight undo/redo change
+  {
+    "tzachar/highlight-undo.nvim",
+    keys = {
+      { "u", desc = "Undo" },
+      { "<C-r>", desc = "Redo" },
+      { "<C-z>", "<Cmd>normal u<CR>", mode = "i", desc = "Undo" },
+    },
+    opts = {
+      -- Same as highlight on yank
+      duration = 150,
+      undo = { hlgroup = "Search" },
+      redo = { hlgroup = "Search" },
     },
   },
 }

@@ -1,4 +1,5 @@
 return {
+  -- hl: syntax highlight and code parser
   {
     "nvim-treesitter/nvim-treesitter",
     event = function()
@@ -15,6 +16,7 @@ return {
     end,
   },
 
+  -- op: automatically change tag
   {
     "windwp/nvim-ts-autotag",
     event = function()
@@ -23,13 +25,13 @@ return {
     ft = { "xml", "html", "javascriptreact", "typescriptreact" },
   },
 
-  -- Highlight different level brackets with different color
+  -- hl: highlight different level brackets with different color
   {
     "HiPhish/rainbow-delimiters.nvim",
     event = "LazyFile",
   },
 
-  -- Highlight matched bracket
+  -- hl: highlight matched bracket
   {
     "monkoose/matchparen.nvim",
     event = "LazyFile",

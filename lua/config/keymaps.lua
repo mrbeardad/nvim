@@ -5,52 +5,44 @@ local lazyutil = require("lazyvim.util")
 local keymaps = require("user.keymaps")
 
 -- Change LazyVim builtin keymaps
-vim.keymap.set("i", "<A-j>", "<Cmd>m .+1<Bar>normal ==<CR>", { desc = "Move Down" })
-vim.keymap.set("i", "<A-k>", "<Cmd>m .-2<Bar>normal ==<CR>", { desc = "Move Up" })
+vim.keymap.set("i", "<A-j>", "<cmd>m .+1<bar>normal ==<cr>", { desc = "Move Down" })
+vim.keymap.set("i", "<A-k>", "<cmd>m .-2<bar>normal ==<cr>", { desc = "Move Up" })
 
 vim.keymap.del("i", ",")
 vim.keymap.del("i", ".")
 vim.keymap.del("i", ";")
 
-vim.keymap.del("n", "<Leader>l")
-vim.keymap.set("n", "<Leader>pp", "<Cmd>Lazy<CR>", { desc = "Plugins Manager" })
-
-vim.keymap.del({ "n", "v" }, "<Leader>cf")
-vim.keymap.set({ "n", "v" }, "<Leader>lf", function()
-  lazyutil.format({ force = true })
-end, { desc = "Format" })
 vim.keymap.set({ "n", "v", "i" }, "<A-F>", function()
   lazyutil.format({ force = true })
 end, { desc = "Format" })
 
-vim.keymap.del("n", "<Leader>cd")
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 
 local lazyterm = function()
   lazyutil.terminal(vim.fn.executable("pwsh") and "pwsh" or nil)
 end
-vim.keymap.set("n", "<Leader>ft", lazyterm, { desc = "Terminal (root dir)" })
+vim.keymap.set("n", "<leader>ft", lazyterm, { desc = "Terminal (root dir)" })
 vim.keymap.set("n", "<A-`>", lazyterm, { desc = "Terminal (root dir)" })
 
-vim.keymap.del("n", "<Leader><Tab>l")
-vim.keymap.del("n", "<Leader><Tab>f")
-vim.keymap.del("n", "<Leader><Tab><Tab>")
-vim.keymap.del("n", "<Leader><Tab>]")
-vim.keymap.del("n", "<Leader><Tab>d")
-vim.keymap.del("n", "<Leader><Tab>[")
-vim.keymap.set("n", "<Leader>tt", "<Cmd>tabnew<CR>", { desc = "New Tab" })
-vim.keymap.set("n", "<Leader>t0", "<Cmd>tabfirst<CR>", { desc = "First Tab" })
-vim.keymap.set("n", "<Leader>t$", "<Cmd>tablast<CR>", { desc = "Last Tab" })
-vim.keymap.set("n", "<Leader>tn", "<Cmd>tabnext<CR>", { desc = "Next Tab" })
-vim.keymap.set("n", "<Leader>tp", "<Cmd>tabprevious<CR>", { desc = "Previous Tab" })
-vim.keymap.set("n", "<Leader>td", "<Cmd>tabclose<CR>", { desc = "Close Tab" })
+vim.keymap.del("n", "<leader><tab>l")
+vim.keymap.del("n", "<leader><tab>f")
+vim.keymap.del("n", "<leader><tab><tab>")
+vim.keymap.del("n", "<leader><tab>]")
+vim.keymap.del("n", "<leader><tab>d")
+vim.keymap.del("n", "<leader><tab>[")
+vim.keymap.set("n", "<leader>tt", "<cmd>tabnew<cr>", { desc = "New Tab" })
+vim.keymap.set("n", "<leader>t0", "<cmd>tabfirst<cr>", { desc = "First Tab" })
+vim.keymap.set("n", "<leader>t$", "<cmd>tablast<cr>", { desc = "Last Tab" })
+vim.keymap.set("n", "<leader>tn", "<cmd>tabnext<cr>", { desc = "Next Tab" })
+vim.keymap.set("n", "<leader>tp", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
+vim.keymap.set("n", "<leader>td", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 
 -- Buffers
-vim.keymap.set("n", "<Leader><Tab><Tab>", "<Cmd>try<Bar>b#<Bar>catch<Bar>endtry<CR>", { desc = "Switch Buffer" })
-vim.keymap.set("n", "<Leader>bw", "<Cmd>noautocmd w<CR>", { desc = "Save Without Format" })
+vim.keymap.set("n", "<leader><tab><tab>", "<cmd>try<bar>b#<Bar>catch<Bar>endtry<cr>", { desc = "Switch Buffer" })
+vim.keymap.set("n", "<leader>bw", "<cmd>noautocmd w<cr>", { desc = "Save Without Format" })
 
 -- Windows
-vim.keymap.set("n", "<Tab>", keymaps.switch_window(true), { desc = "Next Window" })
+vim.keymap.set("n", "<tab>", keymaps.switch_window(true), { desc = "Next Window" })
 vim.keymap.set("n", "<S-Tab>", keymaps.switch_window(), { desc = "Prev Window" })
 vim.keymap.set("n", "<C-w>z", keymaps.zoom_window, { desc = "Zoom Window" })
 
@@ -63,7 +55,7 @@ vim.keymap.set("c", "<A-r>", keymaps.toggle_search_pattern("r"), { desc = "Toggl
 vim.keymap.set("c", "<C-a>", "<C-b>", { silent = false, desc = "Start Of Line" })
 vim.keymap.set("c", "<M-h>", "<Left>", { silent = false, desc = "Left" })
 vim.keymap.set("c", "<M-l>", "<Right>", { silent = false, desc = "Right" })
-vim.keymap.set("i", "<C-a>", "<C-g>u<Cmd>normal! ^<CR>", { desc = "Start Of Line" })
+vim.keymap.set("i", "<C-a>", "<C-g>u<cmd>normal! ^<cr>", { desc = "Start Of Line" })
 vim.keymap.set("i", "<C-e>", "<End>", { desc = "End Of Line" })
 vim.keymap.set("i", "<C-l>", "<Del>", { desc = "Delete Right" })
 vim.keymap.set("i", "<M-h>", "<Left>", { remap = true, desc = "Left" })
@@ -79,7 +71,7 @@ vim.keymap.set("t", "<M-l>", "<Right>", { desc = "Right" })
 vim.keymap.set("", "'", "`", { remap = true, desc = "Jump To Mark" })
 
 -- Motion: jump list
--- HACK: For historical reason, <Tab> and <C-i> have the same key sequence in most of terminals.
+-- HACK: For historical reason, <tab> and <C-i> have the same key sequence in most of terminals.
 -- To distinguish them, you could map another key, say <A-I>, to <C-i> in neovim,
 -- and then map ctrl+i to send <A-I> key sequence in your terminal setting.
 -- For more info `:h tui-modifyOtherKeys` and https://invisible-island.net/xterm/modified-keys.html
@@ -92,13 +84,13 @@ vim.keymap.set("n", ">", ">>", { desc = "Indent" })
 -- Operation: add empty lines
 vim.keymap.set(
   "n",
-  "]<Space>",
+  "]<space>",
   "v:lua.require'user.keymaps'.put_empty_line(v:false)",
   { expr = true, desc = "Put Empty Line Below" }
 )
 vim.keymap.set(
   "n",
-  "[<Space>",
+  "[<space>",
   "v:lua.require'user.keymaps'.put_empty_line(v:true)",
   { expr = true, desc = "Put Empty Line Above" }
 )
@@ -111,9 +103,9 @@ vim.keymap.set("c", "<C-k>", function()
     vim.fn.setcmdline(text:sub(1, col - 1))
   end
 end)
-vim.keymap.set("i", "<C-j>", "<C-g>u<End><CR>")
-vim.keymap.set("i", "<C-k>", '<C-g>u<Cmd>normal! "_d$<CR><Right>')
-vim.keymap.set("i", "<C-z>", "<Cmd>undo<CR>")
+vim.keymap.set("i", "<C-j>", "<C-g>u<End><cr>")
+vim.keymap.set("i", "<C-k>", '<C-g>u<cmd>normal! "_d$<cr><Right>')
+vim.keymap.set("i", "<C-z>", "<cmd>undo<cr>")
 
 -- Operation: yank and paste
 vim.keymap.set("i", "<C-v>", "<C-g>u<C-r><C-p>+")

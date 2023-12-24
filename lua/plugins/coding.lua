@@ -32,36 +32,38 @@ return {
         end, { "i", "c" }),
         ["<Tab>"] = cmp.mapping(function()
           if cmp.visible() then
-            cmp.select_next_item()
+            cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
           else
             cmp.complete()
           end
         end, { "c" }),
         ["<S-Tab>"] = cmp.mapping(function()
           if cmp.visible() then
-            cmp.select_prev_item()
+            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
           else
             cmp.complete()
           end
         end, { "c" }),
         ["<CR>"] = cmp.mapping(function(fallback)
-          vim.cmd("let &ul=&ul") -- break undo
-          if cmp.visible() then
-            cmp.confirm()
-          else
+          if vim.fn.mode():sub(1, 1) == "i" then
+            vim.cmd("let &ul=&ul") -- break undo
+          end
+          if not cmp.confirm() then
             fallback()
           end
         end, { "i", "c" }),
         ["<S-CR>"] = cmp.mapping(function(fallback)
-          vim.cmd("let &ul=&ul") -- break undo
-          if cmp.visible() then
-            cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace })
-          else
+          if vim.fn.mode():sub(1, 1) == "i" then
+            vim.cmd("let &ul=&ul") -- break undo
+          end
+          if not cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace }) then
             fallback()
           end
         end, { "i", "c" }),
         ["<C-CR>"] = cmp.mapping(function(fallback)
-          vim.cmd("let &ul=&ul") -- break undo
+          if vim.fn.mode():sub(1, 1) == "i" then
+            vim.cmd("let &ul=&ul") -- break undo
+          end
           cmp.abort()
           fallback()
         end, { "i", "c" }),
@@ -88,15 +90,12 @@ return {
     end,
   },
 
-  {
-    "echasnovski/mini.pairs",
-    enabled = false,
-  },
+  -- cmp: auto pairs
+  { "echasnovski/mini.pairs", enabled = false },
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     keys = {
-      { "<C-CR>", "<CR>", mode = "i", remap = true, desc = "Autopairs" },
       {
         "<Leader>up",
         function()
@@ -118,13 +117,14 @@ return {
     },
   },
 
+  -- op: surround
   {
     "echasnovski/mini.surround",
     keys = {
       { "s", ":<C-u>lua MiniSurround.add('visual')<CR>", mode = "x", desc = "Add Surround" },
     },
-    opts = function(_, opts)
-      opts.mappings = {
+    opts = {
+      mappings = {
         add = "ys", -- Add surrounding in Normal and Visual modes
         replace = "cs", -- Replace surrounding
         delete = "ds", -- Delete surrounding
@@ -132,17 +132,16 @@ return {
         find_left = "", -- Find surrounding (to the left)
         highlight = "", -- Highlight surrounding
         update_n_lines = "", -- Update `n_lines`
-      }
-      require("lazyvim.util").on_load("mini.surround", function()
-        vim.keymap.del("x", "ys")
-      end)
+      },
+    },
+    config = function(_, opts)
+      require("mini.surround").setup(opts)
+      vim.keymap.del("x", "ys")
     end,
   },
 
-  {
-    "echasnovski/mini.comment",
-    enabled = false,
-  },
+  -- language: comment
+  { "echasnovski/mini.comment", enabled = false },
   {
     "numToStr/Comment.nvim",
     keys = {
@@ -160,6 +159,7 @@ return {
     },
   },
 
+  -- motion: text objects
   {
     "echasnovski/mini.ai",
     event = function()
@@ -192,7 +192,8 @@ return {
       opts.custom_textobjects.f = nil
       -- a = ai.gen_spec.treesitter({ a = "@parameter.outer", i = "@parameter.inner" }, {}),
     end,
-    init = function()
+    config = function(_, opts)
+      require("mini.ai").setup(opts)
       -- Register all text objects with which-key
       require("lazyvim.util").on_load("which-key.nvim", function()
         local i = {
@@ -239,5 +240,31 @@ return {
         })
       end)
     end,
+  },
+
+  {
+    "gbprod/yanky.nvim",
+    keys = {
+      { "Y", "<Plug>(YankyYank)$", desc = "Yank all right text" },
+      { "p", '"0p', remap = true, desc = "Paste" },
+      { "zp", '"0<Plug>(YankyPutAfter)', mode = { "n", "x" }, desc = "Put Last Yanked Text After Cursor" },
+      { "zP", '"0<Plug>(YankyPutBefore)', mode = { "n", "x" }, desc = "Put Last Yanked Text Before Cursor" },
+      { "zgp", '"0<Plug>(YankyGPutAfter)', mode = { "n", "x" }, desc = "Put Last Yanked Text After Selection" },
+      { "zgP", '"0<Plug>(YankyGPutBefore)', mode = { "n", "x" }, desc = "Put Last Yanked Text Before Selection" },
+      { "z]p", '"0<Plug>(YankyPutIndentAfterLinewise)', desc = "Put Indented After Cursor (linewise)" },
+      { "z[p", '"0<Plug>(YankyPutIndentBeforeLinewise)', desc = "Put Indented Before Cursor (linewise)" },
+    },
+    opts = {
+      highlight = { timer = 150 },
+    },
+  },
+
+  {
+    "brenton-leighton/multiple-cursors.nvim",
+    keys = {
+      { "<A-LeftMouse>", "<Cmd>MultipleCursorsMouseAddDelete<CR>", mode = { "n", "i" } },
+      { "<C-n>", "<Cmd>MultipleCursorsAddToWordUnderCursor<CR>", mode = { "n", "v" } },
+    },
+    opts = {},
   },
 }
