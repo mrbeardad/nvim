@@ -7,7 +7,6 @@
     "lazyvim.plugins.extras.lang.python",
     "lazyvim.plugins.extras.lang.yaml",
     "lazyvim.plugins.extras.ui.alpha",
-    "lazyvim.plugins.extras.ui.mini-animate",
     "lazyvim.plugins.extras.vscode"
   ],
   "news": {

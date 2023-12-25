@@ -5,6 +5,7 @@ return {
     priority = 1000,
   },
 
+  -- hl: colorscheme
   {
     "folke/tokyonight.nvim",
     opts = {
@@ -15,7 +16,7 @@ return {
         floats = "normal", -- style for floating windows
       },
       on_highlights = function(hl, c)
-        -- set the dark theme colors, and tokyonight will invert the colors for light theme automatically
+        -- Set the dark theme colors, and tokyonight will invert the colors for light theme automatically
         local lighten = require("tokyonight.util").lighten
         local darken = require("tokyonight.util").darken
         hl.YankyPut = {

@@ -6,6 +6,7 @@ return {
     dependencies = { "hrsh7th/cmp-cmdline" },
     opts = function(_, opts)
       local cmp = require("cmp")
+      opts.performance = { fetching_timeout = 150 }
       opts.mapping = {
         ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
         ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
@@ -242,11 +243,11 @@ return {
     end,
   },
 
+  -- op: yank and paste
   {
     "gbprod/yanky.nvim",
     keys = {
       { "Y", "<Plug>(YankyYank)$", desc = "Yank all right text" },
-      { "p", '"0p', remap = true, desc = "Paste" },
       { "zp", '"0<Plug>(YankyPutAfter)', mode = { "n", "x" }, desc = "Put Last Yanked Text After Cursor" },
       { "zP", '"0<Plug>(YankyPutBefore)', mode = { "n", "x" }, desc = "Put Last Yanked Text Before Cursor" },
       { "zgp", '"0<Plug>(YankyGPutAfter)', mode = { "n", "x" }, desc = "Put Last Yanked Text After Selection" },
@@ -259,6 +260,8 @@ return {
     },
   },
 
+  -- TODO: multiple cursors
+  -- op: multiple cursors
   {
     "brenton-leighton/multiple-cursors.nvim",
     keys = {

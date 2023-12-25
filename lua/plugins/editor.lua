@@ -1,7 +1,8 @@
 local Util = require("lazyvim.util")
 
 return {
-  -- editor: file explorer
+  -- FIX: neo-tree
+  -- ui: file explorer
   {
     "nvim-neo-tree/neo-tree.nvim",
     keys = {

@@ -9,7 +9,7 @@ return {
           require("persistence").stop()
           vim.cmd.qall()
         end,
-        desc = "Don't Save Current Session",
+        desc = "Quit Without Saving Session",
       },
     },
   },
