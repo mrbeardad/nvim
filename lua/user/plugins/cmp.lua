@@ -1,3 +1,5 @@
+local utils = require("user.utils")
+
 return {
   -- Auto completion engine
   {
@@ -13,12 +15,6 @@ return {
     opts = function()
       local cmp = require("cmp")
       return {
-        completion = {
-          -- There are two completion styles:
-          -- `noinsert` means do not automatically insert the selected item, set it if you want to confirm item by manually pressing <cr>,
-          -- `noselect` means do not automatically select the first item, set it if you want to pressing <cr>
-          completeopt = "menu,menuone,noinsert",
-        },
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "luasnip" },
@@ -31,6 +27,13 @@ return {
             require("luasnip").lsp_expand(args.body)
           end,
         },
+        performance = { fetching_timeout = 150 },
+        completion = {
+          -- There are two completion styles:
+          -- `noinsert` means do not automatically insert the selected item, set it if you want to confirm item by manually pressing <cr>,
+          -- `noselect` means do not automatically select the first item, set it if you want to pressing <cr>
+          completeopt = "menu,menuone,noinsert",
+        },
         mapping = {
           ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
           ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
@@ -41,38 +44,20 @@ return {
               cmp.complete()
             end
           end, { "i", "c" }),
-          ["<C-n>"] = cmp.mapping({
-            i = function()
-              if cmp.visible() then
-                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-              else
-                cmp.complete()
-              end
-            end,
-            c = function()
-              if cmp.visible() then
-                cmp.select_next_item()
-              else
-                cmp.complete()
-              end
-            end,
-          }),
-          ["<C-p>"] = cmp.mapping({
-            i = function()
-              if cmp.visible() then
-                cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-              else
-                cmp.complete()
-              end
-            end,
-            c = function()
-              if cmp.visible() then
-                cmp.select_prev_item()
-              else
-                cmp.complete()
-              end
-            end,
-          }),
+          ["<C-n>"] = cmp.mapping(function()
+            if cmp.visible() then
+              cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+            else
+              cmp.complete()
+            end
+          end, { "i", "c" }),
+          ["<C-p>"] = cmp.mapping(function()
+            if cmp.visible() then
+              cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+            else
+              cmp.complete()
+            end
+          end, { "i", "c" }),
           ["<Tab>"] = cmp.mapping(function()
             if cmp.visible() then
               cmp.select_next_item()
@@ -87,23 +72,43 @@ return {
               cmp.complete()
             end
           end, { "c" }),
-          ["<CR>"] = cmp.mapping(function(fallback)
-            vim.cmd("let &ul=&ul") -- break undo
-            if not require("cmp").confirm() then
-              fallback() -- fallback to autopairs
-            end
-          end, { "i", "c" }),
-          ["<S-CR>"] = cmp.mapping(function(fallback)
-            vim.cmd("let &ul=&ul") -- break undo
-            if not require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace }) then
+          ["<CR>"] = cmp.mapping({
+            i = function(fallback)
+              vim.cmd("let &ul=&ul") -- break undo
+              if not require("cmp").confirm() then
+                fallback()
+              end
+            end,
+            c = function(fallback)
+              if not require("cmp").confirm() then
+                fallback()
+              end
+            end,
+          }),
+          ["<S-CR>"] = cmp.mapping({
+            i = function(fallback)
+              vim.cmd("let &ul=&ul")
+              if not require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace }) then
+                fallback()
+              end
+            end,
+            c = function(fallback)
+              if not require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace }) then
+                fallback()
+              end
+            end,
+          }),
+          ["<C-CR>"] = cmp.mapping({
+            i = function(fallback)
+              vim.cmd("let &ul=&ul")
+              cmp.abort()
               fallback()
-            end
-          end, { "i", "c" }),
-          ["<C-CR>"] = cmp.mapping(function(fallback)
-            vim.cmd("let &ul=&ul") -- break undo
-            cmp.abort()
-            fallback()
-          end, { "i", "c" }),
+            end,
+            c = function(fallback)
+              cmp.abort()
+              fallback()
+            end,
+          }),
         },
         formatting = {
           format = function(_, item)
@@ -158,7 +163,7 @@ return {
   -- Snippets
   {
     "L3MON4D3/LuaSnip",
-    build = not jit.os:find("Windows") and "make install_jsregexp",
+    build = utils.is_windows() and "make install_jsregexp",
     dependencies = {
       "rafamadriz/friendly-snippets",
       config = function()
@@ -205,7 +210,6 @@ return {
     dependencies = { "hrsh7th/nvim-cmp" },
     event = "InsertEnter",
     keys = {
-      { "<C-CR>", "<CR>", mode = "i", remap = true, desc = "Autopairs" },
       {
         "<A-p>",
         function()
@@ -219,10 +223,5 @@ return {
     opts = {
       fast_wrap = {},
     },
-    config = function(_, opts)
-      require("nvim-autopairs").setup(opts)
-      -- Insert `(` after select function or method item
-      require("cmp").event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done())
-    end,
   },
 }

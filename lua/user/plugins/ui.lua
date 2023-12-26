@@ -75,7 +75,8 @@ return {
     event = "User LazyDir",
     cmd = "Neotree",
     keys = {
-      { "<Leader>e", "<Cmd>Neotree<CR>", desc = "Explorer" },
+      { "<Leader>e", "<Cmd>Neotree<CR>", desc = "Flie Explorer" },
+      { "<Leader>be", "<Cmd>Neotree buffers<CR>", desc = "Buffer Explorer" },
       { "<Leader>ge", "<Cmd>Neotree git_status<CR>", desc = "Git Explorer" },
     },
     opts = {
@@ -86,7 +87,7 @@ return {
         "document_symbols",
       },
       source_selector = {
-        winbar = false,
+        winbar = true,
         show_scrolled_off_parent_node = true,
         sources = {
           { source = "filesystem" },
@@ -184,9 +185,9 @@ return {
       { "<Leader>bH", "<Cmd>BufferLineMovePrev<CR>", desc = "Move Buffer To Prev" },
       { "<Leader>bL", "<Cmd>BufferLineMoveNext<CR>", desc = "Move Buffer To Next" },
       { "<Leader>bD", "<Cmd>BufferLineSortByDirectory<CR>", desc = "Sort By Directory" },
-      { "<Leader>be", "<Cmd>BufferLineSortByExtension<CR>", desc = "Sort By Extensions" },
+      { "<Leader>bE", "<Cmd>BufferLineSortByExtension<CR>", desc = "Sort By Extensions" },
       { "<Leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
-      { "<Leader>bu", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete unpinned Buffers" },
+      { "<Leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete unpinned Buffers" },
       { "<Leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete Other Buffers" },
       { "<Leader>bl", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete Buffers To The Right" },
       { "<Leader>bh", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete Buffers To The Left" },
@@ -233,10 +234,11 @@ return {
       },
       sections = {
         lualine_a = { "mode" },
-        lualine_b = {
-          "branch",
+        lualine_b = { "branch" },
+        lualine_c = {
           {
             "filename",
+            path = 1,
             symbols = {
               modified = icons.file.modified,
               readonly = icons.file.readonly,
@@ -244,8 +246,6 @@ return {
               newfile = icons.file.newfile,
             },
           },
-        },
-        lualine_c = {
           {
             "diff",
             symbols = {
@@ -266,17 +266,14 @@ return {
           },
         },
         lualine_x = {
-          -- stylua: ignore
           {
-            function() return require("noice").api.status.command.get() end,
-            cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-            -- color = Util.ui.fg("Statement"),
-          },
-          -- stylua: ignore
-          {
-            function() return require("noice").api.status.mode.get() end,
-            cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-            -- color = Util.ui.fg("Constant"),
+            function()
+              return require("noice").api.status.command.get()
+            end,
+            cond = function()
+              return package.loaded["noice"] and require("noice").api.status.command.has()
+            end,
+            color = "Statement",
           },
           {
             "diagnostics",
@@ -287,7 +284,6 @@ return {
               hint = icons.diagnostics.hint .. " ",
             },
           },
-          -- TODO: Noice components
         },
         lualine_y = { "filetype", "fileformat", "encoding" },
         lualine_z = { { " %c  %l:%L", type = "stl" } },
@@ -296,11 +292,88 @@ return {
     },
   },
 
+  -- Scrollbar
+  {
+    "petertriho/nvim-scrollbar",
+    event = "User LazyFile",
+    opts = {
+      hide_if_all_visible = true,
+      handle = {
+        highlight = "ScrollbarHandle",
+      },
+      handlers = {
+        cursor = true,
+        diagnostic = true,
+        gitsigns = true, -- Requires gitsigns
+        search = false, -- Requires hlslens
+      },
+      marks = {
+        Cursor = { text = "—" },
+        Search = { text = { "—", "󰇼" } },
+        Error = { text = { "—", "󰇼" } },
+        Warn = { text = { "—", "󰇼" } },
+        Info = { text = { "—", "󰇼" } },
+        Hint = { text = { "—", "󰇼" } },
+        Misc = { text = { "—", "󰇼" } },
+        GitAdd = { text = "▎" },
+        GitChange = { text = "▎" },
+        GitDelete = { text = "▁" },
+      },
+    },
+  },
+
+  -- Animate scroll
+  {
+    "karb94/neoscroll.nvim",
+    keys = {
+      { "<C-y>", mode = { "n", "x" } },
+      { "<C-e>", mode = { "n", "x" } },
+      { "<C-u>", mode = { "n", "x" } },
+      { "<C-d>", mode = { "n", "x" } },
+      { "<C-b>", mode = { "n", "x" } },
+      { "<C-f>", mode = { "n", "x" } },
+      { "zt", mode = { "n", "x" } },
+      { "zz", mode = { "n", "x" } },
+      { "zb", mode = { "n", "x" } },
+      { "z<CR>", "zt", mode = { "n", "x" }, remap = true },
+    },
+    opts = {
+      easing_function = "quartic",
+    },
+  },
+
+  -- Show context of the current cursor position
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = "User LazyFile",
+    opts = {
+      max_lines = 3,
+    },
+  },
+
   -- Show keymaps help when press
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    opts = {},
+    opts = {
+      plugins = {
+        presets = {
+          operators = false,
+        },
+      },
+      -- Delete < and >
+      operators = {
+        d = "Delete",
+        c = "Change",
+        y = "Yank",
+        ["g~"] = "Toggle Case",
+        ["gu"] = "Lowercase",
+        ["gU"] = "Uppercase",
+        ["zf"] = "Create Fold",
+        ["!"] = "Filter Through External Program",
+        ["v"] = "Visual Character Mode",
+      },
+    },
     config = function(_, opts)
       require("which-key").setup(opts)
       require("which-key").register({
@@ -313,6 +386,7 @@ return {
         ["<Leader>t"] = { name = "+Tabs" },
         ["<Leader>q"] = { name = "+Quit/Session" },
         ["<Leader>s"] = { name = "+Search" },
+        ["<Leader>sn"] = { name = "+Noice Message" },
         ["<Leader>f"] = { name = "+Files" },
         ["<Leader>l"] = { name = "+Language" },
         ["<Leader>g"] = { name = "+Git" },
@@ -377,9 +451,10 @@ return {
       { "gi", "<Cmd>Telescope lsp_implementations reuse_win=true<CR>", desc = "Goto Implementation" },
       -- Others
       { "<Leader>:", "<Cmd>Telescope command_history<CR>", desc = "Command History" },
+      { "<Leader>sC", "<Cmd>Telescope command_history<CR>", desc = "Command History" },
+      { "<Leader>sc", "<Cmd>Telescope commands<CR>", desc = "Commands" },
       { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Auto Commands" },
       { "<Leader>sb", "<Cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Buffer Fuzzy Search" },
-      { "<Leader>sc", "<Cmd>Telescope commands<CR>", desc = "Commands" },
       { "<Leader>sh", "<cmd>Telescope help_tags<CR>", desc = "Help Pages" },
       { "<Leader>sl", "<cmd>Telescope highlights<CR>", desc = "highlights" },
       { "<Leader>sk", "<cmd>Telescope keymaps<CR>", desc = "Key Maps" },
@@ -455,57 +530,49 @@ return {
     "fdschmidt93/telescope-egrepify.nvim",
     keys = {
       { "<Leader>/", "<Cmd>Telescope egrepify<CR>", desc = "Search Text" },
+      { "<Leader>sg", "<Cmd>Telescope egrepify<CR>", desc = "Grep Text" },
     },
     config = function()
       require("telescope").load_extension("egrepify")
     end,
   },
-
-  -- Better `vim.notify()`
+  -- Undo history
   {
-    "rcarriga/nvim-notify",
-    keys = {
-      {
-        "<leader>un",
-        function()
-          require("notify").dismiss({ silent = true, pending = true })
-        end,
-        desc = "Dismiss all Notifications",
-      },
-    },
-    init = function()
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "VeryLazy",
-        callback = function()
-          vim.notify = require("notify")
-        end,
-      })
+    "debugloop/telescope-undo.nvim",
+    keys = { { "<Leader>su", "<Cmd>Telescope undo<CR>", desc = "Undo History" } },
+    config = function()
+      require("telescope").load_extension("undo")
     end,
-    opts = {
-      timeout = 3000,
-      max_height = function()
-        return math.floor(vim.o.lines * 0.75)
-      end,
-      max_width = function()
-        return math.floor(vim.o.columns * 0.75)
-      end,
-      on_open = function(win)
-        vim.api.nvim_win_set_config(win, { zindex = 100 })
-      end,
-    },
   },
+
+  -- Better ui components for neovim
   {
     "folke/noice.nvim",
+    dependencies = {
+      {
+        "rcarriga/nvim-notify",
+        keys = {
+          {
+            "<leader>un",
+            function()
+              require("notify").dismiss({ silent = true, pending = true })
+            end,
+            desc = "Dismiss all Notifications",
+          },
+        },
+        opts = {},
+      },
+    },
     event = "VeryLazy",
     -- stylua: ignore
     keys = {
-      { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
-      { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
-      { "<leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
-      { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
-      { "<leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
-      { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
-      { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
+      { "<C-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
+      { "<Leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
+      { "<Leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
+      { "<Leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
+      { "<Leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
+      { "<C-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
+      { "<C-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
     },
     init = function()
       vim.opt.cmdheight = 0
@@ -522,7 +589,7 @@ return {
       presets = {
         bottom_search = false, -- use a classic bottom cmdline for search
         command_palette = true, -- position the cmdline and popupmenu together
-        long_message_to_split = false, -- long messages will be sent to a split
+        long_message_to_split = true, -- long messages will be sent to a split
         inc_rename = true, -- enables an input dialog for inc-rename.nvim
         lsp_doc_border = true, -- add a border to hover docs and signature help
       },

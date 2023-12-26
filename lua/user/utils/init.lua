@@ -3,10 +3,7 @@ local M = {}
 function M.is_floating(win_id)
   win_id = win_id or vim.api.nvim_get_current_win()
   local cfg = vim.api.nvim_win_get_config(win_id)
-  if cfg.relative > "" or cfg.external then
-    return true
-  end
-  return false
+  return cfg.relative > "" or cfg.external
 end
 
 function M.is_real_file(bufnr, include_bt)
@@ -15,42 +12,32 @@ function M.is_real_file(bufnr, include_bt)
   return bt == "" or include_bt and vim.tbl_contains(include_bt, bt)
 end
 
-local os_uname
-function M.get_os_uname()
-  if not os_uname then
-    os_uname = vim.loop.os_uname()
-  end
-  return os_uname
-end
+M.os_uname = vim.loop.os_uname()
 
 function M.is_windows()
-  return not not M.get_os_uname().sysname:find("Windows")
+  return M.os_uname.sysname:find("Windows") ~= nil
 end
 
 function M.is_macos()
-  return M.get_os_uname().sysname == "Darwin"
+  return M.os_uname.sysname == "Darwin"
 end
 
 function M.is_linux()
-  return M.get_os_uname().sysname == "Linux"
+  return M.os_uname.sysname == "Linux"
 end
 
 function M.is_wsl()
-  local uname = M.get_os_uname()
-  return uname.sysname == "Linux" and not not uname.release:find("Microsoft")
+  return M.os_uname.sysname == "Linux" and M.os_uname.release:find("Microsoft") ~= nil
 end
 
 local root_patterns = { ".git" }
 local root_cache = {}
-function M.workspace_root(bufnr, no_cache)
-  bufnr = bufnr or vim.api.nvim_get_current_buf()
+function M.workspace_root(no_cache)
   local root
+  local bufnr = vim.api.nvim_get_current_buf()
   -- cache
-  if not no_cache then
-    root = root_cache[bufnr]
-    if root then
-      return root, "cache"
-    end
+  if not no_cache and root_cache[bufnr] then
+    return root_cache[bufnr], "cache"
   end
   -- cwd, the buffer has not been written yet, do not cache it
   local bufname = vim.loop.fs_realpath(vim.api.nvim_buf_get_name(bufnr))
@@ -108,35 +95,18 @@ function M.augroup(suffix)
 end
 
 function M.tbl_unique(t)
-  local uniqueElements = {}
+  local uniq_elem = {}
   for _, v in pairs(t) do
-    if not uniqueElements[v] then
-      uniqueElements[v] = true
+    if not uniq_elem[v] then
+      uniq_elem[v] = true
     end
   end
   local result = {}
-  for k, _ in pairs(uniqueElements) do
+  for k, _ in pairs(uniq_elem) do
     table.insert(result, k)
   end
 
   return result
-end
-
-function M.ensure_install_tools(tools)
-  local mr = require("mason-registry")
-  local function ensure_installed()
-    for _, t in ipairs(tools) do
-      local p = mr.get_package(t)
-      if not p:is_installed() then
-        p:install()
-      end
-    end
-  end
-  if mr.refresh then
-    mr.refresh(ensure_installed)
-  else
-    ensure_installed()
-  end
 end
 
 return M

@@ -1,7 +1,3 @@
-if vim.g.vscode then
-  return
-end
-
 -- Bootstrap plugins manager
 local plugins_path = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(plugins_path) then
@@ -17,7 +13,7 @@ end
 vim.opt.rtp:prepend(plugins_path)
 
 -- Load user configs before load plugins
-vim.cmd("runtime! lua/user/configs/*.lua")
+require("user.configs")
 
 require("lazy").setup({
   -- Load plugin specifics in directories
@@ -31,10 +27,6 @@ require("lazy").setup({
     lazy = false,
     -- Always use the latest git commit, set to "*" for latest stable version
     version = false,
-    -- Disable unnecessary plugins for vscode
-    cond = function()
-      return true
-    end,
   },
   install = {
     -- Automatically install missing plugins

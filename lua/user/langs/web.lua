@@ -64,6 +64,13 @@ return {
     },
   },
 
+  -- Automatically add closing tags for HTML and JSX
+  {
+    "windwp/nvim-ts-autotag",
+    ft = { "xml", "html", "javascriptreact", "typescriptreact" },
+    opts = {},
+  },
+
   {
     "mfussenegger/nvim-lint",
     opts = {

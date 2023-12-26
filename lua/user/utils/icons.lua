@@ -121,7 +121,7 @@ return {
   file = {
     modified = "●",
     readonly = "",
-    unnamed = "",
+    unnamed = "󰘓",
     newfile = "",
   },
   diff = {

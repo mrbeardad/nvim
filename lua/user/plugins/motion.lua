@@ -5,32 +5,7 @@ return {
   -- Parse code to AST, and use it to highlight, move, select, etc.
   {
     "nvim-treesitter/nvim-treesitter",
-    dependencies = {
-      {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        config = function()
-          -- Fallback to builtin [c and ]c in diff mode
-          local move = require("nvim-treesitter.textobjects.move")
-          local configs = require("nvim-treesitter.configs")
-          for name, fn in pairs(move) do
-            if name:find("goto") == 1 then
-              move[name] = function(q, ...)
-                if vim.wo.diff then
-                  local config = configs.get_module("textobjects.move")[name]
-                  for key, query in pairs(config or {}) do
-                    if q == query and key:find("[%]%[][cC]") then
-                      vim.cmd("normal! " .. key)
-                      return
-                    end
-                  end
-                end
-                return fn(q, ...)
-              end
-            end
-          end
-        end,
-      },
-    },
+    dependencies = { { "nvim-treesitter/nvim-treesitter-textobjects" } },
     build = ":TSUpdate",
     event = "User LazyFile",
     cmd = { "TSInstall", "TSUpdate", "TSUpdateSync" },
@@ -156,35 +131,6 @@ return {
       { "g[", mode = { "n", "x", "o" } },
       { "g]", mode = { "n", "x", "o" } },
     },
-    opts = function()
-      local ai = require("mini.ai")
-      return {
-        mappings = {
-          around_last = "aN",
-          inside_last = "iN",
-        },
-        n_lines = 250,
-        custom_textobjects = {
-          -- Line
-          l = { "^.*$", "^%s*().*()%s*$" },
-          -- Entire buffer
-          e = function()
-            return {
-              from = { line = 1, col = 1 },
-              ---@diagnostic disable-next-line
-              to = { line = vim.fn.line("$"), col = math.max(vim.fn.getline("$"):len(), 1) },
-            }
-          end,
-          -- a = ai.gen_spec.treesitter({ a = "@parameter.outer", i = "@parameter.inner" }, {}),
-          F = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
-          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
-          o = ai.gen_spec.treesitter({
-            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
-            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
-          }, {}),
-        },
-      }
-    end,
     init = function()
       -- Register all text objects with which-key
       utils.on_load("which-key.nvim", function()
@@ -231,6 +177,35 @@ return {
           a = a,
         })
       end)
+    end,
+    opts = function()
+      local ai = require("mini.ai")
+      return {
+        mappings = {
+          around_last = "aN",
+          inside_last = "iN",
+        },
+        n_lines = 250,
+        custom_textobjects = {
+          -- Line
+          l = { "^.*$", "^%s*().*()%s*$" },
+          -- Entire buffer
+          e = function()
+            return {
+              from = { line = 1, col = 1 },
+              ---@diagnostic disable-next-line
+              to = { line = vim.fn.line("$"), col = math.max(vim.fn.getline("$"):len(), 1) },
+            }
+          end,
+          -- a = ai.gen_spec.treesitter({ a = "@parameter.outer", i = "@parameter.inner" }, {}),
+          F = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
+          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+          o = ai.gen_spec.treesitter({
+            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+          }, {}),
+        },
+      }
     end,
   },
 }

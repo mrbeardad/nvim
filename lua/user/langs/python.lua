@@ -14,7 +14,7 @@ return {
         ruff_lsp = {
           keys = {
             {
-              "<Leader>co",
+              "<Leader>lo",
               function()
                 vim.lsp.buf.code_action({
                   apply = true,

@@ -22,7 +22,7 @@ return {
           end,
           settings = {
             json = {
-              format = { enable = false },
+              format = { enable = true },
               validate = { enable = true },
             },
           },

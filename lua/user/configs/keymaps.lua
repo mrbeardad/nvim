@@ -48,22 +48,21 @@ vim.keymap.set("c", "<A-w>", keymap.toggle_search_pattern("w"), { desc = "Match 
 vim.keymap.set("c", "<A-c>", keymap.toggle_search_pattern("c"), { desc = "Match Case" })
 vim.keymap.set("c", "<A-r>", keymap.toggle_search_pattern("r"), { desc = "Toggle Very Magic" })
 
--- Motions
+-- Scroll: horizontal
+vim.keymap.set({ "n", "x", "i" }, "<A-f>", "<Cmd>normal zL<CR>", { desc = "Scroll Right" })
+vim.keymap.set({ "n", "x", "i" }, "<A-b>", "<Cmd>normal zH<CR>", { desc = "Scroll Left" })
+
+-- Motion: hjkl
 vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down" })
 vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Up" })
-vim.keymap.set("c", "<C-a>", "<C-b>", { silent = false, desc = "Start Of Line" })
-vim.keymap.set("c", "<M-h>", "<Left>", { silent = false, desc = "Left" })
-vim.keymap.set("c", "<M-l>", "<Right>", { silent = false, desc = "Right" })
+vim.keymap.set("c", "<C-a>", "<C-b>", { desc = "Start Of Line" })
+vim.keymap.set("c", "<M-h>", "<Left>", { desc = "Left" })
+vim.keymap.set("c", "<M-l>", "<Right>", { desc = "Right" })
 vim.keymap.set("i", "<C-a>", "<C-g>u<Cmd>normal! ^<CR>", { desc = "Start Of Line" })
 vim.keymap.set("i", "<C-e>", "<End>", { desc = "End Of Line" })
-vim.keymap.set("i", "<C-l>", "<Del>", { desc = "Delete Right" })
-vim.keymap.set("i", "<M-h>", "<Left>", { remap = true, desc = "Left" })
-vim.keymap.set("i", "<M-j>", "<Down>", { remap = true, desc = "Down" })
-vim.keymap.set("i", "<M-k>", "<Up>", { remap = true, desc = "Up" })
-vim.keymap.set("i", "<M-l>", "<Right>", { remap = true, desc = "Right" })
+vim.keymap.set("i", "<M-h>", "<Left>", { desc = "Left" })
+vim.keymap.set("i", "<M-l>", "<Right>", { desc = "Right" })
 vim.keymap.set("t", "<M-h>", "<Left>", { desc = "Left" })
-vim.keymap.set("t", "<M-j>", "<Down>", { desc = "Down" })
-vim.keymap.set("t", "<M-k>", "<Up>", { desc = "Up" })
 vim.keymap.set("t", "<M-l>", "<Right>", { desc = "Right" })
 
 -- Motion: mark
@@ -81,11 +80,7 @@ local diagnostic_goto = function(next, severity)
   severity = severity and vim.diagnostic.severity[severity] or nil
   return function()
     go({ severity = severity })
-    if MiniAnimate then
-      MiniAnimate.execute_after("scroll", vim.diagnostic.open_float)
-    else
-      vim.diagnostic.open_float()
-    end
+    vim.diagnostic.open_float()
   end
 end
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
@@ -124,7 +119,9 @@ vim.keymap.set(
   { expr = true, desc = "Put Empty Line Above" }
 )
 
--- Operation: add undo break-points
+-- Operation: insert/cmdline mode
+vim.keymap.set("c", "<C-l>", "<Del>", { desc = "Delete Right" })
+vim.keymap.set("i", "<C-l>", "<Del>", { desc = "Delete Right" })
 vim.keymap.set("c", "<C-k>", function()
   local text = vim.fn.getcmdline()
   local col = vim.fn.getcmdpos()
@@ -132,17 +129,17 @@ vim.keymap.set("c", "<C-k>", function()
     vim.fn.setcmdline(text:sub(1, col - 1))
   end
 end)
-vim.keymap.set("i", "<C-j>", "<C-g>u<End><CR>")
 vim.keymap.set("i", "<C-k>", '<C-g>u<Cmd>normal! "_d$<CR><Right>')
+vim.keymap.set("i", "<C-j>", "<C-g>u<End><CR>") -- <C-g>u is required here since <End> does not break undo here
 vim.keymap.set("i", "<C-z>", "<Cmd>undo<CR>")
 
--- Yank and paste
+-- Operation: yank and paste
 vim.keymap.set("i", "<C-v>", "<C-g>u<C-r><C-p>+")
 vim.keymap.set("c", "<C-v>", "<C-r>+")
 
 vim.keymap.set("n", "<Leader>qq", "<Cmd>qa<CR>", { desc = "Quit All" })
 
--- Toggle UI options
+-- UI: toggle options
 vim.keymap.set(
   "n",
   "<Leader>ub",
@@ -161,7 +158,7 @@ vim.keymap.set("n", "<Leader>us", "<Cmd>setlocal spell!<CR>", { desc = "Toggle '
 vim.keymap.set("n", "<Leader>uw", "<Cmd>setlocal wrap!<CR>", { desc = "Toggle 'wrap'" })
 vim.keymap.set("n", "<A-z>", "<Cmd>setlocal wrap!<CR>", { desc = "Toggle 'wrap'" })
 
--- Floating terminal
+-- UI: floating terminal
 vim.keymap.set("n", "<A-`>", keymap.open_term, { desc = "Terminal" })
 vim.keymap.set("t", "<A-`>", keymap.open_term, { desc = "Terminal" })
 vim.keymap.set("t", "<Esc><Esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })

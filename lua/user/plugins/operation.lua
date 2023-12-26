@@ -1,3 +1,5 @@
+local utils = require("user.utils")
+
 return {
   -- Modify surround objects
   {
@@ -32,7 +34,7 @@ return {
   -- Better yank/paste
   {
     "gbprod/yanky.nvim",
-    dependencies = { { "kkharji/sqlite.lua", enabled = not jit.os:find("Windows") } },
+    dependencies = { { "kkharji/sqlite.lua", enabled = not utils.is_windows() } },
     keys = {
       {
         "<Leader>sy",
@@ -50,24 +52,24 @@ return {
       },
       { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank Text" },
       { "Y", "<Plug>(YankyYank)$", mode = { "n", "x" }, desc = "Yank Text After Cursor" },
-      { "p", "<Plug>(YankyPutAfter)`[", mode = { "n", "x" }, desc = "Put Yanked Text After Cursor" },
-      { "P", "<Plug>(YankyPutBefore)`[", mode = { "n", "x" }, desc = "Put Yanked Text Before Cursor" },
+      { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put Yanked Text After Cursor" },
+      { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put Yanked Text Before Cursor" },
+      { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put Indented After Cursor (linewise)" },
+      { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put Indented Before Cursor (linewise)" },
       { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put Yanked Text After Selection" },
       { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" }, desc = "Put Yanked Text Before Selection" },
-      { "]p", "<Plug>(YankyPutIndentAfterLinewise)`[", desc = "Put Indented After Cursor (linewise)" },
-      { "[p", "<Plug>(YankyPutIndentBeforeLinewise)`[", desc = "Put Indented Before Cursor (linewise)" },
-      { "zp", '"0<Plug>(YankyPutAfter)`[', mode = { "n", "x" }, desc = "Put Last Yanked Text After Cursor" },
-      { "zP", '"0<Plug>(YankyPutBefore)`[', mode = { "n", "x" }, desc = "Put Last Yanked Text Before Cursor" },
+      { "zp", '"0<Plug>(YankyPutAfter)', mode = { "n", "x" }, desc = "Put Last Yanked Text After Cursor" },
+      { "zP", '"0<Plug>(YankyPutBefore)', mode = { "n", "x" }, desc = "Put Last Yanked Text Before Cursor" },
+      { "z]p", '"0<Plug>(YankyPutIndentAfterLinewise)', desc = "Put Indented After Cursor (linewise)" },
+      { "z[p", '"0<Plug>(YankyPutIndentBeforeLinewise)', desc = "Put Indented Before Cursor (linewise)" },
       { "zgp", '"0<Plug>(YankyGPutAfter)', mode = { "n", "x" }, desc = "Put Last Yanked Text After Selection" },
       { "zgP", '"0<Plug>(YankyGPutBefore)', mode = { "n", "x" }, desc = "Put Last Yanked Text Before Selection" },
-      { "z]p", '"0<Plug>(YankyPutIndentAfterLinewise)`[', desc = "Put Indented After Cursor (linewise)" },
-      { "z[p", '"0<Plug>(YankyPutIndentBeforeLinewise)`[', desc = "Put Indented Before Cursor (linewise)" },
       { "[y", "<Plug>(YankyCycleForward)", desc = "Cycle Forward Through Yank History" },
       { "]y", "<Plug>(YankyCycleBackward)", desc = "Cycle Backward Through Yank History" },
     },
     opts = {
       highlight = { timer = 150 },
-      ring = { storage = jit.os:find("Windows") and "shada" or "sqlite" },
+      ring = { storage = utils.is_windows() and "shada" or "sqlite" },
     },
   },
 
@@ -76,17 +78,8 @@ return {
     "brenton-leighton/multiple-cursors.nvim",
     keys = {
       { "<C-LeftMouse>", "<Cmd>MultipleCursorsMouseAddDelete<CR>", mode = { "n", "i" } },
-      { "ma", "<Cmd>MultipleCursorsAddToWordUnderCursor<CR>", mode = { "n", "v" } },
+      { "<Leader>m", "<Cmd>MultipleCursorsAddToWordUnderCursor<CR>", mode = { "n", "x" } },
     },
     opts = {},
-  },
-
-  -- Undo history
-  {
-    "debugloop/telescope-undo.nvim",
-    keys = { { "<Leader>su", "<Cmd>Telescope undo<CR>", desc = "Undo History" } },
-    config = function()
-      require("telescope").load_extension("undo")
-    end,
   },
 }
