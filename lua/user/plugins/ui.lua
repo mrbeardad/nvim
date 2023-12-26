@@ -187,7 +187,7 @@ return {
       { "<Leader>bD", "<Cmd>BufferLineSortByDirectory<CR>", desc = "Sort By Directory" },
       { "<Leader>bE", "<Cmd>BufferLineSortByExtension<CR>", desc = "Sort By Extensions" },
       { "<Leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
-      { "<Leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete unpinned Buffers" },
+      { "<Leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Unpinned Buffers" },
       { "<Leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete Other Buffers" },
       { "<Leader>bl", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete Buffers To The Right" },
       { "<Leader>bh", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete Buffers To The Left" },
@@ -247,6 +247,26 @@ return {
             },
           },
           {
+            "diagnostics",
+            symbols = {
+              error = icons.diagnostics.error .. " ",
+              warn = icons.diagnostics.warn .. " ",
+              info = icons.diagnostics.info .. " ",
+              hint = icons.diagnostics.hint .. " ",
+            },
+          },
+        },
+        lualine_x = {
+          {
+            function()
+              return require("noice").api.status.command.get()
+            end,
+            cond = function()
+              return package.loaded["noice"] and require("noice").api.status.command.has()
+            end,
+            color = "Statement",
+          },
+          {
             "diff",
             symbols = {
               added = icons.diff.added .. " ",
@@ -263,26 +283,6 @@ return {
                 }
               end
             end,
-          },
-        },
-        lualine_x = {
-          {
-            function()
-              return require("noice").api.status.command.get()
-            end,
-            cond = function()
-              return package.loaded["noice"] and require("noice").api.status.command.has()
-            end,
-            color = "Statement",
-          },
-          {
-            "diagnostics",
-            symbols = {
-              error = icons.diagnostics.error .. " ",
-              warn = icons.diagnostics.warn .. " ",
-              info = icons.diagnostics.info .. " ",
-              hint = icons.diagnostics.hint .. " ",
-            },
           },
         },
         lualine_y = { "filetype", "fileformat", "encoding" },
@@ -386,8 +386,7 @@ return {
         ["<Leader>t"] = { name = "+Tabs" },
         ["<Leader>q"] = { name = "+Quit/Session" },
         ["<Leader>s"] = { name = "+Search" },
-        ["<Leader>sn"] = { name = "+Noice Message" },
-        ["<Leader>f"] = { name = "+Files" },
+        ["<Leader>n"] = { name = "+Noice Message" },
         ["<Leader>l"] = { name = "+Language" },
         ["<Leader>g"] = { name = "+Git" },
         ["<Leader>u"] = { name = "+UI" },
@@ -414,10 +413,9 @@ return {
         desc = "Switch Buffers",
       },
       -- Files
-      { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Files" },
-      { "<Leader>fr", "<Cmd>Telescope oldfiles<CR>", desc = "Recent Files" },
-      { "<Leader>fR", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent Files In Cwd" },
-      { "<Leader>fc", "<Cmd>exe 'Telescope find_files cwd='.stdpath('config')<CR>", desc = "Files" },
+      { "<Leader>f", "<Cmd>Telescope find_files<CR>", desc = "Find Files" },
+      { "<Leader>r", "<Cmd>Telescope oldfiles<CR>", desc = "Recent Files" },
+      { "<Leader>R", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent Files In Cwd" },
       -- Text
       { "<Leader>sw", "<Cmd>Telescope grep_string<CR>", desc = "Word" },
       -- Lsp
@@ -435,7 +433,7 @@ return {
         desc = "Document Symbol",
       },
       {
-        "<leader>sS",
+        "<Leader>sS",
         function()
           local kf = require("user.utils.lsp").kind_filter
           kf = kf[vim.bo.filetype] or kf.default
@@ -567,10 +565,10 @@ return {
     -- stylua: ignore
     keys = {
       { "<C-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
-      { "<Leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
-      { "<Leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
-      { "<Leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
-      { "<Leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
+      { "<Leader>nl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
+      { "<Leader>nh", function() require("noice").cmd("history") end, desc = "Noice History" },
+      { "<Leader>na", function() require("noice").cmd("all") end, desc = "Noice All" },
+      { "<Leader>nd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
       { "<C-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
       { "<C-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
     },

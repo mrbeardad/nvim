@@ -89,7 +89,7 @@ return {
       -- Disable in special buffer
       vim.api.nvim_create_autocmd("FileType", {
         callback = function(ev)
-          if utils.is_real_file(ev.buf) then
+          if vim.bo[ev.buf].filetype ~= "noice" and not utils.is_real_file(ev.buf) then
             vim.api.nvim_buf_set_var(ev.buf, "miniindentscope_disable", true)
           end
         end,
@@ -109,7 +109,7 @@ return {
       -- Disable in special buffer
       vim.api.nvim_create_autocmd("FileType", {
         callback = function(ev)
-          if utils.is_real_file(ev.buf) then
+          if vim.bo[ev.buf].filetype ~= "noice" and not utils.is_real_file(ev.buf) then
             vim.api.nvim_buf_set_var(ev.buf, "minicursorword_disable", true)
           end
         end,

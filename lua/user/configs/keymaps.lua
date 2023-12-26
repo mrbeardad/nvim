@@ -56,14 +56,14 @@ vim.keymap.set({ "n", "x", "i" }, "<A-b>", "<Cmd>normal zH<CR>", { desc = "Scrol
 vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down" })
 vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Up" })
 vim.keymap.set("c", "<C-a>", "<C-b>", { desc = "Start Of Line" })
-vim.keymap.set("c", "<M-h>", "<Left>", { desc = "Left" })
-vim.keymap.set("c", "<M-l>", "<Right>", { desc = "Right" })
+vim.keymap.set("c", "<A-h>", "<Left>", { desc = "Left" })
+vim.keymap.set("c", "<A-l>", "<Right>", { desc = "Right" })
 vim.keymap.set("i", "<C-a>", "<C-g>u<Cmd>normal! ^<CR>", { desc = "Start Of Line" })
 vim.keymap.set("i", "<C-e>", "<End>", { desc = "End Of Line" })
-vim.keymap.set("i", "<M-h>", "<Left>", { desc = "Left" })
-vim.keymap.set("i", "<M-l>", "<Right>", { desc = "Right" })
-vim.keymap.set("t", "<M-h>", "<Left>", { desc = "Left" })
-vim.keymap.set("t", "<M-l>", "<Right>", { desc = "Right" })
+vim.keymap.set("i", "<A-h>", "<Left>", { desc = "Left" })
+vim.keymap.set("i", "<A-l>", "<Right>", { desc = "Right" })
+vim.keymap.set("t", "<A-h>", "<Left>", { desc = "Left" })
+vim.keymap.set("t", "<A-l>", "<Right>", { desc = "Right" })
 
 -- Motion: mark
 vim.keymap.set("", "'", "`", { remap = true, desc = "Jump To Mark" })
@@ -72,7 +72,7 @@ vim.keymap.set("", "'", "`", { remap = true, desc = "Jump To Mark" })
 -- To distinguish them, you could map another key, say <A-I>, to <C-i> in neovim,
 -- and then map ctrl+i to send <A-I> key sequence in your terminal setting.
 -- For more info `:h tui-modifyOtherKeys` and https://invisible-island.net/xterm/modified-keys.html
-vim.keymap.set({ "i", "c", "n", "x", "s" }, "<M-I>", "<C-i>", { desc = "<C-i>" })
+vim.keymap.set({ "i", "c", "n", "x", "s" }, "<A-I>", "<C-i>", { desc = "<C-i>" })
 
 -- Motion: go to diagnostic
 local diagnostic_goto = function(next, severity)

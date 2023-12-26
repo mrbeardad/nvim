@@ -21,7 +21,6 @@ lazy_config.options.defaults.cond = function(plugin)
 end
 
 return {
-  -- TODO: use noice
   {
     "kevinhwang91/nvim-hlslens",
     event = "CmdlineEnter",
