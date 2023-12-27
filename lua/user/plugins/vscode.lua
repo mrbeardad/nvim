@@ -22,56 +22,6 @@ end
 
 return {
   {
-    "kevinhwang91/nvim-hlslens",
-    event = "CmdlineEnter",
-    keys = {
-      {
-        "n",
-        [[<Cmd>execute("normal! " . v:count1 . "Nn"[v:searchforward])<CR><Cmd>lua require("hlslens").start()<CR>]],
-        mode = { "n", "x" },
-        desc = "Repeat last search in forward direction",
-      },
-      {
-        "N",
-        [[<Cmd>execute("normal! " . v:count1 . "nN"[v:searchforward])<CR><Cmd>lua require("hlslens").start()<CR>]],
-        mode = { "n", "x" },
-        desc = "Repeat last search in backward direction",
-      },
-      {
-        "*",
-        [[*<Cmd>lua require("hlslens").start()<CR>]],
-        desc = "Search forward for nearest word (match word)",
-      },
-      {
-        "#",
-        [[#<Cmd>lua require("hlslens").start()<CR>]],
-        desc = "Search forward for nearest word (match word)",
-      },
-      {
-        "g*",
-        [[g*<Cmd>lua require("hlslens").start()<CR>]],
-        mode = { "n", "x" },
-        desc = "Search forward for nearest word",
-      },
-      {
-        "g#",
-        [[g#<Cmd>lua require("hlslens").start()<CR>]],
-        mode = { "n", "x" },
-        desc = "Search backward for nearest word",
-      },
-    },
-    config = function(_, opts)
-      require("hlslens").setup(opts)
-      -- To clear and redraw in vscode
-      -- require("hlslens.lib.event"):on("LensUpdated", function()
-      --   vim.cmd.mode()
-      -- end, {})
-      -- TODO: colorscheme
-      -- vim.cmd("hi HlSearchLensNear guibg=#40bf6a guifg=#062e32")
-      -- vim.cmd("hi HlSearchLens guibg=#0a5e69 guifg=#b2cac3")
-    end,
-  },
-  {
     "nvim-treesitter/nvim-treesitter",
     opts = {
       highlight = { enable = false },

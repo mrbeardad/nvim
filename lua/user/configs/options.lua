@@ -5,7 +5,7 @@ vim.opt.undofile = true -- Enable persistent undo
 vim.opt.undolevels = 10000 -- Increase undolevels since lots of undo breaks are set in insert mode
 vim.opt.updatetime = 300 -- Save swap file and trigger CursorHold
 vim.opt.timeoutlen = 300 -- Wait for a mapped sequence to complete.
-vim.opt.shortmess = "oOtTWIcCF"
+vim.opt.shortmess = "oOtTWIcCFS"
 
 -- Search
 vim.opt.ignorecase = true -- Ignore case

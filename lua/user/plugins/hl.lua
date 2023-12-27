@@ -53,12 +53,49 @@ return {
   -- Display search info after match results
   {
     "kevinhwang91/nvim-hlslens",
-    -- only use it in vscode, in neovim, use noice instead
-    lazy = true,
+    event = "CmdlineEnter",
+    keys = {
+      {
+        "n",
+        [[<Cmd>execute("normal! " . v:count1 . "Nn"[v:searchforward])<CR><Cmd>lua require("hlslens").start()<CR>]],
+        mode = { "n", "x" },
+        desc = "Repeat last search in forward direction",
+      },
+      {
+        "N",
+        [[<Cmd>execute("normal! " . v:count1 . "nN"[v:searchforward])<CR><Cmd>lua require("hlslens").start()<CR>]],
+        mode = { "n", "x" },
+        desc = "Repeat last search in backward direction",
+      },
+      {
+        "*",
+        [[*<Cmd>lua require("hlslens").start()<CR>]],
+        desc = "Search forward for nearest word (match word)",
+      },
+      {
+        "#",
+        [[#<Cmd>lua require("hlslens").start()<CR>]],
+        desc = "Search forward for nearest word (match word)",
+      },
+      {
+        "g*",
+        [[g*<Cmd>lua require("hlslens").start()<CR>]],
+        mode = { "n", "x" },
+        desc = "Search forward for nearest word",
+      },
+      {
+        "g#",
+        [[g#<Cmd>lua require("hlslens").start()<CR>]],
+        mode = { "n", "x" },
+        desc = "Search backward for nearest word",
+      },
+    },
     opts = {
       calm_down = true,
+      enable_incsearch = false,
       override_lens = function(render, posList, nearest, idx, _)
-        local text = nearest and ("[%d/%d]"):format(idx, #posList) or ""
+        --                           🠇 This is \u00A0 since ascii space will disappear in vscode
+        local text = nearest and ("%s [%d/%d]"):format(vim.fn.getreg("/"), idx, #posList) or ""
         local chunks = { { " ", "Ignore" }, { text, "HlSearchLensNear" } }
         local lnum, col = unpack(posList[idx])
         render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
@@ -103,21 +140,40 @@ return {
 
   -- Highlight the word under cursor
   {
-    "echasnovski/mini.cursorword",
+    "RRethy/vim-illuminate",
     event = "User LazyFile",
-    init = function()
-      -- Disable in special buffer
+    keys = {
+      { "]]", desc = "Next Reference" },
+      { "[[", desc = "Prev Reference" },
+    },
+    opts = {
+      delay = 300,
+      large_file_cutoff = 2000,
+      large_file_overrides = {
+        providers = { "lsp" },
+      },
+    },
+    config = function(_, opts)
+      require("illuminate").configure(opts)
+
+      local function map(key, dir, buffer)
+        vim.keymap.set("n", key, function()
+          require("illuminate")["goto_" .. dir .. "_reference"](false)
+        end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
+      end
+
+      map("]]", "next")
+      map("[[", "prev")
+
+      -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
       vim.api.nvim_create_autocmd("FileType", {
-        callback = function(ev)
-          if vim.bo[ev.buf].filetype ~= "noice" and not utils.is_real_file(ev.buf) then
-            vim.api.nvim_buf_set_var(ev.buf, "minicursorword_disable", true)
-          end
+        callback = function()
+          local buffer = vim.api.nvim_get_current_buf()
+          map("]]", "next", buffer)
+          map("[[", "prev", buffer)
         end,
       })
     end,
-    opts = {
-      delay = vim.o.timeoutlen,
-    },
   },
 
   -- Highlight different level brackets with different color

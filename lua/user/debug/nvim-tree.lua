@@ -12,12 +12,11 @@ return {
       view = {
         width = 40,
       },
-      --sync_root_with_cwd = true,
+      sync_root_with_cwd = true,
       update_focused_file = {
         enable = true,
-        -- TODO: set cwd to root manually
-        update_root = true,
-        ignore_list = { "help" },
+        -- update_root = true,
+        -- ignore_list = { "help" },
       },
       diagnostics = {
         enable = true,

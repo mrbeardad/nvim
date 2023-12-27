@@ -163,7 +163,7 @@ return {
   -- Snippets
   {
     "L3MON4D3/LuaSnip",
-    build = utils.is_windows() and "make install_jsregexp",
+    build = not utils.is_windows() and "make install_jsregexp",
     dependencies = {
       "rafamadriz/friendly-snippets",
       config = function()

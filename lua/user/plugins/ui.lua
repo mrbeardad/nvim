@@ -172,6 +172,7 @@ return {
         },
       },
     },
+    enabled = true,
   },
 
   -- Show buffers and tabs at the top
@@ -233,7 +234,7 @@ return {
         globalstatus = true,
       },
       sections = {
-        lualine_a = { "mode" },
+        lualine_a = { { "mode", icon = "" } },
         lualine_b = { "branch" },
         lualine_c = {
           {
@@ -305,7 +306,7 @@ return {
         cursor = true,
         diagnostic = true,
         gitsigns = true, -- Requires gitsigns
-        search = false, -- Requires hlslens
+        search = true, -- Requires hlslens
       },
       marks = {
         Cursor = { text = "—" },
@@ -476,7 +477,7 @@ return {
           -- "smart",
           "truncate",
         },
-        prompt_prefix = " ",
+        prompt_prefix = " ",
         selection_caret = " ",
         file_ignore_patterns = {},
         get_selection_window = function()
