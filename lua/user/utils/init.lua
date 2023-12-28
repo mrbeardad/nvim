@@ -83,8 +83,8 @@ function M.on_load(name, fn)
 end
 
 local augroups = {}
-function M.augroup(suffix)
-  local name = "User" .. suffix
+function M.augroup(name)
+  name = "User" .. name
   local id = augroups[name]
   if id then
     return augroups[name]

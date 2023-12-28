@@ -547,6 +547,7 @@ return {
   -- Better ui components for neovim
   {
     "folke/noice.nvim",
+    enabled = false,
     dependencies = {
       {
         "rcarriga/nvim-notify",

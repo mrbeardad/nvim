@@ -75,10 +75,11 @@ return {
 
   -- Multiple cursor to modify matched pattern
   {
-    "brenton-leighton/multiple-cursors.nvim",
+    "mrbeardad/nvim-multi-cursor",
     keys = {
-      { "<C-LeftMouse>", "<Cmd>MultipleCursorsMouseAddDelete<CR>", mode = { "n", "i" } },
-      { "<Leader>m", "<Cmd>MultipleCursorsAddToWordUnderCursor<CR>", mode = { "n", "x" } },
+      { "<M-LeftMouse>", mode = { "n" } },
+      { "mm", mode = { "n" } },
+      { "mc", mode = { "n" } },
     },
     opts = {},
   },

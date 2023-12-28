@@ -105,6 +105,9 @@ vim.keymap.set("n", "[g", function()
 end, { desc = "Prev Git Diff" })
 vim.keymap.set("n", "]d", keymap.vscode_action("editor.action.marker.next"), { desc = "Next Diagnostic" })
 vim.keymap.set("n", "[d", keymap.vscode_action("editor.action.marker.prev"), { desc = "Prev Diagnostic" })
+-- Operation: delete or change without register
+vim.keymap.set({ "n", "x" }, "<A-d>", '"_d', { desc = "Delete Without Register" })
+vim.keymap.set({ "n", "x" }, "<A-c>", '"_c', { desc = "Change Without Register" })
 -- Operation: better indenting
 vim.keymap.set("n", "<", "<<", { desc = "Deindent" })
 vim.keymap.set("n", ">", ">>", { desc = "Indent" })

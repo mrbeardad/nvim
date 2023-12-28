@@ -91,6 +91,10 @@ vim.keymap.set("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error"
 vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
 vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
+-- Operation: delete or change without register
+vim.keymap.set({ "n", "x" }, "<A-d>", '"_d', { desc = "Delete Without Register" })
+vim.keymap.set({ "n", "x" }, "<A-c>", '"_c', { desc = "Change Without Register" })
+
 -- Operation: better indenting
 vim.keymap.set("n", "<", "<<", { desc = "Deindent" })
 vim.keymap.set("n", ">", ">>", { desc = "Indent" })
@@ -129,13 +133,13 @@ vim.keymap.set("c", "<C-k>", function()
     vim.fn.setcmdline(text:sub(1, col - 1))
   end
 end)
-vim.keymap.set("i", "<C-k>", '<C-g>u<Cmd>normal! "_d$<CR><Right>')
-vim.keymap.set("i", "<C-j>", "<C-g>u<End><CR>") -- <C-g>u is required here since <End> does not break undo here
-vim.keymap.set("i", "<C-z>", "<Cmd>undo<CR>")
+vim.keymap.set("i", "<C-k>", '<C-g>u<Cmd>normal! "_d$<CR><Right>', { desc = "Delete All Right" })
+vim.keymap.set("i", "<C-j>", "<C-g>u<End><CR>", { desc = "New Line" }) -- <C-g>u is required here since <End> does not break undo here
+vim.keymap.set("i", "<C-z>", "<Cmd>undo<CR>", { desc = "Undo" })
 
 -- Operation: yank and paste
-vim.keymap.set("i", "<C-v>", "<C-g>u<C-r><C-p>+")
-vim.keymap.set("c", "<C-v>", "<C-r>+")
+vim.keymap.set("i", "<C-v>", "<C-g>u<C-r><C-p>+", { desc = "Paste Last Yanked" })
+vim.keymap.set("c", "<C-v>", "<C-r>+", { desc = "Paste Last Yanked" })
 
 vim.keymap.set("n", "<Leader>qq", "<Cmd>qa<CR>", { desc = "Quit All" })
 
