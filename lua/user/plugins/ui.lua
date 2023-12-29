@@ -137,6 +137,7 @@ return {
       },
       filesystem = {
         group_empty_dirs = true,
+        bind_to_cwd = true,
         follow_current_file = { enabled = true },
         use_libuv_file_watcher = true,
         window = {
@@ -172,7 +173,19 @@ return {
         },
       },
     },
-    enabled = true,
+    config = function(_, opts)
+      require("neo-tree").setup(opts)
+      local neotree_utils = require("neo-tree.utils")
+      -- Fix the bug on windows https://github.com/nvim-neo-tree/neo-tree.nvim/issues/1264
+      ---@diagnostic disable-next-line
+      neotree_utils.escape_path = function(path)
+        local escaped_path = vim.fn.fnameescape(path) or path
+        if neotree_utils.is_windows then
+          escaped_path = escaped_path:gsub("/", "\\")
+        end
+        return escaped_path
+      end
+    end,
   },
 
   -- Show buffers and tabs at the top

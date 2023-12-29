@@ -1,4 +1,3 @@
-require("user.configs.multiple-cursors")
 if vim.g.vscode then
   require("user.configs.vscode")
 else

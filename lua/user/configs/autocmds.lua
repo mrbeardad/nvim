@@ -58,6 +58,7 @@ vim.api.nvim_create_autocmd("FileType", {
 local current_buf = 0
 vim.api.nvim_create_autocmd("BufEnter", {
   group = utils.augroup("AutoChdir"),
+  nested = true,
   callback = function(ev)
     current_buf = ev.buf
     local root = utils.workspace_root()
@@ -68,6 +69,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 vim.api.nvim_create_autocmd("BufWritePost", {
   group = utils.augroup("AutoChdir"),
+  nested = true,
   callback = function(ev)
     if ev.buf == current_buf and utils.is_real_file(ev.buf) then
       local root = utils.workspace_root(true)
@@ -79,6 +81,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 })
 vim.api.nvim_create_autocmd("LspAttach", {
   group = utils.augroup("AutoChdir"),
+  nested = true,
   callback = function(ev)
     if ev.buf == current_buf then
       local root = utils.workspace_root(true)
