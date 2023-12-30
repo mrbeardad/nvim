@@ -1,5 +1,9 @@
 local utils = require("user.utils")
 local keymap = require("user.utils.keymap")
+local vscode = require("vscode-neovim")
+
+vim.notify = vscode.notify
+vim.g.clipboard = vim.g.vscode_clipboard
 
 -- Options
 vim.opt.undofile = true
@@ -39,25 +43,27 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- Keymaps
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
+
+local function vscode_action(cmd)
+  return function()
+    vscode.action(cmd)
+  end
+end
+
 -- Editor: buffers
-vim.keymap.set("n", "H", keymap.vscode_action("workbench.action.previousEditorInGroup"), { desc = "Previous Editor" })
-vim.keymap.set("n", "L", keymap.vscode_action("workbench.action.nextEditorInGroup"), { desc = "Next Editor" })
-vim.keymap.set(
-  "n",
-  "<Leader>bo",
-  keymap.vscode_action("workbench.action.closeOtherEditors"),
-  { desc = "Close Other Editors" }
-)
+vim.keymap.set("n", "H", vscode_action("workbench.action.previousEditorInGroup"), { desc = "Previous Editor" })
+vim.keymap.set("n", "L", vscode_action("workbench.action.nextEditorInGroup"), { desc = "Next Editor" })
+vim.keymap.set("n", "<Leader>bo", vscode_action("workbench.action.closeOtherEditors"), { desc = "Close Other Editors" })
 vim.keymap.set(
   "n",
   "<Leader>bh",
-  keymap.vscode_action("workbench.action.closeEditorsToTheLeft"),
+  vscode_action("workbench.action.closeEditorsToTheLeft"),
   { desc = "Close Left Editors" }
 )
 vim.keymap.set(
   "n",
   "<Leader>bl",
-  keymap.vscode_action("workbench.action.closeEditorsToTheRight"),
+  vscode_action("workbench.action.closeEditorsToTheRight"),
   { desc = "Close Right Editors" }
 )
 -- Search: fix direction of n/N
@@ -72,9 +78,9 @@ vim.keymap.set("c", "<A-w>", keymap.toggle_search_pattern("w"), { desc = "Match 
 vim.keymap.set("c", "<A-c>", keymap.toggle_search_pattern("c"), { desc = "Match Case" })
 vim.keymap.set("c", "<A-r>", keymap.toggle_search_pattern("r"), { desc = "Toggle Very Magic" })
 -- Search: code navigation
-vim.keymap.set("n", "gt", keymap.vscode_action("editor.action.goToTypeDefinition"), { desc = "Go To Type Definition" })
-vim.keymap.set("n", "gr", keymap.vscode_action("editor.action.goToReferences"), { desc = "Go To References" })
-vim.keymap.set("n", "gi", keymap.vscode_action("editor.action.goToImplementation"), { desc = "Go To Implementations" })
+vim.keymap.set("n", "gt", vscode_action("editor.action.goToTypeDefinition"), { desc = "Go To Type Definition" })
+vim.keymap.set("n", "gr", vscode_action("editor.action.goToReferences"), { desc = "Go To References" })
+vim.keymap.set("n", "gi", vscode_action("editor.action.goToImplementation"), { desc = "Go To Implementations" })
 -- Scroll
 vim.keymap.set({ "n", "x" }, "z<CR>", "zt", { desc = "Move Line To Top Of Screen" })
 -- Motion: basic move
@@ -89,22 +95,20 @@ vim.keymap.set("i", "<A-h>", "<Left>", { desc = "Left" })
 vim.keymap.set("i", "<A-l>", "<Right>", { desc = "Right" })
 -- Motion: bookmark
 vim.keymap.set("", "'", "`", { remap = true, desc = "Jump To Mark" })
-vim.keymap.set({ "n" }, "m;", keymap.vscode_action("bookmarks.toggle"), { desc = "Toogle Bookmark" })
-vim.keymap.set({ "n" }, "m:", keymap.vscode_action("bookmarks.toggleLabeled"), { desc = "Toogle Bookmark Label" })
-vim.keymap.set({ "n" }, "m/", keymap.vscode_action("bookmarks.listFromAllFiles"), { desc = "List All Bookmarks" })
+vim.keymap.set({ "n" }, "m;", vscode_action("bookmarks.toggle"), { desc = "Toogle Bookmark" })
+vim.keymap.set({ "n" }, "m:", vscode_action("bookmarks.toggleLabeled"), { desc = "Toogle Bookmark Label" })
+vim.keymap.set({ "n" }, "m/", vscode_action("bookmarks.listFromAllFiles"), { desc = "List All Bookmarks" })
 -- Motion: diagnostic
 vim.keymap.set("n", "]g", function()
-  local vscode = require("vscode-neovim")
   vscode.action("workbench.action.editor.nextChange")
   vscode.action("workbench.action.compareEditor.nextChange")
 end, { desc = "Next Git Diff" })
 vim.keymap.set("n", "[g", function()
-  local vscode = require("vscode-neovim")
   vscode.action("workbench.action.editor.previousChange")
   vscode.action("workbench.action.compareEditor.previousChange")
 end, { desc = "Prev Git Diff" })
-vim.keymap.set("n", "]d", keymap.vscode_action("editor.action.marker.next"), { desc = "Next Diagnostic" })
-vim.keymap.set("n", "[d", keymap.vscode_action("editor.action.marker.prev"), { desc = "Prev Diagnostic" })
+vim.keymap.set("n", "]d", vscode_action("editor.action.marker.next"), { desc = "Next Diagnostic" })
+vim.keymap.set("n", "[d", vscode_action("editor.action.marker.prev"), { desc = "Prev Diagnostic" })
 -- Operation: delete or change without register
 vim.keymap.set({ "n", "x" }, "<A-d>", '"_d', { desc = "Delete Without Register" })
 vim.keymap.set({ "n", "x" }, "<A-c>", '"_c', { desc = "Change Without Register" })

@@ -179,10 +179,4 @@ function M.open_term(cmd, opts)
   return terminals[termkey]
 end
 
-function M.vscode_action(cmd)
-  return function()
-    require("vscode-neovim").action(cmd)
-  end
-end
-
 return M

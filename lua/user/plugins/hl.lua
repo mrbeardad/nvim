@@ -91,7 +91,7 @@ return {
       },
     },
     opts = {
-      calm_down = true,
+      calm_down = false, -- enable this if you want to execute :nohl automatically
       enable_incsearch = false,
       override_lens = function(render, posList, nearest, idx, _)
         --                           🠇 This is \u00A0 since ascii space will disappear in vscode
