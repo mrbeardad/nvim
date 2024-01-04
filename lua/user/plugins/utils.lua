@@ -73,8 +73,6 @@ return {
     cmd = { "TodoTelescope" },
     -- stylua: ignore
     keys = {
-      { "]T", function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
-      { "[T", function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
       { "<Leader>st", "<Cmd>TodoTelescope<CR>", desc = "Todos" },
       { "<Leader>sT", "<Cmd>TodoTelescope keywords=TODO,FIX,PERF<CR>", desc = "TODO/FIX/PERF" },
     },

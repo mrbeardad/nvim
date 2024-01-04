@@ -1,4 +1,5 @@
 local icons = require("user.utils.icons")
+local utils = require("user.utils")
 
 return {
   -- Startup page
@@ -146,16 +147,15 @@ return {
             ["."] = "toggle_hidden",
             ["i"] = "noop",
             ["K"] = "show_file_details",
-            ["Y"] = {
+            ["c"] = {
               function(state)
                 local node = state.tree:get_node()
                 vim.fn.setreg("+", node.path)
               end,
-              desc = "yank_path",
+              desc = "copy_path",
             },
-            ["O"] = {
+            ["o"] = {
               function(state)
-                local utils = require("user.utils")
                 local node = state.tree:get_node()
                 if utils.is_windows() then
                   os.execute("start " .. node.path)
@@ -209,8 +209,8 @@ return {
     opts = {
       options = {
         diagnostics = "nvim_lsp",
-        close_command = function(n)
-          require("mini.bufremove").delete(n, false)
+        close_command = function(bufnr)
+          require("mini.bufremove").delete(bufnr, false)
         end,
         always_show_bufferline = true,
         diagnostics_indicator = function(_, _, diag)
@@ -349,7 +349,6 @@ return {
       { "zt", mode = { "n", "x" } },
       { "zz", mode = { "n", "x" } },
       { "zb", mode = { "n", "x" } },
-      { "z<CR>", "zt", mode = { "n", "x" }, remap = true },
     },
     opts = {
       easing_function = "quartic",
@@ -400,6 +399,7 @@ return {
         ["<Leader>t"] = { name = "+Tabs" },
         ["<Leader>q"] = { name = "+Quit/Session" },
         ["<Leader>s"] = { name = "+Search" },
+        ["<Leader>m"] = { name = "+Multi Cursor" },
         ["<Leader>n"] = { name = "+Noice Message" },
         ["<Leader>l"] = { name = "+Language" },
         ["<Leader>g"] = { name = "+Git" },
@@ -432,6 +432,15 @@ return {
       { "<Leader>R", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent Files In Cwd" },
       -- Text
       { "<Leader>sw", "<Cmd>Telescope grep_string<CR>", desc = "Word" },
+      {
+        "<Leader>sw",
+        function()
+          local text = table.concat(utils.get_visual_text())
+          require("telescope.builtin").grep_string({ search = text })
+        end,
+        mode = "x",
+        desc = "Word",
+      },
       -- Lsp
       { "<Leader>sd", "<Cmd>Telescope diagnostics bufnr=0<CR>", desc = "Document Diagnostics" },
       { "<Leader>sD", "<Cmd>Telescope diagnostics<CR>", desc = "Workspace Diagnostics" },
@@ -458,7 +467,7 @@ return {
         desc = "Workspace Symbols",
       },
       { "gd", "<Cmd>Telescope lsp_definitions reuse_win=true<CR>", desc = "Goto Definition" },
-      { "gt", "<Cmd>Telescope lsp_type_definitions reuse_win=true<CR>", desc = "Goto Type Definition" },
+      { "gy", "<Cmd>Telescope lsp_type_definitions reuse_win=true<CR>", desc = "Goto Type Definition" },
       { "gr", "<Cmd>Telescope lsp_references<CR>", desc = "Goto References" },
       { "gi", "<Cmd>Telescope lsp_implementations reuse_win=true<CR>", desc = "Goto Implementation" },
       -- Others
@@ -521,7 +530,7 @@ return {
           },
           mappings = {
             i = {
-              ["<C-z>"] = false,
+              -- ["<C-z>"] = false,
               ["<C-a>"] = false,
               ["<C-r>"] = false,
             },
@@ -542,7 +551,15 @@ return {
     "fdschmidt93/telescope-egrepify.nvim",
     keys = {
       { "<Leader>/", "<Cmd>Telescope egrepify<CR>", desc = "Search Text" },
-      { "<Leader>sg", "<Cmd>Telescope egrepify<CR>", desc = "Grep Text" },
+      {
+        "<Leader>/",
+        function()
+          local text = table.concat(utils.get_visual_text()):gsub(" ", "\\ ")
+          vim.cmd("Telescope egrepify default_text=" .. text)
+        end,
+        mode = "x",
+        desc = "Search Text",
+      },
     },
     config = function()
       require("telescope").load_extension("egrepify")
@@ -560,7 +577,6 @@ return {
   -- Better ui components for neovim
   {
     "folke/noice.nvim",
-    enabled = false,
     dependencies = {
       {
         "rcarriga/nvim-notify",
@@ -591,13 +607,15 @@ return {
       vim.opt.cmdheight = 0
     end,
     opts = {
-      override = {
-        -- override the default lsp markdown formatter with Noice
-        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-        -- override the lsp markdown formatter with Noice
-        ["vim.lsp.util.stylize_markdown"] = true,
-        -- override cmp documentation with Noice (needs the other options to work)
-        ["cmp.entry.get_documentation"] = true,
+      lsp = {
+        progress = {
+          enabled = false,
+        },
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
+        },
       },
       presets = {
         bottom_search = false, -- use a classic bottom cmdline for search

@@ -56,23 +56,15 @@ vim.keymap.set({ "n", "x", "i" }, "<A-b>", "<Cmd>normal zH<CR>", { desc = "Scrol
 vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down" })
 vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Up" })
 vim.keymap.set("c", "<C-a>", "<C-b>", { desc = "Start Of Line" })
-vim.keymap.set("c", "<A-h>", "<Left>", { desc = "Left" })
-vim.keymap.set("c", "<A-l>", "<Right>", { desc = "Right" })
-vim.keymap.set("i", "<C-a>", "<C-g>u<Cmd>normal! ^<CR>", { desc = "Start Of Line" })
+vim.keymap.set("i", "<C-a>", "<Home>", { desc = "Start Of Line" })
 vim.keymap.set("i", "<C-e>", "<End>", { desc = "End Of Line" })
-vim.keymap.set("i", "<A-h>", "<Left>", { desc = "Left" })
-vim.keymap.set("i", "<A-l>", "<Right>", { desc = "Right" })
-vim.keymap.set("t", "<A-h>", "<Left>", { desc = "Left" })
-vim.keymap.set("t", "<A-l>", "<Right>", { desc = "Right" })
 
--- Motion: mark
-vim.keymap.set("", "'", "`", { remap = true, desc = "Jump To Mark" })
-
+-- Motion: jump list
 -- HACK: For historical reason, <Tab> and <C-i> have the same key sequence in most of terminals.
 -- To distinguish them, you could map another key, say <A-I>, to <C-i> in neovim,
 -- and then map ctrl+i to send <A-I> key sequence in your terminal setting.
 -- For more info `:h tui-modifyOtherKeys` and https://invisible-island.net/xterm/modified-keys.html
-vim.keymap.set({ "i", "c", "n", "x", "s" }, "<A-I>", "<C-i>", { desc = "<C-i>" })
+vim.keymap.set({ "i", "c", "n", "v" }, "<A-I>", "<C-i>", { desc = "<C-i>" })
 
 -- Motion: go to diagnostic
 local diagnostic_goto = function(next, severity)
@@ -124,8 +116,9 @@ vim.keymap.set(
 )
 
 -- Operation: insert/cmdline mode
-vim.keymap.set("c", "<C-l>", "<Del>", { desc = "Delete Right" })
-vim.keymap.set("i", "<C-l>", "<Del>", { desc = "Delete Right" })
+vim.keymap.set("c", "<C-d>", "<Del>", { desc = "Delete Right" })
+vim.keymap.set("i", "<C-d>", "<Del>", { desc = "Delete Right" })
+vim.keymap.set("i", "<A-d>", '<C-g>u<Cmd>normal! "_dw<CR>', { desc = "Delete Right Word" })
 vim.keymap.set("c", "<C-k>", function()
   local text = vim.fn.getcmdline()
   local col = vim.fn.getcmdpos()
@@ -135,12 +128,12 @@ vim.keymap.set("c", "<C-k>", function()
 end)
 vim.keymap.set("i", "<C-k>", '<C-g>u<Cmd>normal! "_d$<CR><Right>', { desc = "Delete All Right" })
 vim.keymap.set("i", "<C-j>", "<C-g>u<End><CR>", { desc = "New Line" }) -- <C-g>u is required here since <End> does not break undo here
-vim.keymap.set("i", "<C-z>", "<Cmd>undo<CR>", { desc = "Undo" })
 
 -- Operation: yank and paste
 vim.keymap.set("i", "<C-v>", "<C-g>u<C-r><C-p>+", { desc = "Paste Last Yanked" })
 vim.keymap.set("c", "<C-v>", "<C-r>+", { desc = "Paste Last Yanked" })
 
+-- UI: quit
 vim.keymap.set("n", "<Leader>qq", "<Cmd>qa<CR>", { desc = "Quit All" })
 
 -- UI: toggle options

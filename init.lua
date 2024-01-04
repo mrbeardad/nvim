@@ -20,7 +20,6 @@ require("lazy").setup({
   spec = {
     { import = "user/plugins" },
     { import = "user/langs" },
-    -- { import = "user/debug" },
   },
   defaults = {
     -- Do not lazy load plugins by default

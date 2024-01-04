@@ -11,6 +11,9 @@ local enabled = {
   "mini.ai",
   "mini.surround",
   "yanky.nvim",
+  "highlight-undo.nvim",
+  "nvim-multi-cursor",
+  "vscode-multi-cursor.nvim",
 }
 
 local lazy_config = require("lazy.core.config")
@@ -27,5 +30,11 @@ return {
       highlight = { enable = false },
       indent = { enable = false },
     },
+  },
+  {
+    "folke/flash.nvim",
+    init = function()
+      vim.api.nvim_set_hl(0, "FlashLabel", { fg = "#f9fafe", bg = "#ff007c", italic = true, bold = true })
+    end,
   },
 }

@@ -1,11 +1,12 @@
-local utils = require("user.utils")
 local keymap = require("user.utils.keymap")
+local utils = require("user.utils")
 local vscode = require("vscode-neovim")
 
 vim.notify = vscode.notify
 vim.g.clipboard = vim.g.vscode_clipboard
 
 -- Options
+vim.opt.swapfile = false
 vim.opt.undofile = true
 vim.opt.undolevels = 10000
 vim.opt.timeoutlen = 500
@@ -78,23 +79,16 @@ vim.keymap.set("c", "<A-w>", keymap.toggle_search_pattern("w"), { desc = "Match 
 vim.keymap.set("c", "<A-c>", keymap.toggle_search_pattern("c"), { desc = "Match Case" })
 vim.keymap.set("c", "<A-r>", keymap.toggle_search_pattern("r"), { desc = "Toggle Very Magic" })
 -- Search: code navigation
-vim.keymap.set("n", "gt", vscode_action("editor.action.goToTypeDefinition"), { desc = "Go To Type Definition" })
+vim.keymap.set("n", "gy", vscode_action("editor.action.goToTypeDefinition"), { desc = "Go To Type Definition" })
 vim.keymap.set("n", "gr", vscode_action("editor.action.goToReferences"), { desc = "Go To References" })
 vim.keymap.set("n", "gi", vscode_action("editor.action.goToImplementation"), { desc = "Go To Implementations" })
--- Scroll
-vim.keymap.set({ "n", "x" }, "z<CR>", "zt", { desc = "Move Line To Top Of Screen" })
 -- Motion: basic move
 vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down" })
 vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Up" })
 vim.keymap.set("c", "<C-a>", "<C-b>", { desc = "Start Of Line" })
-vim.keymap.set("c", "<A-h>", "<Left>", { desc = "Left" })
-vim.keymap.set("c", "<A-l>", "<Right>", { desc = "Right" })
 vim.keymap.set("i", "<C-a>", "<Home>", { desc = "Start Of Line" })
 vim.keymap.set("i", "<C-e>", "<End>", { desc = "End Of Line" })
-vim.keymap.set("i", "<A-h>", "<Left>", { desc = "Left" })
-vim.keymap.set("i", "<A-l>", "<Right>", { desc = "Right" })
 -- Motion: bookmark
-vim.keymap.set("", "'", "`", { remap = true, desc = "Jump To Mark" })
 vim.keymap.set({ "n" }, "m;", vscode_action("bookmarks.toggle"), { desc = "Toogle Bookmark" })
 vim.keymap.set({ "n" }, "m:", vscode_action("bookmarks.toggleLabeled"), { desc = "Toogle Bookmark Label" })
 vim.keymap.set({ "n" }, "m/", vscode_action("bookmarks.listFromAllFiles"), { desc = "List All Bookmarks" })
@@ -131,6 +125,9 @@ vim.keymap.set(
   { expr = true, desc = "Put Empty Line Above" }
 )
 -- Operation: insert mode
+vim.keymap.set("c", "<C-d>", "<Del>", { desc = "Delete Right" })
+vim.keymap.set("i", "<C-d>", "<Del>", { desc = "Delete Right" })
+vim.keymap.set("i", "<A-d>", '<C-g>u<Cmd>normal! "_dw<CR>')
 vim.keymap.set("c", "<C-k>", function()
   local text = vim.fn.getcmdline()
   local col = vim.fn.getcmdpos()
@@ -138,11 +135,15 @@ vim.keymap.set("c", "<C-k>", function()
     vim.fn.setcmdline(text:sub(1, col - 1))
   end
 end)
-vim.keymap.set("c", "<C-l>", "<Del>", { desc = "Delete Right" })
-vim.keymap.set("i", "<C-l>", "<Del>", { desc = "Delete Right" })
-vim.keymap.set("i", "<C-j>", "<C-g>u<End><CR>")
 vim.keymap.set("i", "<C-k>", '<C-g>u<Cmd>normal! "_d$<CR><Right>')
-vim.keymap.set("i", "<C-z>", "<Cmd>undo<CR>")
+vim.keymap.set("i", "<C-j>", "<C-g>u<End><CR>")
 -- Operation: yank and paste
 vim.keymap.set("i", "<C-v>", "<C-g>u<C-r><C-p>+")
 vim.keymap.set("c", "<C-v>", "<C-r>+")
+-- Operation: undo
+vim.keymap.set("i", "<C-z>", "<Cmd>normal u<CR>")
+-- Operation: repeat
+vim.keymap.del("x", "mi")
+vim.keymap.del("x", "mI")
+vim.keymap.del("x", "ma")
+vim.keymap.del("x", "mA")

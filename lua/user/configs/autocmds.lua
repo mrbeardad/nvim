@@ -61,9 +61,11 @@ vim.api.nvim_create_autocmd("BufEnter", {
   nested = true,
   callback = function(ev)
     current_buf = ev.buf
-    local root = utils.workspace_root()
-    if root ~= vim.loop.cwd() then
-      vim.fn.chdir(root)
+    if utils.is_real_file(current_buf) then
+      local root = utils.workspace_root()
+      if root ~= vim.loop.cwd() then
+        vim.fn.chdir(root)
+      end
     end
   end,
 })
@@ -71,7 +73,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   group = utils.augroup("AutoChdir"),
   nested = true,
   callback = function(ev)
-    if ev.buf == current_buf and utils.is_real_file(ev.buf) then
+    if ev.buf == current_buf then
       local root = utils.workspace_root(true)
       if root ~= vim.loop.cwd() then
         vim.fn.chdir(root)

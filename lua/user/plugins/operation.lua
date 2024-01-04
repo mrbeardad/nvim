@@ -1,3 +1,4 @@
+local keymap = require("user.utils.keymap")
 local utils = require("user.utils")
 
 return {
@@ -35,37 +36,24 @@ return {
   {
     "gbprod/yanky.nvim",
     dependencies = { { "kkharji/sqlite.lua", enabled = not utils.is_windows() } },
+    -- stylua: ignore
     keys = {
-      {
-        "<Leader>sy",
-        function()
-          require("telescope").extensions.yank_history.yank_history({})
-        end,
-        desc = "Open Yank History",
-      },
-      {
-        "<Leader>sp",
-        function()
-          require("telescope").extensions.yank_history.yank_history({})
-        end,
-        desc = "Open Yank History",
-      },
+      { "<Leader>sy", function() require("telescope").extensions.yank_history.yank_history({}) end, desc = "Open Yank History" },
+      { "<Leader>sp", function() require("telescope").extensions.yank_history.yank_history({}) end, desc = "Open Yank History" },
       { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank Text" },
       { "Y", "<Plug>(YankyYank)$", mode = { "n", "x" }, desc = "Yank Text After Cursor" },
       { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put Yanked Text After Cursor" },
       { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put Yanked Text Before Cursor" },
-      { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put Indented After Cursor (linewise)" },
-      { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put Indented Before Cursor (linewise)" },
-      { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put Yanked Text After Selection" },
-      { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" }, desc = "Put Yanked Text Before Selection" },
+      { "gp", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put Indented After Cursor (linewise)" },
+      { "gP", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put Indented Before Cursor (linewise)" },
       { "zp", '"0<Plug>(YankyPutAfter)', mode = { "n", "x" }, desc = "Put Last Yanked Text After Cursor" },
       { "zP", '"0<Plug>(YankyPutBefore)', mode = { "n", "x" }, desc = "Put Last Yanked Text Before Cursor" },
-      { "z]p", '"0<Plug>(YankyPutIndentAfterLinewise)', desc = "Put Indented After Cursor (linewise)" },
-      { "z[p", '"0<Plug>(YankyPutIndentBeforeLinewise)', desc = "Put Indented Before Cursor (linewise)" },
-      { "zgp", '"0<Plug>(YankyGPutAfter)', mode = { "n", "x" }, desc = "Put Last Yanked Text After Selection" },
-      { "zgP", '"0<Plug>(YankyGPutBefore)', mode = { "n", "x" }, desc = "Put Last Yanked Text Before Selection" },
+      { "zgp", '"0<Plug>(YankyPutIndentAfterLinewise)', mode = { "n", "x" }, desc = "Put Last Yanked Text After Selection" },
+      { "zgP", '"0<Plug>(YankyPutIndentBeforeLinewise)', mode = { "n", "x" }, desc = "Put Last Yanked Text Before Selection" },
       { "[y", "<Plug>(YankyCycleForward)", desc = "Cycle Forward Through Yank History" },
       { "]y", "<Plug>(YankyCycleBackward)", desc = "Cycle Backward Through Yank History" },
+      { "[p", "<Plug>(YankyCycleForward)", desc = "Cycle Forward Through Yank History" },
+      { "]p", "<Plug>(YankyCycleBackward)", desc = "Cycle Backward Through Yank History" },
     },
     opts = {
       highlight = { timer = 150 },
@@ -77,10 +65,156 @@ return {
   {
     "mrbeardad/nvim-multi-cursor",
     keys = {
-      { "<M-LeftMouse>", mode = { "n" } },
-      { "mm", mode = { "n" } },
-      { "mc", mode = { "n" } },
+      {
+        "<C-j>",
+        function()
+          require("nvim-multi-cursor").toggle_cursor_downward()
+        end,
+        mode = { "n" },
+        desc = "Add Cursor",
+      },
+      {
+        "<C-k>",
+        function()
+          require("nvim-multi-cursor").toggle_cursor_upward()
+        end,
+        mode = { "n" },
+        desc = "Add Cursor",
+      },
+      {
+        "<Leader>mm",
+        function()
+          require("nvim-multi-cursor").toggle_cursor_at_curpos()
+        end,
+        mode = { "n" },
+        desc = "Add Cursor",
+      },
+      {
+        "<Leader>ms",
+        function()
+          require("nvim-multi-cursor").toggle_cursor_by_flash()
+        end,
+        mode = { "n" },
+        desc = "Selection To Add Cursor",
+      },
+      {
+        "<Leader>mw",
+        function()
+          require("nvim-multi-cursor").toggle_cursor_by_flash(vim.fn.expand("<cword>"))
+        end,
+        mode = { "n" },
+        desc = "Selection Wrod To Add Cursor",
+      },
     },
     opts = {},
+  },
+
+  {
+    "vscode-neovim/vscode-multi-cursor.nvim",
+    keys = {
+      {
+        "I",
+        function()
+          require("vscode-multi-cursor").start_left({ no_selection = true })
+        end,
+        mode = "x",
+      },
+      {
+        "I",
+        function()
+          if #require("vscode-multi-cursor.state").cursors == 0 then
+            return "I"
+          end
+          require("vscode-multi-cursor").start_left()
+          return "<Ignore>"
+        end,
+        mode = "n",
+        expr = true,
+      },
+      {
+        "A",
+        function()
+          require("vscode-multi-cursor").start_right({ no_selection = true })
+        end,
+        mode = "x",
+      },
+      {
+        "A",
+        function()
+          if #require("vscode-multi-cursor.state").cursors == 0 then
+            return "A"
+          end
+          require("vscode-multi-cursor").start_right()
+          return "<Ignore>"
+        end,
+        mode = "n",
+        expr = true,
+      },
+      {
+        "c",
+        function()
+          require("vscode-multi-cursor").start_right()
+          require("vscode-neovim").action("deleteLeft")
+        end,
+        mode = "x",
+      },
+      {
+        "<Leader>m",
+        function()
+          return require("vscode-multi-cursor").create_cursor()
+        end,
+        mode = { "n", "x" },
+        expr = true,
+        desc = "Create cursor",
+      },
+      -- {
+      --   "mcs",
+      --   function()
+      --     require("vscode-multi-cursor").flash_char()
+      --   end,
+      --   mode = "n",
+      --   desc = "Create cursor using flash",
+      -- },
+      -- {
+      --   "mcw",
+      --   function()
+      --     require("vscode-multi-cursor").flash_word()
+      --   end,
+      --   mode = "n",
+      --   desc = "Create selection using flash",
+      -- },
+      {
+        "<Esc>",
+        function()
+          if #require("vscode-multi-cursor.state").cursors ~= 0 then
+            require("vscode-multi-cursor").cancel()
+          else
+            vim.cmd("normal! \27")
+          end
+        end,
+        mode = "n",
+        desc = "Cancel/Clear all cursors",
+      },
+      {
+        "[m",
+        function()
+          require("vscode-multi-cursor").prev_cursor()
+        end,
+        mode = "n",
+        desc = "Goto prev cursor",
+      },
+      {
+        "]m",
+        function()
+          require("vscode-multi-cursor").next_cursor()
+        end,
+        mode = "n",
+        desc = "Goto next cursor",
+      },
+    },
+    opts = {
+      default_mappings = false,
+    },
+    cond = not not vim.g.vscode,
   },
 }

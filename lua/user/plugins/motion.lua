@@ -1,5 +1,5 @@
+local keymap = require("user.utils.keymap")
 local utils = require("user.utils")
-local flash_utils = require("user.utils.flash")
 
 return {
   -- Parse code to AST, and use it to highlight, move, select, etc.
@@ -31,10 +31,10 @@ return {
       textobjects = {
         move = {
           enable = true,
-          goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
-          goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
-          goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
-          goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
+          goto_next_start = { ["]a"] = "@parameter.outer", ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
+          goto_next_end = { ["]A"] = "@parameter.outer", ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
+          goto_previous_start = { ["[a"] = "@parameter.outer", ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
+          goto_previous_end = { ["[A"] = "@parameter.outer", ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
         },
       },
     },
@@ -57,6 +57,7 @@ return {
   {
     "folke/flash.nvim",
     event = "CmdlineEnter",
+    -- stylua: ignore
     keys = {
       { "f", mode = { "n", "x", "o" } },
       { "F", mode = { "n", "x", "o" } },
@@ -64,18 +65,8 @@ return {
       { "T", mode = { "n", "x", "o" } },
       { "r", "<Cmd>lua require('flash').remote({restore=true})<CR>", mode = "o", desc = "Flash Remote" },
       { "S", "<Cmd>lua require('flash').treesitter()<CR>", mode = { "n", "o", "x" }, desc = "Flash Treesitter" },
-      {
-        ";",
-        "<Cmd>lua require('flash').treesitter({jump={pos='start'}})<CR>",
-        mode = { "n", "o", "x" },
-        desc = "Outter Start Of Treesitter Node",
-      },
-      {
-        ",",
-        "<Cmd>lua require('flash').treesitter({jump={pos='end'}})<CR>",
-        mode = { "n", "o", "x" },
-        desc = "Outter Start Of Treesitter Node",
-      },
+      { ";", "<Cmd>lua require('flash').treesitter({jump={pos='start'}})<CR>", mode = { "n", "o", "x" }, desc = "Outter Start Of Treesitter Node" },
+      { ",", "<Cmd>lua require('flash').treesitter({jump={pos='end'}})<CR>", mode = { "n", "o", "x" }, desc = "Outter Start Of Treesitter Node" },
     },
     opts = {
       labels = "asdfghjklqwertyuiopzxcvbnm1234567890",
@@ -115,7 +106,7 @@ return {
       defaults = {
         mappings = {
           i = {
-            ["<C-s>"] = flash_utils.flash_telescope,
+            ["<C-s>"] = keymap.flash_telescope,
           },
         },
       },
@@ -155,7 +146,8 @@ return {
           a = "Argument",
           f = "Function Call",
           F = "Function",
-          c = "Class",
+          T = "Type Definition",
+          c = "Comment",
           o = "Block/Conditional/loop",
         }
         local a = vim.deepcopy(i)
@@ -188,7 +180,7 @@ return {
         n_lines = 250,
         custom_textobjects = {
           -- Line
-          l = { "^.*$", "^%s*().*()%s*$" },
+          l = { "^()%s*().*()%s*()\n$" },
           -- Entire buffer
           e = function()
             return {
@@ -199,7 +191,8 @@ return {
           end,
           -- a = ai.gen_spec.treesitter({ a = "@parameter.outer", i = "@parameter.inner" }, {}),
           F = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
-          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+          T = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+          c = ai.gen_spec.treesitter({ a = "@comment.outer", i = "@comment.inner" }, {}),
           o = ai.gen_spec.treesitter({
             a = { "@block.outer", "@conditional.outer", "@loop.outer" },
             i = { "@block.inner", "@conditional.inner", "@loop.inner" },

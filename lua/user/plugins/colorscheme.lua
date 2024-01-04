@@ -53,8 +53,8 @@ return {
           italic = true,
         }
         hl.FlashLabelUnselected = {
-          fg = darken(hl.FlashLabel.fg, 0.8),
-          bg = darken(hl.FlashLabel.bg, 0.8),
+          fg = darken(hl.FlashLabel.fg, 0.7),
+          bg = darken(hl.FlashLabel.bg, 0.7),
           bold = true,
           italic = true,
         }
