@@ -1,19 +1,89 @@
-# Keymaps
+<div align="center">
 
-- [Keymaps](#keymaps)
-  - [Editor](#editor)
-  - [Search](#search)
-  - [Scroll](#scroll)
-  - [Motion](#motion)
-  - [Operation](#operation)
-    - [Add/Change/Delete](#addchangedelete)
-    - [Yank](#yank)
-    - [Repeat](#repeat)
-    - [Undo](#undo)
-  - [Language](#language)
-  - [Misc](#misc)
+# Nvim
 
-## Editor
+✨ A nvim config for both neovim and vscode. The biggest difference from the other configs, such as [LazyVim](https://github.com/LazyVim/LazyVim), is that this config keeps neovim as a simple editor rather than IDE. Let vscode focus on being IDE, and let neovim focus on editing.
+
+![lisence](https://img.shields.io/github/license/mrbeardad/nvim?style=for-the-badge&color=brightgreen)
+![stars](https://img.shields.io/github/stars/mrbeardad/nvim?style=for-the-badge&color=yellow)
+![open_issues](https://img.shields.io/github/issues/mrbeardad/nvim?style=for-the-badge&color=orange)
+![tag](https://img.shields.io/github/v/tag/mrbeardad/nvim?style=for-the-badge)
+![last_commit](https://img.shields.io/github/last-commit/mrbeardad/nvim?style=for-the-badge&color=blueviolet)
+
+<!-- 📄[中文文档](README-zh.md) -->
+
+![nvim1](images/nvim1.png)
+![nvim2](images/nvim2.png)
+
+</div>
+
+---
+
+- [Nvim](#nvim)
+  - [Installation](#installation)
+    - [Windows](#windows)
+    - [Linux](#linux)
+  - [Configuration](#configuration)
+  - [Keymaps](#keymaps)
+    - [Editor](#editor)
+    - [Search](#search)
+    - [Scroll](#scroll)
+    - [Motion](#motion)
+    - [Operation](#operation)
+      - [Add/Change/Delete](#addchangedelete)
+      - [Yank](#yank)
+      - [Repeat](#repeat)
+      - [Undo](#undo)
+    - [Language](#language)
+    - [Misc](#misc)
+
+## Installation
+
+### Windows
+
+```ps1
+# required
+Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
+# optional but recommended
+Move-Item $env:LOCALAPPDATA\nvim-data $env:LOCALAPPDATA\nvim-data.bak
+# clone
+git clone https://github.com/mrbeardad/nvim $env:LOCALAPPDATA\nvim
+# start and install plugins automatically
+nvim
+```
+
+### Linux
+
+```sh
+# required
+mv ~/.config/nvim{,.bak}
+
+# optional but recommended
+mv ~/.local/share/nvim{,.bak}
+mv ~/.local/state/nvim{,.bak}
+mv ~/.cache/nvim{,.bak}
+# clone
+git clone https://github.com/LazyVim/starter ~/.config/nvim
+# start and install plugins automatically
+nvim
+```
+
+## Configuration
+
+In most of terminals, `<C-S-*>` and `<C-*>` have the same key sequence.
+To distinguish them, map `ctrl+shift+*` to send `<C-S-*>` key sequence in your terminal setting.
+For detail see [here](https://www.reddit.com/r/neovim/comments/mbj8m5/how_to_setup_ctrlshiftkey_mappings_in_neovim_and/)
+
+For historical reason, `<Tab>` and `<C-i>` have the same key sequence in most of terminals.
+To distinguish them, you could map another key, say `<A-I>`, to `<C-i>` in neovim,
+and then map ctrl+i to send `<A-I>` key sequence in your terminal setting.
+For more info [`:h tui-modifyOtherKeys`](https://neovim.io/doc/user/term.html#tui-input) and [xterm-modified-keys](https://invisible-island.net/xterm/modified-keys.html)
+
+My own windows terminal setting is [here](https://github.com/mrbeardad/MyIDE/blob/master/wt/settings.json)
+
+## Keymaps
+
+### Editor
 
 | Neovim Keys | VSCode Keys        | Mode       | Description            |
 | ----------- | ------------------ | ---------- | ---------------------- |
@@ -61,7 +131,7 @@
 > 2. The `window` in Neovim is similar to the `editor group` in VSCode.
 > 3. They are just similar rather than equal.
 
-## Search
+### Search
 
 Use **Search** if the target positon is unknown or too far.
 
@@ -92,7 +162,7 @@ Use **Search** if the target positon is unknown or too far.
 > 1. For details of vim regular expression, see [`:h pattern`](https://neovim.io/doc/user/pattern.html#search-pattern)
 > 2. For fzf fuzzy search syntax, see [`:h telescope-fzf-native.nvim`](https://github.com/nvim-telescope/telescope-fzf-native.nvim#telescope-fzf-nativenvim)
 
-## Scroll
+### Scroll
 
 Use **Scroll** if the target position is roughly known.
 
@@ -111,18 +181,7 @@ Use **Scroll** if the target position is roughly known.
 | `Alt`+`B`   | `Alt+B`     | **N** **V** | Scroll right                                     |
 | `zs`        | -           | **N** **V** | Scroll to leave current column at left of screen |
 
-<!-- TODO: 条件独立事件与制表 -->
-<!-- TODO: 分支的处理，用if-else还是return短路 -->
-<!-- TODO: multi cursor visual A -->
-<!-- TODO: vscode xmap c for <c-v> mode -->
-<!-- TODO: highlight theme for vscode-plugin nvim-plugin pwsh-highlight -->
-<!-- TODO: 间隔-1、距离、数量+1 -->
-<!-- TODO: git clean and git checkout --ours -->
-<!-- HACK: In most of terminals, <C-S-*> and <C-*> have the same key sequence.
--- To distinguish them, map ctrl+shift+* to send <C-S-*> key sequence in your terminal setting.
--- Detail: https://www.reddit.com/r/neovim/comments/mbj8m5/how_to_setup_ctrlshiftkey_mappings_in_neovim_and/ -->
-
-## Motion
+### Motion
 
 Use **Motion** if the target position is exactly known.
 
@@ -186,9 +245,9 @@ Use **Motion** if the target position is exactly known.
 | `an`/`in` `{textobj}` | **V**       | Select next/previous text object                                                     |
 | `aN`/`iN` `{textobj}` | **V**       | Select next/previous text object                                                     |
 
-## Operation
+### Operation
 
-### Add/Change/Delete
+#### Add/Change/Delete
 
 > Tips:
 >
@@ -240,7 +299,7 @@ Use **Motion** if the target position is exactly known.
 | `Ctrl`+`K` | **I** | Delete all right                               |
 | `Ctrl`+`J` | **I** | New line                                       |
 
-### Yank
+#### Yank
 
 | Key                              | Mode        | Description                               |
 | -------------------------------- | ----------- | ----------------------------------------- |
@@ -273,7 +332,7 @@ Use **Motion** if the target position is exactly known.
 >
 > - Use `` `[ `` or `` `] `` to jump to the start or end of last changed or yanked text.
 
-### Repeat
+#### Repeat
 
 | Key              | Mode  | Description                                                      |
 | ---------------- | ----- | ---------------------------------------------------------------- |
@@ -288,7 +347,7 @@ Use **Motion** if the target position is exactly known.
 | `SPC` `ms`       | **N** | Add cursor at selected position                                  |
 | `SPC` `mw`       | **N** | Add cursor at selected position that match the word under cursor |
 
-### Undo
+#### Undo
 
 | Key        | Mode  | Description         |
 | ---------- | ----- | ------------------- |
@@ -297,7 +356,7 @@ Use **Motion** if the target position is exactly known.
 | `Ctrl`+`Z` | **I** | Undo                |
 | `SPC` `su` | **N** | Search undo history |
 
-## Language
+### Language
 
 | Key               | Mode              | Description                                   |
 | ----------------- | ----------------- | --------------------------------------------- |
@@ -314,7 +373,7 @@ Use **Motion** if the target position is exactly known.
 | `Ctrl`+`/`        | **I** **N** **V** | Comment code                                  |
 | `Alt`+`Shift`+`F` | **I** **N** **V** | Format code                                   |
 
-## Misc
+### Misc
 
 | Key            | Mode  | Description     |
 | -------------- | ----- | --------------- |
