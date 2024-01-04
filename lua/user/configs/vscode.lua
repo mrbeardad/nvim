@@ -24,6 +24,7 @@ vim.opt.shiftround = true
 vim.opt.smartindent = true
 vim.opt.formatoptions = "tcrqjnl"
 vim.opt.clipboard = "unnamedplus"
+vim.cmd.syntax("off")
 
 -- Autocmds
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "BufAdd" }, {
