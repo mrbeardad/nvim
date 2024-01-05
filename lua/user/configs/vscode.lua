@@ -84,8 +84,20 @@ vim.keymap.set("n", "gy", vscode_action("editor.action.goToTypeDefinition"), { d
 vim.keymap.set("n", "gr", vscode_action("editor.action.goToReferences"), { desc = "Go To References" })
 vim.keymap.set("n", "gi", vscode_action("editor.action.goToImplementation"), { desc = "Go To Implementations" })
 -- Motion: basic move
-vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down" })
-vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Up" })
+vim.keymap.set({ "n", "x" }, "j", function()
+  if vim.v.count == 0 then
+    vim.cmd("normal gj") -- vscode's gj
+  else
+    vim.cmd(string.format("normal! %dj", vim.v.count))
+  end
+end, { desc = "Down" })
+vim.keymap.set({ "n", "x" }, "k", function()
+  if vim.v.count == 0 then
+    vim.cmd("normal gk") -- vscode's gk
+  else
+    vim.cmd(string.format("normal! %dk", vim.v.count))
+  end
+end, { desc = "Down" })
 vim.keymap.set("c", "<C-a>", "<C-b>", { desc = "Start Of Line" })
 vim.keymap.set("i", "<C-a>", "<Home>", { desc = "Start Of Line" })
 vim.keymap.set("i", "<C-e>", "<End>", { desc = "End Of Line" })
