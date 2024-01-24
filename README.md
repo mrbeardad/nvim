@@ -57,7 +57,6 @@ nvim
 ```sh
 # required
 mv ~/.config/nvim{,.bak}
-
 # optional but recommended
 mv ~/.local/share/nvim{,.bak}
 mv ~/.local/state/nvim{,.bak}
@@ -76,7 +75,7 @@ For detail see [here](https://www.reddit.com/r/neovim/comments/mbj8m5/how_to_set
 
 For historical reason, `<Tab>` and `<C-i>` have the same key sequence in most of terminals.
 To distinguish them, you could map another key, say `<A-I>`, to `<C-i>` in neovim,
-and then map ctrl+i to send `<A-I>` key sequence in your terminal setting.
+and then map `ctrl+i` to send `<A-I>` key sequence in your terminal setting.
 For more info [`:h tui-modifyOtherKeys`](https://neovim.io/doc/user/term.html#tui-input) and [xterm-modified-keys](https://invisible-island.net/xterm/modified-keys.html)
 
 My own windows terminal setting is [here](https://github.com/mrbeardad/MyIDE/blob/master/wt/settings.json).
@@ -106,16 +105,13 @@ And my [settings.json](https://github.com/mrbeardad/MyIDE/blob/master/vscode/set
 | `/`         | `/`                | _Explorer_ | Filter                 |
 | `?`         | -                  | _Explorer_ | Help                   |
 
-| Neovim Keys | VSCode Keys  | Mode  | Description       |
-| ----------- | ------------ | ----- | ----------------- |
-| `H`         | `H`          | **N** | Previous file     |
-| `L`         | `L`          | **N** | Next file         |
-| `SPC` `TAB` | `Ctrl`+`TAB` | **N** | Switch file       |
-| `Ctrl`+`S`  | `Ctrl`+`S`   | **N** | Save file         |
-| `SPC` `bd`  | `Ctrl+W` `q` | **N** | Close file        |
-| `SPC` `bo`  | `SPC` `bo`   | **N** | Close other files |
-| `SPC` `bh`  | `SPC` `bh`   | **N** | Close left files  |
-| `SPC` `bl`  | `SPC` `bl`   | **N** | Close right files |
+| Neovim Keys | VSCode Keys  | Mode  | Description   |
+| ----------- | ------------ | ----- | ------------- |
+| `H`         | `H`          | **N** | Previous file |
+| `L`         | `L`          | **N** | Next file     |
+| `SPC` `TAB` | `Ctrl`+`TAB` | **N** | Switch file   |
+| `Ctrl`+`S`  | `Ctrl`+`S`   | **N** | Save file     |
+| `SPC` `bd`  | `Ctrl+W` `q` | **N** | Close file    |
 
 | Neovim Keys    | VSCode Keys    | Mode  | Description                                 |
 | -------------- | -------------- | ----- | ------------------------------------------- |

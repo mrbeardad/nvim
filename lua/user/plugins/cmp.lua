@@ -37,13 +37,6 @@ return {
         mapping = {
           ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
           ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
-          ["<A-I>"] = cmp.mapping(function()
-            if cmp.visible() then
-              cmp.abort()
-            else
-              cmp.complete()
-            end
-          end, { "i", "c" }),
           ["<C-n>"] = cmp.mapping(function()
             if cmp.visible() then
               cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
