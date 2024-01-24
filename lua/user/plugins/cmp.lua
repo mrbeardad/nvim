@@ -43,14 +43,14 @@ return {
             else
               cmp.complete()
             end
-          end, { "i", "c" }),
+          end, { "i" }),
           ["<C-p>"] = cmp.mapping(function()
             if cmp.visible() then
               cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
             else
               cmp.complete()
             end
-          end, { "i", "c" }),
+          end, { "i" }),
           ["<Tab>"] = cmp.mapping(function()
             if cmp.visible() then
               cmp.select_next_item()
