@@ -78,9 +78,65 @@ To distinguish them, you could map another key, say `<A-I>`, to `<C-i>` in neovi
 and then map `ctrl+i` to send `<A-I>` key sequence in your terminal setting.
 For more info [`:h tui-modifyOtherKeys`](https://neovim.io/doc/user/term.html#tui-input) and [xterm-modified-keys](https://invisible-island.net/xterm/modified-keys.html)
 
-My own windows terminal setting is [here](https://github.com/mrbeardad/MyIDE/blob/master/wt/settings.json).
+> My own windows terminal setting is [here](https://github.com/mrbeardad/MyIDE/blob/master/wt/settings.json).
 
-And my [settings.json](https://github.com/mrbeardad/MyIDE/blob/master/vscode/settings.json#L80) and [keybindings.json](https://github.com/mrbeardad/MyIDE/blob/master/vscode/keybindings.json) of vscode.
+Make sure you have added following settings to your settings.json,
+
+```json
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+
+  "vscode-neovim.ctrlKeysForInsertMode": [
+    "a",
+    "c",
+    "d",
+    "h",
+    "j",
+    "o",
+    "r",
+    "t",
+    "u",
+    "w",
+    // all above are default keys
+    "e",
+    "l",
+    "k"
+    // "v",
+    // "z"
+  ],
+  "vscode-neovim.ctrlKeysForNormalMode": [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "h",
+    "i",
+    "j",
+    "l",
+    "o",
+    // "r",
+    // "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    // "z",
+    "/",
+    "]",
+    "right",
+    "left",
+    "up",
+    "down",
+    "backspace",
+    "delete"
+  ],
+```
+
+and also add all the [keybindings](https://github.com/mrbeardad/MyIDE/blob/master/vscode/keybindings.json) to your keybindings.json
 
 ## Keymaps
 
