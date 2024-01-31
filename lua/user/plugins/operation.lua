@@ -153,9 +153,15 @@ return {
       {
         "c",
         function()
-          require("vscode-multi-cursor").start_right()
-          require("vscode-neovim").action("deleteLeft")
+          if vim.fn.mode() == "\x16" then
+            require("vscode-multi-cursor").start_right()
+            require("vscode-neovim").action("deleteLeft")
+            return "<Ignore>"
+          else
+            return "c"
+          end
         end,
+        expr = true,
         mode = "x",
       },
       {
