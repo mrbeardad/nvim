@@ -29,7 +29,7 @@ vim.opt.formatoptions = "tcrqjnl"
 vim.opt.clipboard = "unnamedplus" -- Sync with system clipboard
 
 -- UI: inside window
-vim.opt.list = true -- Show some invisible characters (tabs...
+vim.opt.list = true -- Show some invisible characters
 vim.opt.listchars = {
   tab = "→ ",
   eol = "↵",

@@ -1,16 +1,16 @@
 -- Bootstrap plugins manager
-local plugins_path = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(plugins_path) then
+local lazy_path = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazy_path) then
   vim.fn.system({
     "git",
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
     "--branch=stable",
-    plugins_path,
+    lazy_path,
   })
 end
-vim.opt.rtp:prepend(plugins_path)
+vim.opt.rtp:prepend(lazy_path)
 
 -- Load user configs before load plugins
 require("user.configs")
