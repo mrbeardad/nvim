@@ -5,7 +5,7 @@ return {
   {
     "williamboman/mason.nvim",
     build = ":MasonUpdate",
-    keys = { { "<Leader>pl", "<Cmd>Mason<CR>", desc = "Language Tools Manager" } },
+    keys = { { "<Leader>lm", "<Cmd>Mason<CR>", desc = "Language Tools Manager" } },
     cmd = { "Mason", "MasonUpdate", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
     opts = {
       ensure_installed = {},

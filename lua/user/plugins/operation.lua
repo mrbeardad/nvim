@@ -217,6 +217,14 @@ return {
         mode = "n",
         desc = "Goto next cursor",
       },
+      {
+        "<C-n>",
+        function()
+          require("vscode-multi-cursor").addSelectionToNextFindMatch()
+        end,
+        mode = { "n", "x", "i" },
+        desc = "Select Next Find Match",
+      },
     },
     opts = {
       default_mappings = false,

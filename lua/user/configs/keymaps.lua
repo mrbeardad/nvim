@@ -4,7 +4,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 -- Plugins Manager
-vim.keymap.set("n", "<Leader>pp", "<Cmd>Lazy<CR>", { desc = "Plugins Manager" })
+vim.keymap.set("n", "<Leader>p", "<Cmd>Lazy<CR>", { desc = "Plugins Manager" })
 
 -- Buffers: switch
 vim.keymap.set("n", "<Leader><Tab><Tab>", "<Cmd>try<Bar>b#<Bar>catch<Bar>endtry<CR>", { desc = "Switch Buffer" })

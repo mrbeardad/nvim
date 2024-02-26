@@ -17,11 +17,14 @@ return {
 
   {
     "mfussenegger/nvim-lint",
-    opts = {
-      linters_by_ft = {
-        markdown = { "markdownlint" },
-      },
-    },
+    opts = function(_, opts)
+      opts.linters_by_ft.markdown = { "markdownlint" }
+      require("lint").linters.markdownlint.args = {
+        "--disable",
+        "MD013",
+        "--",
+      }
+    end,
   },
 
   {

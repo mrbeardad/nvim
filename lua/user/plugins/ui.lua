@@ -391,7 +391,6 @@ return {
         ["<Leader>l"] = { name = "+Language" },
         ["<Leader>g"] = { name = "+Git" },
         ["<Leader>u"] = { name = "+UI" },
-        ["<Leader>p"] = { name = "+Package Managers" },
       })
     end,
   },

@@ -2,7 +2,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, { "javascript", "jsdoc", "typescript", "tsx", "html", "css" })
+      vim.list_extend(opts.ensure_installed, { "javascript", "jsdoc", "typescript", "tsx" })
     end,
   },
 
@@ -14,7 +14,7 @@ return {
         tsserver = {
           keys = {
             {
-              "<Leader>co",
+              "<Leader>lo",
               function()
                 vim.lsp.buf.code_action({
                   apply = true,
@@ -27,7 +27,7 @@ return {
               desc = "Organize Imports",
             },
             {
-              "<Leader>cR",
+              "<Leader>lR",
               function()
                 vim.lsp.buf.code_action({
                   apply = true,
@@ -67,7 +67,7 @@ return {
   -- Automatically add closing tags for HTML and JSX
   {
     "windwp/nvim-ts-autotag",
-    ft = { "xml", "html", "javascriptreact", "typescriptreact" },
+    ft = { "javascriptreact", "typescriptreact" },
     opts = {},
   },
 
@@ -92,10 +92,6 @@ return {
         ["typescript"] = { "prettier" },
         ["typescriptreact"] = { "prettier" },
         ["vue"] = { "prettier" },
-        ["css"] = { "prettier" },
-        ["scss"] = { "prettier" },
-        ["less"] = { "prettier" },
-        ["html"] = { "prettier" },
       },
     },
   },

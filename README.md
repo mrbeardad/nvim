@@ -100,10 +100,8 @@ Make sure you have added following settings to your settings.json,
     "w",
     // all above are default keys
     "e",
-    "l",
-    "k"
-    // "v",
-    // "z"
+    "k",
+    "n"
   ],
   "vscode-neovim.ctrlKeysForNormalMode": [
     "a",
@@ -132,7 +130,8 @@ Make sure you have added following settings to your settings.json,
     "up",
     "down",
     "backspace",
-    "delete"
+    "delete",
+    "n"
   ],
 ```
 
@@ -198,9 +197,9 @@ Use **Search** if the target positon is unknown or too far.
 | `n`        | `n`                | **n**       | Search forwar for last pattern in file                     |
 | `N`        | `N`                | **N**       | Search backward for last pattern in file                   |
 | `SPC` `/`  | `Ctrl`+`Shift`+`F` | **N** **V** | Search in workspace                                        |
-| `SPC` `sw` | -                  | **N** **V** | Search based on word in workspace                          |
 | `SPC` `f`  | `Ctrl`+`P`         | **N**       | Search files in workspace                                  |
 | `SPC` `r`  | `Ctrl`+`R`         | **N**       | Search recently opened files                               |
+| `SPC` `sw` | -                  | **N** **V** | Search based on word in workspace                          |
 | `SPC` `sm` | _Side Bar_         | **N**       | Search marks                                               |
 | `SPC` `st` | _Side Bar_         | **N**       | Search todos                                               |
 | `SPC` `ss` | `Ctrl`+`Shift`+`O` | **N**       | Search symbols in file                                     |
@@ -220,20 +219,20 @@ Use **Search** if the target positon is unknown or too far.
 
 Use **Scroll** if the target position is roughly known.
 
-| Neovim Keys | VSCode Keys | Mode        | Description                                      |
-| ----------- | ----------- | ----------- | ------------------------------------------------ |
-| `Ctrl`+`D`  | `Ctrl`+`D`  | **N** **V** | Scroll down half screen                          |
-| `Ctrl`+`U`  | `Ctrl`+`U`  | **N** **V** | Scroll up half screen                            |
-| `Ctrl`+`F`  | `Ctrl`+`F`  | **N** **V** | Scroll down full screen                          |
-| `Ctrl`+`B`  | `Ctrl`+`B`  | **N** **V** | Scroll up full screen                            |
-| `gg`        | `gg`        | **N** **V** | Go to first line                                 |
-| `G`         | `G`         | **N** **V** | Go to `{count}`-th line , default last line      |
-| `zz`        | `zz`        | **N** **V** | Scroll to leave current line at center of screen |
-| `zt`        | `zt`        | **N** **V** | Scroll to leave current line at top of screen    |
-| `zb`        | `zb`        | **N** **V** | Scroll to leave current line at bottom of screen |
-| `Alt`+`F`   | `Alt+F`     | **N** **V** | Scroll left                                      |
-| `Alt`+`B`   | `Alt+B`     | **N** **V** | Scroll right                                     |
-| `zs`        | -           | **N** **V** | Scroll to leave current column at left of screen |
+| Neovim Keys | VSCode Keys | Mode  | Description                                      |
+| ----------- | ----------- | ----- | ------------------------------------------------ |
+| `Ctrl`+`D`  | `Ctrl`+`D`  | **N** | Scroll down half screen                          |
+| `Ctrl`+`U`  | `Ctrl`+`U`  | **N** | Scroll up half screen                            |
+| `Ctrl`+`F`  | `Ctrl`+`F`  | **N** | Scroll down full screen                          |
+| `Ctrl`+`B`  | `Ctrl`+`B`  | **N** | Scroll up full screen                            |
+| `gg`        | `gg`        | **N** | Go to first line                                 |
+| `G`         | `G`         | **N** | Go to `{count}`-th line , default last line      |
+| `zz`        | `zz`        | **N** | Scroll to leave current line at center of screen |
+| `zt`        | `zt`        | **N** | Scroll to leave current line at top of screen    |
+| `zb`        | `zb`        | **N** | Scroll to leave current line at bottom of screen |
+| `Alt`+`F`   | `Alt+F`     | **N** | Scroll left                                      |
+| `Alt`+`B`   | `Alt+B`     | **N** | Scroll right                                     |
+| `zs`        | -           | **N** | Scroll to leave current column at left of screen |
 
 ### Motion
 
@@ -397,7 +396,7 @@ Use **Motion** if the target position is exactly known.
 | `Q`              | **N** | Repeat the last recorded register                                |
 | `Ctrl`+`J`       | **N** | Add cursor downward                                              |
 | `Ctrl`+`K`       | **N** | Add cursor upward                                                |
-| `SPC` `mm`       | **N** | Add cursor                                                       |
+| `Ctrl`+`N`       | **N** | Add cursor at next find match                                    |
 | `SPC` `ms`       | **N** | Add cursor at selected position                                  |
 | `SPC` `mw`       | **N** | Add cursor at selected position that match the word under cursor |
 
