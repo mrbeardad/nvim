@@ -2,7 +2,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, { "xml", "html" })
+      vim.list_extend(opts.ensure_installed, { "bash" })
     end,
   },
 
@@ -10,23 +10,17 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        html = {},
+        bashls = {}, -- Automatically call shellcheck
       },
     },
-  },
-
-  {
-    "windwp/nvim-ts-autotag",
-    ft = { "xml", "html" },
-    opts = {},
   },
 
   {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        xml = { "prettier" },
-        html = { "prettier" },
+        sh = { "shfmt" },
+        bash = { "shfmt" },
       },
     },
   },
@@ -34,7 +28,7 @@ return {
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, { "prettier" })
+      vim.list_extend(opts.ensure_installed, { "shellcheck", "shfmt" })
     end,
   },
 }

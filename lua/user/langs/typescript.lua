@@ -40,25 +40,6 @@ return {
               desc = "Remove Unused Imports",
             },
           },
-          settings = {
-            typescript = {
-              format = {
-                indentSize = vim.o.shiftwidth,
-                convertTabsToSpaces = vim.o.expandtab,
-                tabSize = vim.o.tabstop,
-              },
-            },
-            javascript = {
-              format = {
-                indentSize = vim.o.shiftwidth,
-                convertTabsToSpaces = vim.o.expandtab,
-                tabSize = vim.o.tabstop,
-              },
-            },
-            completions = {
-              completeFunctionCalls = true,
-            },
-          },
         },
       },
     },
@@ -87,11 +68,11 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        ["javascript"] = { "prettier" },
-        ["javascriptreact"] = { "prettier" },
-        ["typescript"] = { "prettier" },
-        ["typescriptreact"] = { "prettier" },
-        ["vue"] = { "prettier" },
+        javascript = { "prettier" },
+        javascriptreact = { "prettier" },
+        typescript = { "prettier" },
+        typescriptreact = { "prettier" },
+        vue = { "prettier" },
       },
     },
   },

@@ -82,14 +82,6 @@ return {
         desc = "Add Cursor",
       },
       {
-        "<Leader>mm",
-        function()
-          require("nvim-multi-cursor").toggle_cursor_at_curpos()
-        end,
-        mode = { "n" },
-        desc = "Add Cursor",
-      },
-      {
         "<Leader>ms",
         function()
           require("nvim-multi-cursor").toggle_cursor_by_flash()

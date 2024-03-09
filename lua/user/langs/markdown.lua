@@ -40,7 +40,7 @@ return {
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, { "markdownlint", "vale", "prettier" })
+      vim.list_extend(opts.ensure_installed, { "markdownlint", "prettier" })
     end,
   },
 }

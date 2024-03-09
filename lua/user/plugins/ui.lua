@@ -5,11 +5,11 @@ return {
   -- Startup page
   {
     "goolord/alpha-nvim",
-    event = "VimEnter",
     init = function()
       -- Hide statusline during startup, the statusline plugin will reset it later
       vim.opt.laststatus = 0
     end,
+    event = "VimEnter",
     opts = function()
       -- Header
       local dashboard = require("alpha.themes.dashboard")
@@ -156,13 +156,16 @@ return {
             },
             ["o"] = {
               function(state)
-                local node = state.tree:get_node()
+                local path = state.tree:get_node().path
+                if vim.fn.isdirectory(path) == 0 then
+                  path = vim.fs.dirname(path)
+                end
                 if utils.is_windows() then
-                  os.execute("start " .. node.path)
+                  os.execute("start " .. path)
                 elseif utils.is_linux() then
-                  os.execute("xdg-open " .. node.path)
+                  os.execute("xdg-open " .. path)
                 elseif utils.is_macos() then
-                  os.execute("open " .. node.path)
+                  os.execute("open " .. path)
                 else
                   vim.notify("Unsupported System")
                 end
