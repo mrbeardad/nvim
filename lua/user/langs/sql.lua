@@ -31,6 +31,20 @@ return {
       formatters_by_ft = {
         sql = { "sqlfluff" },
       },
+      formatters = {
+        sqlfluff = {
+          command = "sqlfluff",
+          args = {
+            "format",
+            "--nocolor",
+            "--dialect",
+            "ansi",
+            "--disable-progress-bar",
+            "-",
+          },
+          stdin = true,
+        },
+      },
     },
   },
 
