@@ -11,36 +11,7 @@ return {
     opts = {
       -- make sure mason installs the server
       servers = {
-        tsserver = {
-          keys = {
-            {
-              "<Leader>lo",
-              function()
-                vim.lsp.buf.code_action({
-                  apply = true,
-                  context = {
-                    only = { "source.organizeImports.ts" },
-                    diagnostics = {},
-                  },
-                })
-              end,
-              desc = "Organize Imports",
-            },
-            {
-              "<Leader>lR",
-              function()
-                vim.lsp.buf.code_action({
-                  apply = true,
-                  context = {
-                    only = { "source.removeUnused.ts" },
-                    diagnostics = {},
-                  },
-                })
-              end,
-              desc = "Remove Unused Imports",
-            },
-          },
-        },
+        tsserver = {},
       },
     },
   },

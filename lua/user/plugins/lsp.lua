@@ -150,11 +150,6 @@ return {
         mode = { "i", "n", "x" },
         desc = "Format",
       },
-      {
-        "<Leader>lI",
-        "<Cmd>ConformInfo<CR>",
-        desc = "Formatter Info",
-      },
     },
     init = function()
       vim.opt.formatexpr = "v:lua.require'conform'.formatexpr()"

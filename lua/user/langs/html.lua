@@ -7,18 +7,18 @@ return {
   },
 
   {
+    "windwp/nvim-ts-autotag",
+    ft = { "xml", "html" },
+    opts = {},
+  },
+
+  {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
         html = {},
       },
     },
-  },
-
-  {
-    "windwp/nvim-ts-autotag",
-    ft = { "xml", "html" },
-    opts = {},
   },
 
   {

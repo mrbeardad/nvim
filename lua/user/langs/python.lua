@@ -11,23 +11,7 @@ return {
     opts = {
       servers = {
         pyright = {},
-        ruff_lsp = {
-          keys = {
-            {
-              "<Leader>lo",
-              function()
-                vim.lsp.buf.code_action({
-                  apply = true,
-                  context = {
-                    only = { "source.organizeImports" },
-                    diagnostics = {},
-                  },
-                })
-              end,
-              desc = "Organize Imports",
-            },
-          },
-        },
+        ruff_lsp = {},
       },
       setup = {
         ruff_lsp = function()
@@ -41,6 +25,15 @@ return {
             end,
           })
         end,
+      },
+    },
+  },
+
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        python = { "ruff_fix", "ruff_format" },
       },
     },
   },

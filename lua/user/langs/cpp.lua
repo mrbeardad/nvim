@@ -20,6 +20,7 @@ return {
         clangd = {
           keys = {
             { "<A-o>", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch Source/Header (C/C++)" },
+            { "<Leader>ls", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch Source/Header (C/C++)" },
           },
         },
         cmake = {},
