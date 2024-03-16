@@ -51,15 +51,19 @@ return {
     keys = { { "<Leader>li", "<Cmd>LspInfo<CR>", desc = "Language Servers Info" } },
     opts = {
       servers = {},
-      on_attach = function(client, bufnr)
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "Hover" })
-        vim.keymap.set({ "n", "x" }, "<Leader>la", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Actions" })
-        if client.server_capabilities.inlayHintProvider then
-          vim.lsp.buf.inlay_hint(bufnr, true)
-        end
-      end,
     },
     config = function(_, opts)
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local bufnr = args.buf
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          vim.keymap.set({ "n", "x" }, "<Leader>la", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Actions" })
+          if client.server_capabilities.inlayHintProvider then
+            vim.lsp.inlay_hint.enable(bufnr, true)
+          end
+        end,
+      })
+
       -- Use these in neovim before 0.10
       vim.fn.sign_define("DiagnosticSignError", { text = icons.diagnostics.error, texthl = "DiagnosticSignError" })
       vim.fn.sign_define("DiagnosticSignWarn", { text = icons.diagnostics.warn, texthl = "DiagnosticSignWarn" })
@@ -127,20 +131,20 @@ return {
     event = "BufWritePre",
     keys = {
       {
-        "<Leader>lF",
-        function()
-          require("conform").format({ async = true, lsp_fallback = true, formatters = { "injected" } })
-        end,
-        mode = { "n", "x" },
-        desc = "Format Injected Langs",
-      },
-      {
         "<Leader>lf",
         function()
           require("conform").format({ async = true, lsp_fallback = true })
         end,
         mode = { "n", "x" },
         desc = "Format",
+      },
+      {
+        "<Leader>lF",
+        function()
+          require("conform").format({ async = true, lsp_fallback = true, formatters = { "injected" } })
+        end,
+        mode = { "n", "x" },
+        desc = "Format Injected Langs",
       },
       {
         "<A-F>",
