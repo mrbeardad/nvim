@@ -31,8 +31,8 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        markdown = { "prettier" },
-        ["markdown.mdx"] = { "prettier" },
+        markdown = { "prettierd" },
+        ["markdown.mdx"] = { "prettierd" },
       },
     },
   },
@@ -40,7 +40,7 @@ return {
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, { "markdownlint", "prettier" })
+      vim.list_extend(opts.ensure_installed, { "markdownlint", "prettierd" })
     end,
   },
 }
