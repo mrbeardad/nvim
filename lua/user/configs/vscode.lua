@@ -69,6 +69,7 @@ vim.keymap.set(
   { desc = "Close Right Editors" }
 )
 -- Search: clear highlight
+-- NOTE: conflict with <Esc> of vscode-multi-cursor in operation.lua
 vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch|diffupdate|normal! <C-L><CR><Esc>", { desc = "Clear Highlight" })
 -- Search: fix direction of n/N
 vim.keymap.set("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })

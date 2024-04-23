@@ -153,8 +153,8 @@ return {
             return "c"
           end
         end,
-        expr = true,
         mode = "x",
+        expr = true,
       },
       {
         "<Leader>m",
@@ -186,10 +186,12 @@ return {
         function()
           if #require("vscode-multi-cursor.state").cursors ~= 0 then
             require("vscode-multi-cursor").cancel()
+            return "<Ignore>"
           else
-            vim.cmd("normal! \27")
+            return "<Cmd>nohlsearch|diffupdate|normal! <C-L><CR><Esc>"
           end
         end,
+        expr = true,
         mode = "n",
         desc = "Cancel/Clear all cursors",
       },

@@ -462,10 +462,11 @@ return {
       -- Others
       { "<Leader>:", "<Cmd>Telescope command_history<CR>", desc = "Command History" },
       { "<Leader>sC", "<Cmd>Telescope command_history<CR>", desc = "Command History" },
+      { "<Leader>?", "<cmd>Telescope help_tags<CR>", desc = "Help Pages" },
+      { "<Leader>sh", "<cmd>Telescope help_tags<CR>", desc = "Help Pages" },
       { "<Leader>sc", "<Cmd>Telescope commands<CR>", desc = "Commands" },
       { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Auto Commands" },
       { "<Leader>sb", "<Cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Buffer Fuzzy Search" },
-      { "<Leader>sh", "<cmd>Telescope help_tags<CR>", desc = "Help Pages" },
       { "<Leader>sl", "<cmd>Telescope highlights<CR>", desc = "highlights" },
       { "<Leader>sk", "<cmd>Telescope keymaps<CR>", desc = "Key Maps" },
       { "<Leader>sm", "<cmd>Telescope marks<CR>", desc = "Jump To Mark" },
