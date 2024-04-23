@@ -35,6 +35,9 @@ vim.keymap.set("n", "<Leader>tn", "<Cmd>tabnext<CR>", { desc = "Next Tab" })
 vim.keymap.set("n", "<Leader>tp", "<Cmd>tabprevious<CR>", { desc = "Previous Tab" })
 vim.keymap.set("n", "<Leader>td", "<Cmd>tabclose<CR>", { desc = "Close Tab" })
 
+-- Search: clear highlight
+vim.keymap.set("n", "<Esc>", "<Cmd>nohl<CR><Esc>", { expr = true, desc = "Clear Highlight" })
+
 -- Search: fix direction of n/N
 vim.keymap.set("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
 vim.keymap.set("x", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
