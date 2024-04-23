@@ -69,7 +69,7 @@ vim.keymap.set(
   { desc = "Close Right Editors" }
 )
 -- Search: clear highlight
-vim.keymap.set("n", "<Esc>", "<Cmd>nohl<CR><Esc>", { expr = true, desc = "Clear Highlight" })
+vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch|diffupdate|normal! <C-L><CR><Esc>", { desc = "Clear Highlight" })
 -- Search: fix direction of n/N
 vim.keymap.set("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
 vim.keymap.set("x", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
