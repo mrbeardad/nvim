@@ -89,7 +89,7 @@ Make sure you have added following settings to your settings.json,
 
   "vscode-neovim.ctrlKeysForInsertMode": [
     "a",
-    "c",
+    // "c",
     "d",
     "h",
     "j",
@@ -106,7 +106,7 @@ Make sure you have added following settings to your settings.json,
   "vscode-neovim.ctrlKeysForNormalMode": [
     "a",
     "b",
-    "c",
+    // "c",
     "d",
     "e",
     "f",
