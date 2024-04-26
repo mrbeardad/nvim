@@ -82,20 +82,20 @@ return {
         desc = "Add Cursor",
       },
       {
-        "<Leader>ms",
-        function()
-          require("nvim-multi-cursor").toggle_cursor_by_flash()
-        end,
-        mode = { "n" },
-        desc = "Selection To Add Cursor",
-      },
-      {
-        "<Leader>mw",
+        "<Leader>mm",
         function()
           require("nvim-multi-cursor").toggle_cursor_by_flash(vim.fn.expand("<cword>"))
         end,
         mode = { "n" },
         desc = "Selection Wrod To Add Cursor",
+      },
+      {
+        "<Leader>mc",
+        function()
+          require("nvim-multi-cursor").toggle_cursor_by_flash()
+        end,
+        mode = { "n" },
+        desc = "Selection To Add Cursor",
       },
     },
     opts = {},
@@ -163,16 +163,23 @@ return {
         end,
         mode = { "n", "x" },
         expr = true,
-        desc = "Create cursor",
+        desc = "Create Cursor",
       },
-      -- {
-      --   "mcs",
-      --   function()
-      --     require("vscode-multi-cursor").flash_char()
-      --   end,
-      --   mode = "n",
-      --   desc = "Create cursor using flash",
-      -- },
+      {
+        "<Leader>ms",
+        function()
+          if vim.api.nvim_get_hl(0, { name = "FlashLabelUnselected" }).bg == nil then
+            vim.api.nvim_set_hl(
+              0,
+              "FlashLabelUnselected",
+              { fg = "#b9bbc4", bg = "#bd0c69", italic = true, bold = true }
+            )
+          end
+          keymap.toggle_cursor_by_flash()
+        end,
+        mode = "n",
+        desc = "Create cursor using flash",
+      },
       -- {
       --   "mcw",
       --   function()
@@ -193,7 +200,7 @@ return {
         end,
         expr = true,
         mode = "n",
-        desc = "Cancel/Clear all cursors",
+        desc = "Cancel/Clear All Cursors",
       },
       {
         "[m",
@@ -201,7 +208,7 @@ return {
           require("vscode-multi-cursor").prev_cursor()
         end,
         mode = "n",
-        desc = "Goto prev cursor",
+        desc = "Goto Prev Cursor",
       },
       {
         "]m",
@@ -209,7 +216,7 @@ return {
           require("vscode-multi-cursor").next_cursor()
         end,
         mode = "n",
-        desc = "Goto next cursor",
+        desc = "Goto Next Cursor",
       },
       {
         "<C-n>",
@@ -218,6 +225,22 @@ return {
         end,
         mode = { "n", "x", "i" },
         desc = "Select Next Find Match",
+      },
+      {
+        "<C-S-n>",
+        function()
+          require("vscode-multi-cursor").addSelectionToPreviousFindMatch()
+        end,
+        mode = { "n", "x", "i" },
+        desc = "Select Previous Find Match",
+      },
+      {
+        "<C-S-l>",
+        function()
+          require("vscode-multi-cursor").selectHighlights()
+        end,
+        mode = { "n", "x", "i" },
+        desc = "Select All Find Match",
       },
     },
     opts = {

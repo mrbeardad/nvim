@@ -197,4 +197,55 @@ function M.flash_telescope(prompt_bufnr)
   })
 end
 
+function M.toggle_cursor_by_flash(pattern)
+  local selected_labels = {}
+
+  local function find_label(match)
+    for i, pos in ipairs(selected_labels) do
+      if pos[1] == match.pos[1] and pos[2] == match.pos[2] then
+        return i
+      end
+    end
+    return nil
+  end
+
+  require("flash").jump({
+    pattern = pattern,
+    search = {
+      mode = "search",
+    },
+    jump = {
+      pos = "range",
+    },
+    label = {
+      format = function(opts)
+        return {
+          {
+            opts.match.label,
+            find_label(opts.match) and opts.hl_group or "FlashLabelUnselected",
+          },
+        }
+      end,
+    },
+    action = function(match, state)
+      local i = find_label(match)
+      if i then
+        table.remove(selected_labels, i)
+      else
+        table.insert(selected_labels, { match.pos[1], match.pos[2], match.end_pos[1], match.end_pos[2] })
+      end
+      state:_update()
+      require("flash").jump({ continue = true })
+    end,
+  })
+
+  vim.schedule(function()
+    for index, pos in ipairs(selected_labels) do
+      require("vscode-multi-cursor.state").add_cursor(
+        require("vscode-multi-cursor.cursor").new({ pos[1], pos[2] }, { pos[3], pos[4] })
+      )
+    end
+  end)
+end
+
 return M

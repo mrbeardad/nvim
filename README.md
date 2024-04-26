@@ -387,18 +387,22 @@ Use **Motion** if the target position is exactly known.
 
 #### Repeat
 
-| Key              | Mode  | Description                                                      |
-| ---------------- | ----- | ---------------------------------------------------------------- |
-| `.`              | **N** | Repeat last change                                               |
-| `q` `{register}` | **N** | Record typed characters into register, `q` again to stop         |
-| `@` `{register}` | **N** | Execute the contents of register                                 |
-| `@@`             | **N** | Repeat Previous `@`                                              |
-| `Q`              | **N** | Repeat the last recorded register                                |
-| `Ctrl`+`J`       | **N** | Add cursor downward                                              |
-| `Ctrl`+`K`       | **N** | Add cursor upward                                                |
-| `Ctrl`+`N`       | **N** | Add cursor at next find match                                    |
-| `SPC` `ms`       | **N** | Add cursor at selected position                                  |
-| `SPC` `mw`       | **N** | Add cursor at selected position that match the word under cursor |
+| Key                | Mode  | Description                                                      |
+| ------------------ | ----- | ---------------------------------------------------------------- |
+| `.`                | **N** | Repeat last change                                               |
+| `q` `{register}`   | **N** | Record typed characters into register, `q` again to stop         |
+| `@` `{register}`   | **N** | Execute the contents of register                                 |
+| `@@`               | **N** | Repeat Previous `@`                                              |
+| `Q`                | **N** | Repeat the last recorded register                                |
+| `Ctrl`+`J`         | **N** | Add cursor downward                                              |
+| `Ctrl`+`K`         | **N** | Add cursor upward                                                |
+| `SPC` `mm`         | **N** | Add cursor at selected position that match the word under cursor |
+| `SPC` `mc`         | **N** | Add cursor at selected position                                  |
+| `Ctrl`+`N`         | **N** | Add selection at next find match (VSCode only)                   |
+| `Ctrl`+`Shift`+`N` | **N** | Add selection at previous find match (VSCode only)               |
+| `Ctrl`+`Shift`+`L` | **N** | Add selection at all find match (VSCode only)                    |
+| `SPC` `m`          | **N** | Add selection with motion                                        |
+| `SPC` `ms`         | **N** | Add selection at selected position                               |
 
 #### Undo
 
@@ -406,7 +410,7 @@ Use **Motion** if the target position is exactly known.
 | ---------- | ----------- | ------------------- |
 | `u`        | **N**       | Undo                |
 | `U`        | **N**       | Redo                |
-| `Ctrl`+`Z` | **N** **I** | VSCode Undo         |
+| `Ctrl`+`Z` | **N** **I** | Undo (VSCode only)  |
 | `SPC` `su` | **N**       | Search undo history |
 
 ### Language
