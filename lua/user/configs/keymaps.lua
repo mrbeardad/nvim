@@ -2,7 +2,7 @@ local keymap = require("user.utils.keymap")
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
-
+-- TODO: esc to close floating windows
 -- Plugins Manager
 vim.keymap.set("n", "<Leader>p", "<Cmd>Lazy<CR>", { desc = "Plugins Manager" })
 

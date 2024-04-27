@@ -115,7 +115,7 @@ Make sure you have added following settings to your settings.json,
     "j",
     "l",
     "o",
-    // "r",
+    "r",
     // "t",
     "u",
     "v",
@@ -188,27 +188,27 @@ and also add all the [keybindings](https://github.com/mrbeardad/MyIDE/blob/maste
 
 Use **Search** if the target positon is unknown or too far.
 
-| Neovim Key | VSCode Key         | Mode        | Description                                                |
-| ---------- | ------------------ | ----------- | ---------------------------------------------------------- |
-| `/`        | `/`                | **N**       | Search forward in file                                     |
-| `?`        | `?`                | **N**       | Search backward in file                                    |
-| `*`        | `*`                | **N** **V** | Search forward for the word nearest to the cursor in file  |
-| `#`        | `#`                | **N** **V** | Search backward for the word nearest to the cursor in file |
-| `n`        | `n`                | **n**       | Search forwar for last pattern in file                     |
-| `N`        | `N`                | **N**       | Search backward for last pattern in file                   |
-| `SPC` `/`  | `Ctrl`+`Shift`+`F` | **N** **V** | Search in workspace                                        |
-| `SPC` `f`  | `Ctrl`+`P`         | **N**       | Search files in workspace                                  |
-| `SPC` `r`  | `Ctrl`+`R`         | **N**       | Search recently opened files                               |
-| `SPC` `sw` | -                  | **N** **V** | Search based on word in workspace                          |
-| `SPC` `sm` | _Side Bar_         | **N**       | Search marks                                               |
-| `SPC` `st` | _Side Bar_         | **N**       | Search todos                                               |
-| `SPC` `ss` | `Ctrl`+`Shift`+`O` | **N**       | Search symbols in file                                     |
-| `SPC` `sS` | `Ctrl`+`T`         | **N**       | Search symbols in workspace                                |
-| `gd`       | `gd`               | **N**       | Go to definition                                           |
-| `gy`       | `gy`               | **N**       | Go to type definition                                      |
-| `gr`       | `gr`               | **N**       | Go to reference                                            |
-| `gi`       | `gi`               | **N**       | Go to implementation                                       |
-| `Ctrl`+`/` | -                  | _Telescope_ | Help                                                       |
+| Neovim Key | VSCode Key            | Mode        | Description                                                |
+| ---------- | --------------------- | ----------- | ---------------------------------------------------------- |
+| `/`        | `/`                   | **N**       | Search forward in file                                     |
+| `?`        | `?`                   | **N**       | Search backward in file                                    |
+| `*`        | `*`                   | **N** **V** | Search forward for the word nearest to the cursor in file  |
+| `#`        | `#`                   | **N** **V** | Search backward for the word nearest to the cursor in file |
+| `n`        | `n`                   | **n**       | Search forwar for last pattern in file                     |
+| `N`        | `N`                   | **N**       | Search backward for last pattern in file                   |
+| `SPC` `/`  | `Ctrl`+`Shift`+`F`    | **N** **V** | Search in workspace                                        |
+| `SPC` `f`  | `Ctrl`+`P`            | **N**       | Search files in workspace                                  |
+| `SPC` `r`  | `Ctrl`+`K` `Ctrl`+`R` | **N**       | Search recently opened files                               |
+| `SPC` `sw` | -                     | **N** **V** | Search based on word in workspace                          |
+| `SPC` `sm` | _Side Bar_            | **N**       | Search marks                                               |
+| `SPC` `st` | _Side Bar_            | **N**       | Search todos                                               |
+| `SPC` `ss` | `Ctrl`+`Shift`+`O`    | **N**       | Search symbols in file                                     |
+| `SPC` `sS` | `Ctrl`+`T`            | **N**       | Search symbols in workspace                                |
+| `gd`       | `gd`                  | **N**       | Go to definition                                           |
+| `gy`       | `gy`                  | **N**       | Go to type definition                                      |
+| `gr`       | `gr`                  | **N**       | Go to reference                                            |
+| `gi`       | `gi`                  | **N**       | Go to implementation                                       |
+| `Ctrl`+`/` | -                     | _Telescope_ | Help                                                       |
 
 > Tips:
 >
@@ -230,8 +230,8 @@ Use **Scroll** if the target position is roughly known.
 | `zz`        | `zz`        | **N** | Scroll to leave current line at center of screen |
 | `zt`        | `zt`        | **N** | Scroll to leave current line at top of screen    |
 | `zb`        | `zb`        | **N** | Scroll to leave current line at bottom of screen |
-| `Alt`+`F`   | `Alt+F`     | **N** | Scroll left                                      |
-| `Alt`+`B`   | `Alt+B`     | **N** | Scroll right                                     |
+| `zh`        | `zh`        | **N** | Scroll left                                      |
+| `zl`        | `zl`        | **N** | Scroll right                                     |
 | `zs`        | -           | **N** | Scroll to leave current column at left of screen |
 
 ### Motion
@@ -283,8 +283,7 @@ Use **Motion** if the target position is exactly known.
 | `a`                        | `[a` `]a`                     | Argument                                       |
 | `f`                        |                               | Function call surround                         |
 | `F`                        | `[f` `]f`                     | Function                                       |
-| `T`                        | `[t` `]t`                     | Type definition                                |
-| `c`                        | `[c` `]c`                     | Comment                                        |
+| `c`                        | `[c` `]c`                     | Type definition                                |
 | -                          | `[d` `]d` `[e` `]e` `[w` `]w` | Diagnostics/Error/Warning                      |
 | `S` (not text object)      | `;` `,`                       | Parent treesitter node                         |
 
@@ -369,6 +368,7 @@ Use **Motion** if the target position is exactly known.
 | `zgp`                            | **N**       | Paste last yanked text above current line |
 | `[p`                             | **N**       | Cycle forward through yank history        |
 | `]p`                             | **N**       | Cycle backward through yank history       |
+| `Ctrl`+`C`                       | **I** **V** | Copy (VSCode only)                        |
 | `Ctrl`+`V`                       | **I**       | Paste last yanked                         |
 | `SPC` `sy`                       | **N**       | Search yank history                       |
 
@@ -387,31 +387,40 @@ Use **Motion** if the target position is exactly known.
 
 #### Repeat
 
-| Key                | Mode  | Description                                                      |
-| ------------------ | ----- | ---------------------------------------------------------------- |
-| `.`                | **N** | Repeat last change                                               |
-| `q` `{register}`   | **N** | Record typed characters into register, `q` again to stop         |
-| `@` `{register}`   | **N** | Execute the contents of register                                 |
-| `@@`               | **N** | Repeat Previous `@`                                              |
-| `Q`                | **N** | Repeat the last recorded register                                |
-| `Ctrl`+`J`         | **N** | Add cursor downward                                              |
-| `Ctrl`+`K`         | **N** | Add cursor upward                                                |
-| `SPC` `mm`         | **N** | Add cursor at selected position that match the word under cursor |
-| `SPC` `mc`         | **N** | Add cursor at selected position                                  |
-| `Ctrl`+`N`         | **N** | Add selection at next find match (VSCode only)                   |
-| `Ctrl`+`Shift`+`N` | **N** | Add selection at previous find match (VSCode only)               |
-| `Ctrl`+`Shift`+`L` | **N** | Add selection at all find match (VSCode only)                    |
-| `SPC` `m`          | **N** | Add selection with motion                                        |
-| `SPC` `ms`         | **N** | Add selection at selected position                               |
+| Key                | Mode  | Description                                              |
+| ------------------ | ----- | -------------------------------------------------------- |
+| `.`                | **N** | Repeat last change                                       |
+| `q` `{register}`   | **N** | Record typed characters into register, `q` again to stop |
+| `@` `{register}`   | **N** | Execute the contents of register                         |
+| `@@`               | **N** | Repeat Previous `@`                                      |
+| `Q`                | **N** | Repeat the last recorded register                        |
+| `Ctrl`+`N`         | **N** | Add selection at next find match                         |
+| `Ctrl`+`Shift`+`N` | **N** | Move selection to next find match                        |
+| `Ctrl`+`Shift`+`L` | **N** | Add selection at all find match                          |
+| `Ctrl`+`J`         | **N** | Add cursor downward                                      |
+| `Ctrl`+`Shift`+`J` | **N** | Move cursor down                                         |
+| `Ctrl`+`K`         | **N** | Add cursor upward                                        |
+| `Ctrl`+`Shift`+`K` | **N** | Move cursor up                                           |
+| `SPC` `mw`         | **N** | Add cursor at selected word                              |
+| `SPC` `ms`         | **N** | Add cursor at selected pattern match                     |
+
+> Tips
+>
+> There is more than one method for complex repetitive editing: (from easy to difficult)
+>
+> 1. Dot repeat `.`
+> 2. Multiple cursors
+> 3. Substitute command `:s/pat/repl/[flag]`
+> 4. Macro `q`/`@`
 
 #### Undo
 
-| Key        | Mode        | Description         |
-| ---------- | ----------- | ------------------- |
-| `u`        | **N**       | Undo                |
-| `U`        | **N**       | Redo                |
-| `Ctrl`+`Z` | **N** **I** | Undo (VSCode only)  |
-| `SPC` `su` | **N**       | Search undo history |
+| Key        | Mode  | Description         |
+| ---------- | ----- | ------------------- |
+| `u`        | **N** | Undo                |
+| `Ctrl`+`R` | **N** | Redo                |
+| `Ctrl`+`Z` | **I** | Undo                |
+| `SPC` `su` | **N** | Search undo history |
 
 ### Language
 

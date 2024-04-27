@@ -41,8 +41,11 @@ return {
       -- Vertical center the header
       local remain_height = vim.api.nvim_win_get_height(0) - #banner - #dashboard.section.buttons.val * 2 - 2
       remain_height = remain_height > 0 and remain_height or 0
-      dashboard.opts.layout[1].val = math.ceil(remain_height / 2)
-      dashboard.opts.layout[3].val = math.floor(remain_height / 2)
+      dashboard.opts.layout[1].val = math.ceil(remain_height / 10 * 3)
+      dashboard.opts.layout[3].val = math.floor(remain_height / 10 * 3)
+      dashboard.opts.layout[6] = dashboard.opts.layout[5]
+      dashboard.opts.layout[5] = { type = "padding", val = math.floor(remain_height / 10 * 3) }
+      dashboard.opts.layout[7] = { type = "padding", val = math.floor(remain_height / 10 * 1) }
       -- Highlight
       for _, button in ipairs(dashboard.section.buttons.val) do
         button.opts.hl = "AlphaButtons"

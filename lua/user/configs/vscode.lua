@@ -86,6 +86,9 @@ vim.keymap.set("c", "<A-r>", keymap.toggle_search_pattern("r"), { desc = "Toggle
 vim.keymap.set("n", "gy", vscode_action("editor.action.goToTypeDefinition"), { desc = "Go To Type Definition" })
 vim.keymap.set("n", "gr", vscode_action("editor.action.goToReferences"), { desc = "Go To References" })
 vim.keymap.set("n", "gi", vscode_action("editor.action.goToImplementation"), { desc = "Go To Implementations" })
+-- Scroll
+vim.keymap.set("n", "zl", vscode_action("scrollRight"), { desc = "Scroll Right" })
+vim.keymap.set("n", "zh", vscode_action("scrollLeft"), { desc = "Scroll Left" })
 -- Motion: basic move
 vim.keymap.set({ "n", "x" }, "j", function()
   if vim.v.count == 0 then

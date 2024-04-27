@@ -68,31 +68,63 @@ return {
       {
         "<C-j>",
         function()
-          require("nvim-multi-cursor").toggle_cursor_downward()
+          require("nvim-multi-cursor.cursor").toggle_cursor_downward()
         end,
         mode = { "n" },
-        desc = "Add Cursor",
+        desc = "Add Cursor Downward",
+      },
+      {
+        "<C-S-j>",
+        function()
+          require("nvim-multi-cursor.cursor").cursor_down()
+        end,
+        mode = { "n" },
+        desc = "Move Cursor Down",
       },
       {
         "<C-k>",
         function()
-          require("nvim-multi-cursor").toggle_cursor_upward()
+          require("nvim-multi-cursor.cursor").toggle_cursor_upward()
         end,
         mode = { "n" },
-        desc = "Add Cursor",
+        desc = "Add Cursor Upward",
       },
       {
-        "<Leader>mm",
+        "<C-S-k>",
         function()
-          require("nvim-multi-cursor").toggle_cursor_by_flash(vim.fn.expand("<cword>"))
+          require("nvim-multi-cursor.cursor").cursor_up()
+        end,
+        mode = { "n" },
+        desc = "Move Cursor Up",
+      },
+      {
+        "<C-n>",
+        function()
+          require("nvim-multi-cursor.cursor").toggle_cursor_next_match()
+        end,
+        mode = { "n" },
+        desc = "Add Cursor Upward",
+      },
+      {
+        "<C-S-n>",
+        function()
+          require("nvim-multi-cursor.cursor").cursor_next_match()
+        end,
+        mode = { "n" },
+        desc = "Move Cursor Up",
+      },
+      {
+        "<Leader>mw",
+        function()
+          require("nvim-multi-cursor.cursor").toggle_cursor_by_flash([[\<\w*\>]])
         end,
         mode = { "n" },
         desc = "Selection Wrod To Add Cursor",
       },
       {
-        "<Leader>mc",
+        "<Leader>ms",
         function()
-          require("nvim-multi-cursor").toggle_cursor_by_flash()
+          require("nvim-multi-cursor.cursor").toggle_cursor_by_flash()
         end,
         mode = { "n" },
         desc = "Selection To Add Cursor",
@@ -165,21 +197,21 @@ return {
         expr = true,
         desc = "Create Cursor",
       },
-      {
-        "<Leader>ms",
-        function()
-          if vim.api.nvim_get_hl(0, { name = "FlashLabelUnselected" }).bg == nil then
-            vim.api.nvim_set_hl(
-              0,
-              "FlashLabelUnselected",
-              { fg = "#b9bbc4", bg = "#bd0c69", italic = true, bold = true }
-            )
-          end
-          keymap.toggle_cursor_by_flash()
-        end,
-        mode = "n",
-        desc = "Create cursor using flash",
-      },
+      -- {
+      --   "<Leader>ms",
+      --   function()
+      --     if vim.api.nvim_get_hl(0, { name = "FlashLabelUnselected" }).bg == nil then
+      --       vim.api.nvim_set_hl(
+      --         0,
+      --         "FlashLabelUnselected",
+      --         { fg = "#b9bbc4", bg = "#bd0c69", italic = true, bold = true }
+      --       )
+      --     end
+      --     keymap.toggle_cursor_by_flash()
+      --   end,
+      --   mode = "n",
+      --   desc = "Create cursor using flash",
+      -- },
       -- {
       --   "mcw",
       --   function()
@@ -225,14 +257,6 @@ return {
         end,
         mode = { "n", "x", "i" },
         desc = "Select Next Find Match",
-      },
-      {
-        "<C-S-n>",
-        function()
-          require("vscode-multi-cursor").addSelectionToPreviousFindMatch()
-        end,
-        mode = { "n", "x", "i" },
-        desc = "Select Previous Find Match",
       },
       {
         "<C-S-l>",

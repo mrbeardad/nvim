@@ -37,4 +37,11 @@ return {
       vim.api.nvim_set_hl(0, "FlashLabel", { fg = "#f9fafe", bg = "#ff007c", italic = true, bold = true })
     end,
   },
+  {
+    "mrbeardad/nvim-multi-cursor",
+    keys = {
+      { "<C-N>", false },
+      { "<C-S-N>", false },
+    },
+  },
 }

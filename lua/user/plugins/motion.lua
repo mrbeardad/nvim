@@ -5,7 +5,33 @@ return {
   -- Parse code to AST, and use it to highlight, move, select, etc.
   {
     "nvim-treesitter/nvim-treesitter",
-    dependencies = { { "nvim-treesitter/nvim-treesitter-textobjects" } },
+    dependencies = {
+      {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        config = function()
+          -- When in diff mode, we want to use the default
+          -- vim text objects c & C instead of the treesitter ones.
+          local move = require("nvim-treesitter.textobjects.move") ---@type table<string,fun(...)>
+          local configs = require("nvim-treesitter.configs")
+          for name, fn in pairs(move) do
+            if name:find("goto") == 1 then
+              move[name] = function(q, ...)
+                if vim.wo.diff then
+                  local config = configs.get_module("textobjects.move")[name] ---@type table<string,string>
+                  for key, query in pairs(config or {}) do
+                    if q == query and key:find("[%]%[][cC]") then
+                      vim.cmd("normal! " .. key)
+                      return
+                    end
+                  end
+                end
+                return fn(q, ...)
+              end
+            end
+          end
+        end,
+      },
+    },
     build = ":TSUpdate",
     event = "User LazyFile",
     cmd = { "TSInstall", "TSUpdate", "TSUpdateSync" },
@@ -146,8 +172,7 @@ return {
           a = "Argument",
           f = "Function Call",
           F = "Function",
-          T = "Type Definition",
-          c = "Comment",
+          c = "Class",
           o = "Block/Conditional/loop",
         }
         local a = vim.deepcopy(i)
@@ -191,8 +216,7 @@ return {
           end,
           -- a = ai.gen_spec.treesitter({ a = "@parameter.outer", i = "@parameter.inner" }, {}),
           F = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
-          T = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
-          c = ai.gen_spec.treesitter({ a = "@comment.outer", i = "@comment.inner" }, {}),
+          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
           o = ai.gen_spec.treesitter({
             a = { "@block.outer", "@conditional.outer", "@loop.outer" },
             i = { "@block.inner", "@conditional.inner", "@loop.inner" },

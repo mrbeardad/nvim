@@ -194,8 +194,8 @@ return {
     "tzachar/highlight-undo.nvim",
     keys = {
       { "u", desc = "Undo" },
-      { "U", desc = "Redo" },
-      { "<C-z>", "<Cmd>normal u<CR>", mode = "i", desc = "Undo" },
+      { "<C-R>", desc = "Redo" },
+      { "<C-Z>", "<Cmd>normal u<CR>", mode = "i", desc = "Undo" },
     },
     opts = {
       -- Same as highlight on yank
