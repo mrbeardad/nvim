@@ -35,16 +35,16 @@ return {
           completeopt = "menu,menuone,noinsert",
         },
         mapping = {
-          ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-          ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
-          ["<C-n>"] = cmp.mapping(function()
+          ["<C-F>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
+          ["<C-B>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
+          ["<C-N>"] = cmp.mapping(function()
             if cmp.visible() then
               cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
             else
               cmp.complete()
             end
           end, { "i" }),
-          ["<C-p>"] = cmp.mapping(function()
+          ["<C-P>"] = cmp.mapping(function()
             if cmp.visible() then
               cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
             else
@@ -148,8 +148,8 @@ return {
       })
 
       -- History search
-      -- vim.keymap.set("c", "<C-n>", "<Down>", { desc = "History Forward Search" })
-      -- vim.keymap.set("c", "<C-p>", "<Up>", { desc = "History Backward Search" })
+      -- vim.keymap.set("c", "<C-N>", "<Down>", { desc = "History Forward Search" })
+      -- vim.keymap.set("c", "<C-P>", "<Up>", { desc = "History Backward Search" })
     end,
   },
 

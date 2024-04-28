@@ -10,8 +10,8 @@ vim.keymap.set("n", "<Leader>p", "<Cmd>Lazy<CR>", { desc = "Plugins Manager" })
 vim.keymap.set("n", "<Leader><Tab><Tab>", "<Cmd>try<Bar>b#<Bar>catch<Bar>endtry<CR>", { desc = "Switch Buffer" })
 
 -- Buffers: save
-vim.keymap.set("n", "<C-s>", "<Cmd>silent! update<Bar>redraw<CR>", { desc = "Save" })
-vim.keymap.set({ "i", "x" }, "<C-s>", "<Esc><Cmd>silent! update<Bar>redraw<CR>", { desc = "Save" })
+vim.keymap.set("n", "<C-S>", "<Cmd>silent! update<Bar>redraw<CR>", { desc = "Save" })
+vim.keymap.set({ "i", "x" }, "<C-S>", "<Esc><Cmd>silent! update<Bar>redraw<CR>", { desc = "Save" })
 vim.keymap.set("n", "<Leader>bw", "<Cmd>noautocmd w<CR>", { desc = "Save Without Format" })
 
 -- Windows: switch
@@ -19,7 +19,7 @@ vim.keymap.set("n", "<Tab>", keymap.switch_window(true), { desc = "Next Window" 
 vim.keymap.set("n", "<S-Tab>", keymap.switch_window(), { desc = "Prev Window" })
 
 -- Windows: zoom
-vim.keymap.set("n", "<C-w>z", keymap.zoom_window, { desc = "Zoom Window" })
+vim.keymap.set("n", "<C-W>z", keymap.zoom_window, { desc = "Zoom Window" })
 
 -- Windows: resize
 vim.keymap.set("n", "<C-Up>", "<Cmd>resize +2<CR>", { desc = "Increase Window Height" })
@@ -58,16 +58,16 @@ vim.keymap.set({ "n", "x", "i" }, "<A-b>", "<Cmd>normal zH<CR>", { desc = "Scrol
 -- Motion: hjkl
 vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down" })
 vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Up" })
-vim.keymap.set("c", "<C-a>", "<C-b>", { desc = "Start Of Line" })
-vim.keymap.set("i", "<C-a>", "<Home>", { desc = "Start Of Line" })
-vim.keymap.set("i", "<C-e>", "<End>", { desc = "End Of Line" })
+vim.keymap.set("c", "<C-A>", "<C-B>", { desc = "Start Of Line" })
+vim.keymap.set("i", "<C-A>", "<Home>", { desc = "Start Of Line" })
+vim.keymap.set("i", "<C-E>", "<End>", { desc = "End Of Line" })
 
 -- Motion: jump list
--- HACK: For historical reason, <Tab> and <C-i> have the same key sequence in most of terminals.
--- To distinguish them, you could map another key, say <A-I>, to <C-i> in neovim,
+-- HACK: For historical reason, <Tab> and <C-I> have the same key sequence in most of terminals.
+-- To distinguish them, you could map another key, say <A-I>, to <C-I> in neovim,
 -- and then map ctrl+i to send <A-I> key sequence in your terminal setting.
 -- For more info `:h tui-modifyOtherKeys` and https://invisible-island.net/xterm/modified-keys.html
-vim.keymap.set({ "i", "c", "n", "v" }, "<A-I>", "<C-i>", { desc = "<C-i>" })
+vim.keymap.set({ "i", "c", "n", "v" }, "<A-I>", "<C-I>", { desc = "<C-I>" })
 
 -- Motion: go to diagnostic
 local diagnostic_goto = function(next, severity)
@@ -119,22 +119,22 @@ vim.keymap.set(
 )
 
 -- Operation: insert/cmdline mode
-vim.keymap.set("c", "<C-d>", "<Del>", { desc = "Delete Right" })
-vim.keymap.set("i", "<C-d>", "<Del>", { desc = "Delete Right" })
-vim.keymap.set("i", "<A-d>", '<C-g>u<Cmd>normal! "_dw<CR>', { desc = "Delete Right Word" })
-vim.keymap.set("c", "<C-k>", function()
+vim.keymap.set("c", "<C-D>", "<Del>", { desc = "Delete Right" })
+vim.keymap.set("i", "<C-D>", "<Del>", { desc = "Delete Right" })
+vim.keymap.set("i", "<A-d>", '<C-G>u<Cmd>normal! "_dw<CR>', { desc = "Delete Right Word" })
+vim.keymap.set("c", "<C-K>", function()
   local text = vim.fn.getcmdline()
   local col = vim.fn.getcmdpos()
   if text and col - 1 < #text then
     vim.fn.setcmdline(text:sub(1, col - 1))
   end
 end)
-vim.keymap.set("i", "<C-k>", '<C-g>u<Cmd>normal! "_d$<CR><Right>', { desc = "Delete All Right" })
-vim.keymap.set("i", "<C-j>", "<C-g>u<End><CR>", { desc = "New Line" }) -- <C-g>u is required here since <End> does not break undo here
+vim.keymap.set("i", "<C-K>", '<C-G>u<Cmd>normal! "_d$<CR><Right>', { desc = "Delete All Right" })
+vim.keymap.set("i", "<C-J>", "<C-G>u<End><CR>", { desc = "New Line" }) -- <C-G>u is required here since <End> does not break undo here
 
 -- Operation: yank and paste
-vim.keymap.set("i", "<C-v>", "<C-g>u<C-r><C-p>+", { desc = "Paste Last Yanked" })
-vim.keymap.set("c", "<C-v>", "<C-r>+", { desc = "Paste Last Yanked" })
+vim.keymap.set("i", "<C-V>", "<C-G>u<C-R><C-P>+", { desc = "Paste Last Yanked" })
+vim.keymap.set("c", "<C-V>", "<C-R>+", { desc = "Paste Last Yanked" })
 
 -- UI: quit
 vim.keymap.set("n", "<Leader>qq", "<Cmd>qa<CR>", { desc = "Quit All" })

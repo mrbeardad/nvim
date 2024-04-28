@@ -7,7 +7,7 @@ return {
     "echasnovski/mini.surround",
     keys = {
       { "ys", desc = "Add Surround" },
-      { "s", ":<C-u>lua MiniSurround.add('visual')<CR>", mode = "x", desc = "Add Surround" },
+      { "s", ":<C-U>lua MiniSurround.add('visual')<CR>", mode = "x", desc = "Add Surround" },
       { "cs", desc = "Change Surround" },
       { "ds", desc = "Delete Surround" },
     },
@@ -66,7 +66,7 @@ return {
     "mrbeardad/nvim-multi-cursor",
     keys = {
       {
-        "<C-j>",
+        "<C-J>",
         function()
           require("nvim-multi-cursor.cursor").toggle_cursor_downward()
         end,
@@ -82,7 +82,7 @@ return {
         desc = "Move Cursor Down",
       },
       {
-        "<C-k>",
+        "<C-K>",
         function()
           require("nvim-multi-cursor.cursor").toggle_cursor_upward()
         end,
@@ -98,7 +98,7 @@ return {
         desc = "Move Cursor Up",
       },
       {
-        "<C-n>",
+        "<C-N>",
         function()
           require("nvim-multi-cursor.cursor").toggle_cursor_next_match()
         end,
@@ -251,7 +251,7 @@ return {
         desc = "Goto Next Cursor",
       },
       {
-        "<C-n>",
+        "<C-N>",
         function()
           require("vscode-multi-cursor").addSelectionToNextFindMatch()
         end,

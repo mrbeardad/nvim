@@ -35,8 +35,8 @@ return {
         -- stylua: ignore start
         map("n", "]g", goto_hunk(true), "Next Git Hunk")
         map("n", "[g", goto_hunk(false), "Prev Git Hunk")
-        map({ "o", "x" }, "ig", ":<C-u>Gitsigns select_hunk<CR>", "Select Git Hunk")
-        map({ "o", "x" }, "ag", ":<C-u>Gitsigns select_hunk<CR>", "Select Git Hunk")
+        map({ "o", "x" }, "ig", ":<C-U>Gitsigns select_hunk<CR>", "Select Git Hunk")
+        map({ "o", "x" }, "ag", ":<C-U>Gitsigns select_hunk<CR>", "Select Git Hunk")
         map({ "n", "x" }, "<Leader>gs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
         map({ "n", "x" }, "<Leader>gr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
         map("n", "<Leader>gS", gs.stage_buffer, "Stage Buffer")

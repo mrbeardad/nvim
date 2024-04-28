@@ -132,7 +132,7 @@ return {
       defaults = {
         mappings = {
           i = {
-            ["<C-s>"] = keymap.flash_telescope,
+            ["<C-S>"] = keymap.flash_telescope,
           },
         },
       },

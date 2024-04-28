@@ -333,12 +333,12 @@ return {
   {
     "karb94/neoscroll.nvim",
     keys = {
-      { "<C-y>", mode = { "n", "x" } },
-      { "<C-e>", mode = { "n", "x" } },
-      { "<C-u>", mode = { "n", "x" } },
-      { "<C-d>", mode = { "n", "x" } },
-      { "<C-b>", mode = { "n", "x" } },
-      { "<C-f>", mode = { "n", "x" } },
+      { "<C-Y>", mode = { "n", "x" } },
+      { "<C-E>", mode = { "n", "x" } },
+      { "<C-U>", mode = { "n", "x" } },
+      { "<C-D>", mode = { "n", "x" } },
+      { "<C-B>", mode = { "n", "x" } },
+      { "<C-F>", mode = { "n", "x" } },
       { "zt", mode = { "n", "x" } },
       { "zz", mode = { "n", "x" } },
       { "zb", mode = { "n", "x" } },
@@ -501,15 +501,15 @@ return {
         mappings = {
           i = {
             ["<Esc>"] = "close",
-            ["<C-f>"] = "preview_scrolling_down",
-            ["<C-b>"] = "preview_scrolling_up",
+            ["<C-F>"] = "preview_scrolling_down",
+            ["<C-B>"] = "preview_scrolling_up",
             ["<A-f>"] = "preview_scrolling_right",
             ["<A-b>"] = "preview_scrolling_left",
             ["<Up>"] = "cycle_history_prev",
             ["<Down>"] = "cycle_history_next",
-            ["<C-v>"] = false,
-            ["<C-u>"] = false,
-            ["<C-k>"] = false,
+            ["<C-V>"] = false,
+            ["<C-U>"] = false,
+            ["<C-K>"] = false,
           },
         },
       },
@@ -523,9 +523,9 @@ return {
           },
           mappings = {
             i = {
-              -- ["<C-z>"] = false,
-              ["<C-a>"] = false,
-              ["<C-r>"] = false,
+              -- ["<C-Z>"] = false,
+              ["<C-A>"] = false,
+              ["<C-R>"] = false,
             },
           },
         },
@@ -593,8 +593,8 @@ return {
       { "<Leader>nh", function() require("noice").cmd("history") end, desc = "Noice History" },
       { "<Leader>na", function() require("noice").cmd("all") end, desc = "Noice All" },
       { "<Leader>nd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
-      { "<C-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
-      { "<C-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
+      { "<C-F>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
+      { "<C-B>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
     },
     init = function()
       vim.opt.cmdheight = 0

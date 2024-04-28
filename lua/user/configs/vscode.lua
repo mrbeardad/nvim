@@ -104,9 +104,9 @@ vim.keymap.set({ "n", "x" }, "k", function()
     vim.cmd(string.format("normal! %dk", vim.v.count))
   end
 end, { desc = "Down" })
-vim.keymap.set("c", "<C-a>", "<C-b>", { desc = "Start Of Line" })
-vim.keymap.set("i", "<C-a>", "<Home>", { desc = "Start Of Line" })
-vim.keymap.set("i", "<C-e>", "<End>", { desc = "End Of Line" })
+vim.keymap.set("c", "<C-A>", "<C-B>", { desc = "Start Of Line" })
+vim.keymap.set("i", "<C-A>", "<Home>", { desc = "Start Of Line" })
+vim.keymap.set("i", "<C-E>", "<End>", { desc = "End Of Line" })
 -- Motion: bookmark
 vim.keymap.set({ "n" }, "m;", vscode_action("bookmarks.toggle"), { desc = "Toogle Bookmark" })
 vim.keymap.set({ "n" }, "m:", vscode_action("bookmarks.toggleLabeled"), { desc = "Toogle Bookmark Label" })
@@ -144,23 +144,23 @@ vim.keymap.set(
   { expr = true, desc = "Put Empty Line Above" }
 )
 -- Operation: insert mode
-vim.keymap.set("c", "<C-d>", "<Del>", { desc = "Delete Right" })
-vim.keymap.set("i", "<C-d>", "<Del>", { desc = "Delete Right" })
-vim.keymap.set("i", "<A-d>", '<C-g>u<Cmd>normal! "_dw<CR>')
-vim.keymap.set("c", "<C-k>", function()
+vim.keymap.set("c", "<C-D>", "<Del>", { desc = "Delete Right" })
+vim.keymap.set("i", "<C-D>", "<Del>", { desc = "Delete Right" })
+vim.keymap.set("i", "<A-d>", '<C-G>u<Cmd>normal! "_dw<CR>')
+vim.keymap.set("c", "<C-K>", function()
   local text = vim.fn.getcmdline()
   local col = vim.fn.getcmdpos()
   if text and col - 1 < #text then
     vim.fn.setcmdline(text:sub(1, col - 1))
   end
 end)
-vim.keymap.set("i", "<C-k>", '<C-g>u<Cmd>normal! "_d$<CR><Right>')
-vim.keymap.set("i", "<C-j>", "<C-g>u<End><CR>")
+vim.keymap.set("i", "<C-K>", '<C-G>u<Cmd>normal! "_d$<CR><Right>')
+vim.keymap.set("i", "<C-J>", "<C-G>u<End><CR>")
 -- Operation: yank and paste
-vim.keymap.set("i", "<C-v>", "<C-g>u<C-r><C-p>+")
-vim.keymap.set("c", "<C-v>", "<C-r>+")
+vim.keymap.set("i", "<C-V>", "<C-G>u<C-R><C-P>+")
+vim.keymap.set("c", "<C-V>", "<C-R>+")
 -- Operation: undo
-vim.keymap.set("i", "<C-z>", "<Cmd>normal u<CR>")
+vim.keymap.set("i", "<C-Z>", "<Cmd>normal u<CR>")
 -- Operation: repeat
 vim.keymap.del("x", "mi")
 vim.keymap.del("x", "mI")
