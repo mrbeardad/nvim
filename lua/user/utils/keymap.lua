@@ -130,6 +130,10 @@ function M.toggle_search_pattern(flag)
     end
 
     vim.fn.setcmdline(pattern, #pattern + 1 - w2_len)
+    -- vscode does not trigger flash after setcmdline
+    if vim.g.vscode then
+      vim.api.nvim_input(" <BS>")
+    end
   end
 end
 
