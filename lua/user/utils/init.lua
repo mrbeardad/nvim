@@ -30,7 +30,7 @@ function M.is_wsl()
   return M.os_uname.sysname == "Linux" and M.os_uname.release:find("Microsoft") ~= nil
 end
 
-local root_patterns = { ".git" }
+local root_patterns = { ".git", ".svn" }
 local root_cache = {}
 function M.workspace_root(no_cache)
   local root
