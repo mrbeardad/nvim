@@ -106,7 +106,7 @@ return {
         desc = "Add Cursor Upward",
       },
       {
-        "<C-S-n>",
+        "<C-S-N>",
         function()
           require("nvim-multi-cursor.cursor").cursor_next_match()
         end,
@@ -225,8 +225,10 @@ return {
         function()
           if #require("vscode-multi-cursor.state").cursors ~= 0 then
             require("vscode-multi-cursor").cancel()
+            vim.print("fuck")
             return "<Ignore>"
           else
+            vim.print("shit")
             return "<Cmd>nohlsearch|diffupdate|normal! <C-L><CR><Esc>"
           end
         end,

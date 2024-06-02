@@ -38,8 +38,8 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        json = { "prettierd" },
-        jsonc = { "prettierd" },
+        json = { "prettier" },
+        jsonc = { "prettier" },
       },
     },
   },
@@ -47,7 +47,7 @@ return {
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, { "prettierd" })
+      vim.list_extend(opts.ensure_installed, { "prettier" })
     end,
   },
 }

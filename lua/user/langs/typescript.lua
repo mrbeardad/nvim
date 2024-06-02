@@ -39,11 +39,11 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        javascript = { "prettierd" },
-        javascriptreact = { "prettierd" },
-        typescript = { "prettierd" },
-        typescriptreact = { "prettierd" },
-        vue = { "prettierd" },
+        javascript = { "prettier" },
+        javascriptreact = { "prettier" },
+        typescript = { "prettier" },
+        typescriptreact = { "prettier" },
+        vue = { "prettier" },
       },
     },
   },
@@ -51,7 +51,7 @@ return {
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, { "eslint_d", "prettierd" })
+      vim.list_extend(opts.ensure_installed, { "eslint_d", "prettier" })
     end,
   },
 }

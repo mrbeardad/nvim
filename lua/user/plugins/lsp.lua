@@ -40,8 +40,6 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      -- Configures lua-language-server for neovim
-      { "folke/neodev.nvim", opts = {} },
       -- Load before mason.nvim and nvim-lspconfig
       "williamboman/mason.nvim",
       -- Automatically install language server when it is setup, load before nvim-lspconfig

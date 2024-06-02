@@ -19,9 +19,9 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        css = { "prettierd" },
-        scss = { "prettierd" },
-        less = { "prettierd" },
+        css = { "prettier" },
+        scss = { "prettier" },
+        less = { "prettier" },
       },
     },
   },
@@ -29,7 +29,7 @@ return {
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, { "prettierd" })
+      vim.list_extend(opts.ensure_installed, { "prettier" })
     end,
   },
 }
