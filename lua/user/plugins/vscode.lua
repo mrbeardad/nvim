@@ -14,6 +14,7 @@ local enabled = {
   "highlight-undo.nvim",
   "nvim-multi-cursor",
   "vscode-multi-cursor.nvim",
+  "im-select.nvim",
 }
 
 local lazy_config = require("lazy.core.config")
