@@ -12,6 +12,7 @@ if not vim.loop.fs_stat(lazy_path) then
 end
 vim.opt.rtp:prepend(lazy_path)
 
+vim.env.PATH = vim.env.PATH .. ";" .. vim.fn.stdpath("config")
 -- Load user configs before load plugins
 require("user.configs")
 

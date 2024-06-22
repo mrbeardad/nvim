@@ -272,4 +272,10 @@ return {
     },
     cond = not not vim.g.vscode,
   },
+  {
+    "keaising/im-select.nvim",
+    config = function()
+      require("im_select").setup({})
+    end,
+  },
 }
