@@ -5,7 +5,7 @@ vim.opt.undofile = true -- Enable persistent undo
 vim.opt.undolevels = 10000 -- Increase undolevels since lots of undo breaks are set in insert mode
 vim.opt.updatetime = 300 -- Save swap file and trigger CursorHold
 vim.opt.timeoutlen = 300 -- Wait for a mapped sequence to complete.
-vim.opt.shortmess = "oOtTWIcCFS"
+vim.opt.shortmess = "oOtTWIcCFS" -- Configure the message format
 
 -- Search
 vim.opt.ignorecase = true -- Ignore case
@@ -25,7 +25,7 @@ vim.opt.tabstop = 2 -- Number of spaces tabs count for
 vim.opt.shiftwidth = 2 -- Size of an indent
 vim.opt.shiftround = true -- Round indent
 vim.opt.smartindent = true -- Insert indents automatically
-vim.opt.formatoptions = "tcrqjnl"
+vim.opt.formatoptions = "tcrqjnl" -- Configure the automatically format options
 vim.opt.clipboard = "unnamedplus" -- Sync with system clipboard
 
 -- UI: inside window

@@ -515,7 +515,6 @@ return {
       },
       extensions = {
         egrepify = {
-          AND = false,
           prefixes = {
             ["!"] = {
               flag = "invert-match",
@@ -523,9 +522,9 @@ return {
           },
           mappings = {
             i = {
-              -- ["<C-Z>"] = false,
-              ["<C-A>"] = false,
-              ["<C-R>"] = false,
+              ["<C-Z>"] = false,
+              ["<C-a>"] = false,
+              ["<C-r>"] = false,
             },
           },
         },

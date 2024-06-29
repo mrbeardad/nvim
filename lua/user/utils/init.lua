@@ -12,7 +12,7 @@ function M.is_real_file(bufnr, include_bt)
   return bt == "" or include_bt and vim.tbl_contains(include_bt, bt)
 end
 
-M.os_uname = vim.loop.os_uname()
+M.os_uname = vim.uv.os_uname()
 
 function M.is_windows()
   return M.os_uname.sysname:find("Windows") ~= nil
@@ -40,14 +40,14 @@ function M.workspace_root(no_cache)
     return root_cache[bufnr], "cache"
   end
   -- cwd, the buffer has not been written yet, do not cache it
-  local bufname = vim.loop.fs_realpath(vim.api.nvim_buf_get_name(bufnr))
+  local bufname = vim.uv.fs_realpath(vim.api.nvim_buf_get_name(bufnr))
   if not bufname then
-    return vim.loop.cwd(), "cwd"
+    return vim.uv.cwd(), "cwd"
   end
   -- lsp
   local folders = vim.lsp.buf.list_workspace_folders()
   for _, f in ipairs(folders) do
-    f = vim.loop.fs_realpath(f) .. (M.is_windows() and "\\" or "/")
+    f = vim.uv.fs_realpath(f) .. (M.is_windows() and "\\" or "/")
     if vim.startswith(bufname, f) then
       root_cache[bufnr] = f
       return f, "lsp"
