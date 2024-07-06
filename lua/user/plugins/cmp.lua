@@ -43,14 +43,14 @@ return {
             else
               cmp.complete()
             end
-          end, { "i" }),
+          end, { "i", "c" }),
           ["<C-P>"] = cmp.mapping(function()
             if cmp.visible() then
               cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
             else
               cmp.complete()
             end
-          end, { "i" }),
+          end, { "i", "c" }),
           ["<Tab>"] = cmp.mapping(function()
             if cmp.visible() then
               cmp.select_next_item()
@@ -146,10 +146,6 @@ return {
           { name = "buffer" },
         },
       })
-
-      -- History search
-      -- vim.keymap.set("c", "<C-N>", "<Down>", { desc = "History Forward Search" })
-      -- vim.keymap.set("c", "<C-P>", "<Up>", { desc = "History Backward Search" })
     end,
   },
 
@@ -204,7 +200,7 @@ return {
     event = "InsertEnter",
     keys = {
       {
-        "<A-p>",
+        "<M-p>",
         function()
           local state = require("nvim-autopairs").state
           state.disabled = not state.disabled

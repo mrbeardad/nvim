@@ -201,7 +201,7 @@ return {
       -- Same as highlight on yank
       duration = 150,
       undo = { hlgroup = "Search" },
-      redo = { hlgroup = "Search", lhs = "U" },
+      redo = { hlgroup = "Search" },
     },
   },
 }

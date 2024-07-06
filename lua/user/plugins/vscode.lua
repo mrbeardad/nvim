@@ -9,12 +9,13 @@ local enabled = {
   "nvim-treesitter-textobjects",
   "flash.nvim",
   "mini.ai",
+  "mini.indentscope",
   "mini.surround",
+  "sqlite.lua",
   "yanky.nvim",
   "highlight-undo.nvim",
   "nvim-multi-cursor",
   "vscode-multi-cursor.nvim",
-  "im-select.nvim",
 }
 
 local lazy_config = require("lazy.core.config")
@@ -171,7 +172,7 @@ return {
         desc = "Select Next Find Match",
       },
       {
-        "<C-S-l>",
+        "<C-S-L>",
         function()
           require("vscode-multi-cursor").selectHighlights()
         end,

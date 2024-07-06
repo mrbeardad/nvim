@@ -21,6 +21,7 @@
 
 - [Nvim](#nvim)
   - [Installation](#installation)
+    - [Requirements](#requirements)
     - [Windows](#windows)
     - [Linux](#linux)
   - [Configuration](#configuration)
@@ -38,6 +39,17 @@
     - [Misc](#misc)
 
 ## Installation
+
+### Requirements
+
+- Neovim 0.10.0
+- Git
+- C/C++ compiler
+- CMake
+- ripgrep
+- fd
+- sqlite
+- Nerd Font
 
 ### Windows
 
@@ -74,8 +86,8 @@ To distinguish them, map `ctrl+shift+*` to send `<C-S-*>` key sequence in your t
 For detail see [here](https://www.reddit.com/r/neovim/comments/mbj8m5/how_to_setup_ctrlshiftkey_mappings_in_neovim_and/)
 
 For historical reason, `<Tab>` and `<C-i>` have the same key sequence in most of terminals.
-To distinguish them, you could map another key, say `<A-I>`, to `<C-i>` in neovim,
-and then map `ctrl+i` to send `<A-I>` key sequence in your terminal setting.
+To distinguish them, you could map another key, say `<M-I>`, to `<C-i>` in neovim,
+and then map `ctrl+i` to send `<M-I>` key sequence in your terminal setting.
 For more info [`:h tui-modifyOtherKeys`](https://neovim.io/doc/user/term.html#tui-input) and [xterm-modified-keys](https://invisible-island.net/xterm/modified-keys.html)
 
 > My own windows terminal setting is [here](https://github.com/mrbeardad/MyIDE/blob/master/wt/settings.json).
@@ -143,7 +155,7 @@ and also add all the [keybindings](https://github.com/mrbeardad/MyIDE/blob/maste
 
 | Neovim Keys | VSCode Keys        | Mode       | Description            |
 | ----------- | ------------------ | ---------- | ---------------------- |
-| `SPC` `e`   | `Ctrl`+`Shift`+`E` | **N**      | Open or focus explorer |
+| `Space` `e` | `Ctrl`+`Shift`+`E` | **N**      | Open or focus explorer |
 | `j`         | `j`                | _Explorer_ | Up                     |
 | `k`         | `k`                | _Explorer_ | Down                   |
 | `h`         | `h`                | _Explorer_ | Collapse               |
@@ -160,13 +172,13 @@ and also add all the [keybindings](https://github.com/mrbeardad/MyIDE/blob/maste
 | `/`         | `/`                | _Explorer_ | Filter                 |
 | `?`         | -                  | _Explorer_ | Help                   |
 
-| Neovim Keys | VSCode Keys  | Mode  | Description   |
-| ----------- | ------------ | ----- | ------------- |
-| `H`         | `H`          | **N** | Previous file |
-| `L`         | `L`          | **N** | Next file     |
-| `SPC` `TAB` | `Ctrl`+`TAB` | **N** | Switch file   |
-| `Ctrl`+`S`  | `Ctrl`+`S`   | **N** | Save file     |
-| `SPC` `bd`  | `Ctrl+W` `q` | **N** | Close file    |
+| Neovim Keys                                       | VSCode Keys  | Mode  | Description   |
+| ------------------------------------------------- | ------------ | ----- | ------------- |
+| `H`                                               | `H`          | **N** | Previous file |
+| `L`                                               | `L`          | **N** | Next file     |
+| `Space` `Tab`/`Space` `Tab` `Tab`/`Space` `` ` `` | `Ctrl`+`Tab` | **N** | Switch file   |
+| `Ctrl`+`S`                                        | `Ctrl`+`S`   | **N** | Save file     |
+| `Space` `bd`                                      | `Ctrl+W` `q` | **N** | Close file    |
 
 | Neovim Keys    | VSCode Keys    | Mode  | Description                                 |
 | -------------- | -------------- | ----- | ------------------------------------------- |
@@ -188,27 +200,27 @@ and also add all the [keybindings](https://github.com/mrbeardad/MyIDE/blob/maste
 
 Use **Search** if the target positon is unknown or too far.
 
-| Neovim Key | VSCode Key            | Mode        | Description                                                |
-| ---------- | --------------------- | ----------- | ---------------------------------------------------------- |
-| `/`        | `/`                   | **N**       | Search forward in file                                     |
-| `?`        | `?`                   | **N**       | Search backward in file                                    |
-| `*`        | `*`                   | **N** **V** | Search forward for the word nearest to the cursor in file  |
-| `#`        | `#`                   | **N** **V** | Search backward for the word nearest to the cursor in file |
-| `n`        | `n`                   | **n**       | Search forwar for last pattern in file                     |
-| `N`        | `N`                   | **N**       | Search backward for last pattern in file                   |
-| `SPC` `/`  | `Ctrl`+`Shift`+`F`    | **N** **V** | Search in workspace                                        |
-| `SPC` `f`  | `Ctrl`+`P`            | **N**       | Search files in workspace                                  |
-| `SPC` `r`  | `Ctrl`+`K` `Ctrl`+`R` | **N**       | Search recently opened files                               |
-| `SPC` `sw` | -                     | **N** **V** | Search based on word in workspace                          |
-| `SPC` `sm` | _Side Bar_            | **N**       | Search marks                                               |
-| `SPC` `st` | _Side Bar_            | **N**       | Search todos                                               |
-| `SPC` `ss` | `Ctrl`+`Shift`+`O`    | **N**       | Search symbols in file                                     |
-| `SPC` `sS` | `Ctrl`+`T`            | **N**       | Search symbols in workspace                                |
-| `gd`       | `gd`                  | **N**       | Go to definition                                           |
-| `gy`       | `gy`                  | **N**       | Go to type definition                                      |
-| `gr`       | `gr`                  | **N**       | Go to reference                                            |
-| `gi`       | `gi`                  | **N**       | Go to implementation                                       |
-| `Ctrl`+`/` | -                     | _Telescope_ | Help                                                       |
+| Neovim Key   | VSCode Key         | Mode        | Description                                                |
+| ------------ | ------------------ | ----------- | ---------------------------------------------------------- |
+| `/`          | `/`                | **N**       | Search forward in file                                     |
+| `?`          | `?`                | **N**       | Search backward in file                                    |
+| `*`          | `*`                | **N** **V** | Search forward for the word nearest to the cursor in file  |
+| `#`          | `#`                | **N** **V** | Search backward for the word nearest to the cursor in file |
+| `n`          | `n`                | **n**       | Search forwar for last pattern in file                     |
+| `N`          | `N`                | **N**       | Search backward for last pattern in file                   |
+| `Space` `/`  | `Ctrl`+`Shift`+`F` | **N** **V** | Search in workspace                                        |
+| `Space` `f`  | `Ctrl`+`P`         | **N**       | Search files in workspace                                  |
+| `Space` `r`  | `Ctrl`+`K` `R`     | **N**       | Search recently opened files                               |
+| `Space` `sw` | -                  | **N** **V** | Search based on word in workspace                          |
+| `Space` `sm` | _Side Bar_         | **N**       | Search marks                                               |
+| `Space` `st` | _Side Bar_         | **N**       | Search todos                                               |
+| `Space` `ss` | `Ctrl`+`Shift`+`O` | **N**       | Search symbols in file                                     |
+| `Space` `sS` | `Ctrl`+`T`         | **N**       | Search symbols in workspace                                |
+| `gd`         | `gd`               | **N**       | Go to definition                                           |
+| `gt`         | `gt`               | **N**       | Go to type definition                                      |
+| `gr`         | `gr`               | **N**       | Go to reference                                            |
+| `gi`         | `gi`               | **N**       | Go to implementation                                       |
+| `Ctrl`+`/`   | -                  | _Telescope_ | Help                                                       |
 
 > Tips:
 >
@@ -319,7 +331,7 @@ Use **Motion** if the target position is exactly known.
 
 | Normal Key               | Mode                | Description                                          |
 | ------------------------ | ------------------- | ---------------------------------------------------- |
-| `ESC`                    | **ALL**             | Return to normal mode                                |
+| `Esc`                    | **ALL**             | Return to normal mode                                |
 | `ys` `{motion}` `{char}` | **N** **V**         | Add surround around `{motion}` with `{char}`         |
 | `cs` `{char1}` `{char2}` | **N**               | Change the surrounding pair `{char}` with `{char2}`  |
 | `ds` `{char}`            | **N**               | Delete the surrounding pair `{char}`                 |
@@ -331,8 +343,8 @@ Use **Motion** if the target position is exactly known.
 | `Alt`+`K`                | **I**, **N**, **V** | Move line Up                                         |
 | `Ctrl`+`A`               | **N**               | Add to the number under cursor                       |
 | `Ctrl`+`X`               | **N**               | Subtract from the number under cursor                |
-| `]` `SPC`                | **N**               | Add empty line below                                 |
-| `[` `SPC`                | **N**               | Add empty line above                                 |
+| `]` `Space`              | **N**               | Add empty line below                                 |
+| `[` `Space`              | **N**               | Add empty line above                                 |
 
 | Insert Key | Mode  | Description                                    |
 | ---------- | ----- | ---------------------------------------------- |
@@ -370,7 +382,7 @@ Use **Motion** if the target position is exactly known.
 | `]p`                             | **N**       | Cycle backward through yank history       |
 | `Ctrl`+`C`                       | **I** **V** | Copy (VSCode only)                        |
 | `Ctrl`+`V`                       | **I**       | Paste last yanked                         |
-| `SPC` `sy`                       | **N**       | Search yank history                       |
+| `Space` `sy`                     | **N**       | Search yank history                       |
 
 > Tips
 >
@@ -401,8 +413,8 @@ Use **Motion** if the target position is exactly known.
 | `Ctrl`+`Shift`+`J` | **N** | Move cursor down                                         |
 | `Ctrl`+`K`         | **N** | Add cursor upward                                        |
 | `Ctrl`+`Shift`+`K` | **N** | Move cursor up                                           |
-| `SPC` `mw`         | **N** | Add cursor at selected word                              |
-| `SPC` `ms`         | **N** | Add cursor at selected pattern match                     |
+| `Space` `mw`       | **N** | Add cursor at selected word                              |
+| `Space` `ms`       | **N** | Add cursor at selected pattern match                     |
 
 > Tips
 >
@@ -415,12 +427,12 @@ Use **Motion** if the target position is exactly known.
 
 #### Undo
 
-| Key        | Mode  | Description         |
-| ---------- | ----- | ------------------- |
-| `u`        | **N** | Undo                |
-| `Ctrl`+`R` | **N** | Redo                |
-| `Ctrl`+`Z` | **I** | Undo                |
-| `SPC` `su` | **N** | Search undo history |
+| Key          | Mode  | Description         |
+| ------------ | ----- | ------------------- |
+| `u`          | **N** | Undo                |
+| `Ctrl`+`R`   | **N** | Redo                |
+| `Ctrl`+`Z`   | **I** | Undo                |
+| `Space` `su` | **N** | Search undo history |
 
 ### Language
 
@@ -444,7 +456,7 @@ Use **Motion** if the target position is exactly known.
 | Key            | Mode  | Description     |
 | -------------- | ----- | --------------- |
 | `Ctrl`+`` ` `` | **N** | Toggle terminal |
-| `SPC` `n`      | **N** | Toggle output   |
+| `Space` `n`    | **N** | Toggle output   |
 | `Alt`+`Z`      | **N** | Toggle wrap     |
 | `za`           | **N** | Toggle fold     |
 | `ga`           | **N** | Unicode point   |

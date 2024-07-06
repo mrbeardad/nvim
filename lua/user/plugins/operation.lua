@@ -35,7 +35,12 @@ return {
   -- Better yank/paste
   {
     "gbprod/yanky.nvim",
-    dependencies = { { "kkharji/sqlite.lua", enabled = not utils.is_windows() } },
+    dependencies = { "kkharji/sqlite.lua" },
+    init = function()
+      if utils.is_windows() then
+        vim.g.sqlite_clib_path = "winsqlite3.dll"
+      end
+    end,
     -- stylua: ignore
     keys = {
       { "<Leader>sy", function() require("telescope").extensions.yank_history.yank_history({}) end, desc = "Open Yank History" },
@@ -50,14 +55,12 @@ return {
       { "zP", '"0<Plug>(YankyPutBefore)', mode = { "n", "x" }, desc = "Put Last Yanked Text Before Cursor" },
       { "zgp", '"0<Plug>(YankyPutIndentAfterLinewise)', mode = { "n", "x" }, desc = "Put Last Yanked Text After Selection" },
       { "zgP", '"0<Plug>(YankyPutIndentBeforeLinewise)', mode = { "n", "x" }, desc = "Put Last Yanked Text Before Selection" },
-      { "[y", "<Plug>(YankyCycleForward)", desc = "Cycle Forward Through Yank History" },
-      { "]y", "<Plug>(YankyCycleBackward)", desc = "Cycle Backward Through Yank History" },
       { "[p", "<Plug>(YankyCycleForward)", desc = "Cycle Forward Through Yank History" },
       { "]p", "<Plug>(YankyCycleBackward)", desc = "Cycle Backward Through Yank History" },
     },
     opts = {
       highlight = { timer = 150 },
-      ring = { storage = utils.is_windows() and "shada" or "sqlite" },
+      ring = { storage = "sqlite" },
     },
   },
 
@@ -74,7 +77,7 @@ return {
         desc = "Add Cursor Downward",
       },
       {
-        "<C-S-j>",
+        "<C-S-J>",
         function()
           require("nvim-multi-cursor.cursor").cursor_down()
         end,
@@ -90,7 +93,7 @@ return {
         desc = "Add Cursor Upward",
       },
       {
-        "<C-S-k>",
+        "<C-S-K>",
         function()
           require("nvim-multi-cursor.cursor").cursor_up()
         end,
@@ -102,13 +105,21 @@ return {
         function()
           require("nvim-multi-cursor.cursor").toggle_cursor_next_match()
         end,
-        mode = { "n" },
+        mode = { "n", "x" },
         desc = "Add Cursor Upward",
       },
       {
         "<C-S-N>",
         function()
           require("nvim-multi-cursor.cursor").cursor_next_match()
+        end,
+        mode = { "n" },
+        desc = "Move Cursor Up",
+      },
+      {
+        "<C-S-L>",
+        function()
+          require("nvim-multi-cursor.cursor").toggle_cursor_all_match()
         end,
         mode = { "n" },
         desc = "Move Cursor Up",
@@ -140,14 +151,5 @@ return {
       default_mappings = false,
     },
     -- cond = not not vim.g.vscode,
-  },
-
-  {
-    "keaising/im-select.nvim",
-    ft = { "markdown" },
-    config = function()
-      require("im_select").setup({})
-    end,
-    enabled = false,
   },
 }

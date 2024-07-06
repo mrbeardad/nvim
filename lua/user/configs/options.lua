@@ -1,3 +1,4 @@
+local deferclip = require("user.utils.deferclip")
 -- Editor
 vim.opt.confirm = true -- Confirm to save changes before exiting modified buffer
 vim.opt.autowrite = true -- Enable auto write
@@ -26,7 +27,8 @@ vim.opt.shiftwidth = 2 -- Size of an indent
 vim.opt.shiftround = true -- Round indent
 vim.opt.smartindent = true -- Insert indents automatically
 vim.opt.formatoptions = "tcrqjnl" -- Configure the automatically format options
-vim.opt.clipboard = "unnamedplus" -- Sync with system clipboard
+vim.opt.clipboard = "unnamedplus" -- Do not sync with system clipboard
+deferclip.setup() -- Defer to sync clipboard to improve performance
 
 -- UI: inside window
 vim.opt.list = true -- Show some invisible characters

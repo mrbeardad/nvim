@@ -6,7 +6,7 @@ return {
       vim.cmd.colorscheme("tokyonight")
     end,
     opts = {
-      update_interval = 3000,
+      update_interval = 1000,
       set_dark_mode = function()
         vim.api.nvim_set_option_value("background", "dark", { scope = "global" })
       end,
@@ -66,129 +66,5 @@ return {
         }
       end,
     },
-  },
-
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    lazy = true,
-    opts = {
-      flavour = "macchiato", -- latte, frappe, macchiato, mocha
-      background = {
-        light = "latte",
-        dark = "macchiato",
-      },
-      dim_inactive = {
-        enabled = true,
-      },
-      custom_highlights = function(colors)
-        return {
-          MatchParen = { italic = true },
-        }
-      end,
-      integrations = {
-        aerial = false,
-        alpha = true,
-        barbar = false,
-        beacon = false,
-        -- bufferline
-        cmp = true,
-        coc_nvim = false,
-        dap = false,
-        dap_ui = false,
-        dashboard = false,
-        dropbar = {
-          enabled = false,
-          color_mode = false, -- enable color for kind's texts, not just kind's icons
-        },
-        -- feline
-        fern = false,
-        fidget = false,
-        flash = true,
-        gitgutter = false,
-        gitsigns = true,
-        harpoon = false,
-        headlines = false,
-        hop = false,
-        illuminate = {
-          enabled = true,
-          lsp = false,
-        },
-        indent_blankline = {
-          enabled = true,
-          scope_color = "", -- catppuccin color (eg. `lavender`) Default: text
-          colored_indent_levels = false,
-        },
-        leap = false,
-        lightspeed = false,
-        lsp_saga = false,
-        lsp_trouble = false,
-        -- lualine
-        markdown = true,
-        mason = true,
-        mini = {
-          enabled = true,
-          indentscope_color = "", -- catppuccin color (eg. `lavender`) Default: text
-        },
-        native_lsp = {
-          enabled = true,
-          virtual_text = {
-            errors = { "italic" },
-            hints = { "italic" },
-            warnings = { "italic" },
-            information = { "italic" },
-          },
-          underlines = {
-            errors = { "undercurl" },
-            hints = { "undercurl" },
-            warnings = { "undercurl" },
-            information = { "undercurl" },
-          },
-          inlay_hints = {
-            background = true,
-          },
-        },
-        navic = {
-          enabled = false,
-          custom_bg = "NONE", -- "lualine" will set background to mantle
-        },
-        neogit = false,
-        neotest = false,
-        neotree = true,
-        noice = true,
-        notifier = false,
-        notify = true,
-        nvimtree = false,
-        octo = false,
-        overseer = false,
-        pounce = false,
-        rainbow_delimiters = true,
-        sandwich = false,
-        semantic_tokens = true,
-        symbols_outline = false,
-        telekasten = false,
-        telescope = {
-          enabled = true,
-          -- style = "nvchad"
-        },
-        treesitter = true,
-        treesitter_context = true,
-        ts_rainbow = false,
-        ts_rainbow2 = false,
-        ufo = false,
-        vim_sneak = false,
-        vimwiki = false,
-        which_key = true,
-        window_picker = false,
-      },
-    },
-  },
-  {
-    "akinsho/bufferline.nvim",
-    opts = function(_, opts)
-      if vim.g.colors_name:find("catppuccin", 1, true) then
-        opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
-      end
-    end,
   },
 }

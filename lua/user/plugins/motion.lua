@@ -85,10 +85,10 @@ return {
     event = "CmdlineEnter",
     -- stylua: ignore
     keys = {
-      { "f", mode = { "n", "x", "o" } },
-      { "F", mode = { "n", "x", "o" } },
-      { "t", mode = { "n", "x", "o" } },
-      { "T", mode = { "n", "x", "o" } },
+      { "f", mode = { "n", "x" } },
+      { "F", mode = { "n", "x" } },
+      { "t", mode = { "n", "x" } },
+      { "T", mode = { "n", "x" } },
       { "r", "<Cmd>lua require('flash').remote({restore=true})<CR>", mode = "o", desc = "Flash Remote" },
       { "S", "<Cmd>lua require('flash').treesitter()<CR>", mode = { "n", "o", "x" }, desc = "Flash Treesitter" },
       { ";", "<Cmd>lua require('flash').treesitter({jump={pos='start'}})<CR>", mode = { "n", "o", "x" }, desc = "Outter Start Of Treesitter Node" },
@@ -108,6 +108,7 @@ return {
           keys = { "f", "F", "t", "T" },
           jump_labels = true,
           autohide = true,
+          jump = { autojump = true },
           char_actions = function(motion)
             return {
               [";"] = "next",
@@ -123,6 +124,13 @@ return {
         },
       },
     },
+    config = function(plugin, opts)
+      require("flash").setup(opts)
+      vim.keymap.del({ "o" }, "f", {})
+      vim.keymap.del({ "o" }, "F", {})
+      vim.keymap.del({ "o" }, "t", {})
+      vim.keymap.del({ "o" }, "T", {})
+    end,
   },
   -- Flash Telescope config
   {

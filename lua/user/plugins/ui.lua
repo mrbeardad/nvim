@@ -295,7 +295,7 @@ return {
         lualine_y = { "filetype", "fileformat", "encoding" },
         lualine_z = { { " %c  %l:%L", type = "stl" } },
       },
-      extensions = { "lazy", "neo-tree" },
+      extensions = { "quickfix", "lazy", "neo-tree" },
     },
   },
 
@@ -331,29 +331,56 @@ return {
 
   -- Animate scroll
   {
-    "karb94/neoscroll.nvim",
-    keys = {
-      { "<C-Y>", mode = { "n", "x" } },
-      { "<C-E>", mode = { "n", "x" } },
-      { "<C-U>", mode = { "n", "x" } },
-      { "<C-D>", mode = { "n", "x" } },
-      { "<C-B>", mode = { "n", "x" } },
-      { "<C-F>", mode = { "n", "x" } },
-      { "zt", mode = { "n", "x" } },
-      { "zz", mode = { "n", "x" } },
-      { "zb", mode = { "n", "x" } },
-    },
-    opts = {
-      easing_function = "quartic",
-    },
+    "echasnovski/mini.animate",
+    event = "VeryLazy",
+    opts = function()
+      -- don't use animate when scrolling with the mouse
+      local mouse_scrolled = false
+      for _, scroll in ipairs({ "Up", "Down" }) do
+        local key = "<ScrollWheel" .. scroll .. ">"
+        vim.keymap.set({ "", "i" }, key, function()
+          mouse_scrolled = true
+          return key
+        end, { expr = true })
+      end
+
+      local animate = require("mini.animate")
+      return {
+        cursor = { enable = false },
+        resize = {
+          timing = animate.gen_timing.linear({ duration = 50, unit = "total" }),
+        },
+        scroll = {
+          timing = animate.gen_timing.linear({ duration = 150, unit = "total" }),
+          subscroll = animate.gen_subscroll.equal({
+            predicate = function(total_scroll)
+              if mouse_scrolled then
+                mouse_scrolled = false
+                return false
+              end
+              return total_scroll > 1
+            end,
+          }),
+        },
+      }
+    end,
   },
 
   -- Show context of the current cursor position
   {
     "nvim-treesitter/nvim-treesitter-context",
     event = "User LazyFile",
+    keys = {
+      {
+        "[{",
+        function()
+          require("treesitter-context").go_to_context(vim.v.count1)
+        end,
+        mode = { "n", "x" },
+      },
+    },
     opts = {
-      max_lines = 3,
+      max_lines = vim.o.scrolloff,
     },
   },
 
@@ -459,14 +486,12 @@ return {
         desc = "Workspace Symbols",
       },
       { "gd", "<Cmd>Telescope lsp_definitions reuse_win=true<CR>", desc = "Goto Definition" },
-      { "gy", "<Cmd>Telescope lsp_type_definitions reuse_win=true<CR>", desc = "Goto Type Definition" },
+      { "gt", "<Cmd>Telescope lsp_type_definitions reuse_win=true<CR>", desc = "Goto Type Definition" },
       { "gr", "<Cmd>Telescope lsp_references<CR>", desc = "Goto References" },
       { "gi", "<Cmd>Telescope lsp_implementations reuse_win=true<CR>", desc = "Goto Implementation" },
       -- Others
       { "<Leader>:", "<Cmd>Telescope command_history<CR>", desc = "Command History" },
-      { "<Leader>sC", "<Cmd>Telescope command_history<CR>", desc = "Command History" },
       { "<Leader>?", "<cmd>Telescope help_tags<CR>", desc = "Help Pages" },
-      { "<Leader>sh", "<cmd>Telescope help_tags<CR>", desc = "Help Pages" },
       { "<Leader>sc", "<Cmd>Telescope commands<CR>", desc = "Commands" },
       { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Auto Commands" },
       { "<Leader>sb", "<Cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Buffer Fuzzy Search" },
@@ -503,8 +528,8 @@ return {
             ["<Esc>"] = "close",
             ["<C-F>"] = "preview_scrolling_down",
             ["<C-B>"] = "preview_scrolling_up",
-            ["<A-f>"] = "preview_scrolling_right",
-            ["<A-b>"] = "preview_scrolling_left",
+            ["<M-f>"] = "preview_scrolling_right",
+            ["<M-b>"] = "preview_scrolling_left",
             ["<Up>"] = "cycle_history_prev",
             ["<Down>"] = "cycle_history_next",
             ["<C-V>"] = false,
@@ -515,14 +540,18 @@ return {
       },
       extensions = {
         egrepify = {
+          AND = false,
           prefixes = {
             ["!"] = {
               flag = "invert-match",
             },
+            ["\\C"] = {
+              flag = "case-sensitive",
+            },
           },
           mappings = {
             i = {
-              ["<C-Z>"] = false,
+              ["<C-z>"] = false,
               ["<C-a>"] = false,
               ["<C-r>"] = false,
             },
@@ -570,19 +599,7 @@ return {
   {
     "folke/noice.nvim",
     dependencies = {
-      {
-        "rcarriga/nvim-notify",
-        keys = {
-          {
-            "<leader>un",
-            function()
-              require("notify").dismiss({ silent = true, pending = true })
-            end,
-            desc = "Dismiss all Notifications",
-          },
-        },
-        opts = {},
-      },
+      { "rcarriga/nvim-notify", opts = {} },
     },
     event = "VeryLazy",
     -- stylua: ignore
@@ -592,17 +609,14 @@ return {
       { "<Leader>nh", function() require("noice").cmd("history") end, desc = "Noice History" },
       { "<Leader>na", function() require("noice").cmd("all") end, desc = "Noice All" },
       { "<Leader>nd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
-      { "<C-F>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
-      { "<C-B>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
+      { "<C-F>", function() if not require("noice.lsp").scroll(4) then return "<C-F>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
+      { "<C-B>", function() if not require("noice.lsp").scroll(-4) then return "<C-B>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
     },
     init = function()
       vim.opt.cmdheight = 0
     end,
     opts = {
       lsp = {
-        progress = {
-          enabled = false,
-        },
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,

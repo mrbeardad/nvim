@@ -10,9 +10,8 @@ vim.keymap.set("n", "<Leader>p", "<Cmd>Lazy<CR>", { desc = "Plugins Manager" })
 vim.keymap.set("n", "<Leader><Tab><Tab>", "<Cmd>try<Bar>b#<Bar>catch<Bar>endtry<CR>", { desc = "Switch Buffer" })
 
 -- Buffers: save
-vim.keymap.set("n", "<C-S>", "<Cmd>silent! update<Bar>redraw<CR>", { desc = "Save" })
-vim.keymap.set({ "i", "x" }, "<C-S>", "<Esc><Cmd>silent! update<Bar>redraw<CR>", { desc = "Save" })
-vim.keymap.set("n", "<Leader>bw", "<Cmd>noautocmd w<CR>", { desc = "Save Without Format" })
+vim.keymap.set({ "n", "i", "x" }, "<C-S>", keymap.save_file(false), { desc = "Save" })
+vim.keymap.set({ "n", "x" }, "<Leader>bw", keymap.save_file(true), { desc = "Save Without Format" })
 
 -- Windows: switch
 vim.keymap.set("n", "<Tab>", keymap.switch_window(true), { desc = "Next Window" })
@@ -36,7 +35,7 @@ vim.keymap.set("n", "<Leader>tp", "<Cmd>tabprevious<CR>", { desc = "Previous Tab
 vim.keymap.set("n", "<Leader>td", "<Cmd>tabclose<CR>", { desc = "Close Tab" })
 
 -- Search: clear highlight
-vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch|diffupdate|normal! <C-L><CR><Esc>", { desc = "Clear Highlight" })
+vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR><Esc>", { desc = "Clear Highlight" })
 
 -- Search: fix direction of n/N
 vim.keymap.set("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
@@ -47,13 +46,13 @@ vim.keymap.set("x", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Se
 vim.keymap.set("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
 
 -- Search: simulate vscode search mode
-vim.keymap.set("c", "<A-w>", keymap.toggle_search_pattern("w"), { desc = "Match Whole Word" })
-vim.keymap.set("c", "<A-c>", keymap.toggle_search_pattern("c"), { desc = "Match Case" })
-vim.keymap.set("c", "<A-r>", keymap.toggle_search_pattern("r"), { desc = "Toggle Very Magic" })
+vim.keymap.set("c", "<M-w>", keymap.toggle_search_pattern("w"), { desc = "Match Whole Word" })
+vim.keymap.set("c", "<M-c>", keymap.toggle_search_pattern("c"), { desc = "Match Case" })
+vim.keymap.set("c", "<M-r>", keymap.toggle_search_pattern("r"), { desc = "Toggle Very Magic" })
 
 -- Scroll: horizontal
-vim.keymap.set({ "n", "x", "i" }, "<A-f>", "<Cmd>normal zL<CR>", { desc = "Scroll Right" })
-vim.keymap.set({ "n", "x", "i" }, "<A-b>", "<Cmd>normal zH<CR>", { desc = "Scroll Left" })
+vim.keymap.set({ "n", "x", "i" }, "<M-f>", "<Cmd>normal zL<CR>", { desc = "Scroll Right" })
+vim.keymap.set({ "n", "x", "i" }, "<M-b>", "<Cmd>normal zH<CR>", { desc = "Scroll Left" })
 
 -- Motion: hjkl
 vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down" })
@@ -64,10 +63,10 @@ vim.keymap.set("i", "<C-E>", "<End>", { desc = "End Of Line" })
 
 -- Motion: jump list
 -- HACK: For historical reason, <Tab> and <C-I> have the same key sequence in most of terminals.
--- To distinguish them, you could map another key, say <A-I>, to <C-I> in neovim,
--- and then map ctrl+i to send <A-I> key sequence in your terminal setting.
+-- To distinguish them, you could map another key, say <M-I>, to <C-I> in neovim,
+-- and then map ctrl+i to send <M-I> key sequence in your terminal setting.
 -- For more info `:h tui-modifyOtherKeys` and https://invisible-island.net/xterm/modified-keys.html
-vim.keymap.set({ "i", "c", "n", "v" }, "<A-I>", "<C-I>", { desc = "<C-I>" })
+vim.keymap.set({ "i", "c", "n", "v" }, "<M-I>", "<C-I>", { desc = "<C-I>" })
 
 -- Motion: go to diagnostic
 local diagnostic_goto = function(next, severity)
@@ -87,8 +86,8 @@ vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning"
 vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
 -- Operation: delete or change without register
-vim.keymap.set({ "n", "x" }, "<A-d>", '"_d', { desc = "Delete Without Register" })
-vim.keymap.set({ "n", "x" }, "<A-c>", '"_c', { desc = "Change Without Register" })
+vim.keymap.set({ "n", "x" }, "<M-d>", '"_d', { desc = "Delete Without Register" })
+vim.keymap.set({ "n", "x" }, "<M-c>", '"_c', { desc = "Change Without Register" })
 
 -- Operation: better indenting
 vim.keymap.set("n", "<", "<<", { desc = "Deindent" })
@@ -97,12 +96,12 @@ vim.keymap.set("x", "<", "<gv", { desc = "Deindent" })
 vim.keymap.set("x", ">", ">gv", { desc = "Indent" })
 
 -- Operation: move lines
-vim.keymap.set("i", "<A-j>", "<Cmd>m .+1<Bar>normal ==<CR>", { desc = "Move Down" })
-vim.keymap.set("i", "<A-k>", "<Cmd>m .-2<Bar>normal ==<CR>", { desc = "Move Up" })
-vim.keymap.set("n", "<A-j>", "<Cmd>m .+1<CR>==", { desc = "Move Down" })
-vim.keymap.set("n", "<A-k>", "<Cmd>m .-2<CR>==", { desc = "Move Up" })
-vim.keymap.set("x", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move Down" })
-vim.keymap.set("x", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move Up" })
+vim.keymap.set("i", "<M-j>", "<Cmd>m .+1<Bar>normal ==<CR>", { desc = "Move Down" })
+vim.keymap.set("i", "<M-k>", "<Cmd>m .-2<Bar>normal ==<CR>", { desc = "Move Up" })
+vim.keymap.set("n", "<M-j>", "<Cmd>m .+1<CR>==", { desc = "Move Down" })
+vim.keymap.set("n", "<M-k>", "<Cmd>m .-2<CR>==", { desc = "Move Up" })
+vim.keymap.set("x", "<M-j>", ":m '>+1<CR>gv=gv", { desc = "Move Down" })
+vim.keymap.set("x", "<M-k>", ":m '<-2<CR>gv=gv", { desc = "Move Up" })
 
 -- Operation: add empty lines
 vim.keymap.set(
@@ -121,7 +120,7 @@ vim.keymap.set(
 -- Operation: insert/cmdline mode
 vim.keymap.set("c", "<C-D>", "<Del>", { desc = "Delete Right" })
 vim.keymap.set("i", "<C-D>", "<Del>", { desc = "Delete Right" })
-vim.keymap.set("i", "<A-d>", '<C-G>u<Cmd>normal! "_dw<CR>', { desc = "Delete Right Word" })
+vim.keymap.set("i", "<M-d>", '<C-G>u<Cmd>normal! "_dw<CR>', { desc = "Delete Right Word" })
 vim.keymap.set("c", "<C-K>", function()
   local text = vim.fn.getcmdline()
   local col = vim.fn.getcmdpos()
@@ -133,6 +132,7 @@ vim.keymap.set("i", "<C-K>", '<C-G>u<Cmd>normal! "_d$<CR><Right>', { desc = "Del
 vim.keymap.set("i", "<C-J>", "<C-G>u<End><CR>", { desc = "New Line" }) -- <C-G>u is required here since <End> does not break undo here
 
 -- Operation: yank and paste
+vim.keymap.set("x", "<C-C>", "y", { desc = "Yank" })
 vim.keymap.set("i", "<C-V>", "<C-G>u<C-R><C-P>+", { desc = "Paste Last Yanked" })
 vim.keymap.set("c", "<C-V>", "<C-R>+", { desc = "Paste Last Yanked" })
 
@@ -156,12 +156,12 @@ vim.keymap.set("n", "<Leader>un", "<Cmd>setlocal number!<CR>", { desc = "Toggle 
 vim.keymap.set("n", "<Leader>ur", "<Cmd>setlocal relativenumber!<CR>", { desc = "Toggle 'relativenumber'" })
 vim.keymap.set("n", "<Leader>us", "<Cmd>setlocal spell!<CR>", { desc = "Toggle 'spell'" })
 vim.keymap.set("n", "<Leader>uw", "<Cmd>setlocal wrap!<CR>", { desc = "Toggle 'wrap'" })
-vim.keymap.set("n", "<A-z>", "<Cmd>setlocal wrap!<CR>", { desc = "Toggle 'wrap'" })
+vim.keymap.set("n", "<M-z>", "<Cmd>setlocal wrap!<CR>", { desc = "Toggle 'wrap'" })
 
 -- UI: floating terminal
-vim.keymap.set("n", "<A-`>", keymap.open_term, { desc = "Terminal" })
-vim.keymap.set("t", "<A-`>", keymap.open_term, { desc = "Terminal" })
-vim.keymap.set("t", "<Esc><Esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
+vim.keymap.set("n", "<M-`>", keymap.open_term, { desc = "Terminal" })
+vim.keymap.set("t", "<M-`>", keymap.open_term, { desc = "Terminal" })
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-N>", { desc = "Enter Normal Mode" })
 vim.keymap.set("n", "<Leader>gg", function()
   keymap.open_term("lazygit")
 end, { desc = "Lazygit" })

@@ -19,7 +19,7 @@ return {
   --     servers = {
   --       clangd = {
   --         keys = {
-  --           { "<A-o>", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch Source/Header (C/C++)" },
+  --           { "<M-o>", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch Source/Header (C/C++)" },
   --           { "<Leader>ls", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch Source/Header (C/C++)" },
   --         },
   --       },

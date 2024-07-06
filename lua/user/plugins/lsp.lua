@@ -115,7 +115,7 @@ return {
     },
     config = function(_, opts)
       require("lint").linters_by_ft = opts.linters_by_ft
-      vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+      vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
         callback = function()
           require("lint").try_lint()
         end,
@@ -145,7 +145,7 @@ return {
         desc = "Format Injected Langs",
       },
       {
-        "<A-F>",
+        "<M-F>",
         function()
           require("conform").format({ timeout_ms = 2000, lsp_fallback = true })
         end,

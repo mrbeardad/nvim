@@ -1,3 +1,4 @@
+local deferclip = require("user.utils.deferclip")
 local utils = require("user.utils")
 
 -- Trigger event LazyDir
@@ -139,14 +140,6 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
     local current_tab = vim.fn.tabpagenr()
     vim.cmd("tabdo wincmd =")
     vim.cmd("tabnext " .. current_tab)
-  end,
-})
-
--- Highlight on yank, do it by yanky
-vim.api.nvim_create_autocmd("TextYankPost", {
-  group = utils.augroup("HighlightYank"),
-  callback = function()
-    vim.highlight.on_yank({ higroup = "Search" })
   end,
 })
 

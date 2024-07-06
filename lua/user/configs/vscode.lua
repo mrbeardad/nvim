@@ -35,12 +35,6 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "BufAdd" }, {
     vim.api.nvim_exec_autocmds("User", { pattern = "LazyFile" })
   end,
 })
-vim.api.nvim_create_autocmd("TextYankPost", {
-  group = utils.augroup("HighlightYank"),
-  callback = function()
-    vim.highlight.on_yank({ higroup = "Search" })
-  end,
-})
 
 -- Keymaps
 vim.g.mapleader = " "
@@ -79,31 +73,31 @@ vim.keymap.set("n", "N", "'nN'[v:searchforward].'zv'", { expr = true, desc = "Pr
 vim.keymap.set("x", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
 vim.keymap.set("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
 -- Search: simulate vscode search mode
-vim.keymap.set("c", "<A-w>", keymap.toggle_search_pattern("w"), { desc = "Match Whole Word" })
-vim.keymap.set("c", "<A-c>", keymap.toggle_search_pattern("c"), { desc = "Match Case" })
-vim.keymap.set("c", "<A-r>", keymap.toggle_search_pattern("r"), { desc = "Toggle Very Magic" })
+vim.keymap.set("c", "<M-w>", keymap.toggle_search_pattern("w"), { desc = "Match Whole Word" })
+vim.keymap.set("c", "<M-c>", keymap.toggle_search_pattern("c"), { desc = "Match Case" })
+vim.keymap.set("c", "<M-r>", keymap.toggle_search_pattern("r"), { desc = "Toggle Very Magic" })
 -- Search: code navigation
-vim.keymap.set("n", "gy", vscode_action("editor.action.goToTypeDefinition"), { desc = "Go To Type Definition" })
+vim.keymap.set("n", "gt", vscode_action("editor.action.goToTypeDefinition"), { desc = "Go To Type Definition" })
 vim.keymap.set("n", "gr", vscode_action("editor.action.goToReferences"), { desc = "Go To References" })
 vim.keymap.set("n", "gi", vscode_action("editor.action.goToImplementation"), { desc = "Go To Implementations" })
 -- Scroll
 vim.keymap.set("n", "zl", vscode_action("scrollRight"), { desc = "Scroll Right" })
 vim.keymap.set("n", "zh", vscode_action("scrollLeft"), { desc = "Scroll Left" })
--- Motion: basic move
-vim.keymap.set({ "n", "x" }, "j", function()
-  if vim.v.count == 0 then
-    vim.cmd("normal gj") -- vscode's gj
-  else
-    vim.cmd(string.format("normal! %dj", vim.v.count))
-  end
-end, { desc = "Down" })
-vim.keymap.set({ "n", "x" }, "k", function()
-  if vim.v.count == 0 then
-    vim.cmd("normal gk") -- vscode's gk
-  else
-    vim.cmd(string.format("normal! %dk", vim.v.count))
-  end
-end, { desc = "Down" })
+-- Motion: basic move, vscode gj/gk does not respect curwant
+-- vim.keymap.set({ "n", "x" }, "j", function()
+--   if vim.v.count == 0 then
+--     vim.cmd("normal gj") -- vscode's gj
+--   else
+--     vim.cmd(string.format("normal! %dj", vim.v.count))
+--   end
+-- end, { desc = "Down" })
+-- vim.keymap.set({ "n", "x" }, "k", function()
+--   if vim.v.count == 0 then
+--     vim.cmd("normal gk") -- vscode's gk
+--   else
+--     vim.cmd(string.format("normal! %dk", vim.v.count))
+--   end
+-- end, { desc = "Down" })
 vim.keymap.set("c", "<C-A>", "<C-B>", { desc = "Start Of Line" })
 vim.keymap.set("i", "<C-A>", "<Home>", { desc = "Start Of Line" })
 vim.keymap.set("i", "<C-E>", "<End>", { desc = "End Of Line" })
@@ -123,8 +117,8 @@ end, { desc = "Prev Git Diff" })
 vim.keymap.set("n", "]d", vscode_action("editor.action.marker.next"), { desc = "Next Diagnostic" })
 vim.keymap.set("n", "[d", vscode_action("editor.action.marker.prev"), { desc = "Prev Diagnostic" })
 -- Operation: delete or change without register
-vim.keymap.set({ "n", "x" }, "<A-d>", '"_d', { desc = "Delete Without Register" })
-vim.keymap.set({ "n", "x" }, "<A-c>", '"_c', { desc = "Change Without Register" })
+vim.keymap.set({ "n", "x" }, "<M-d>", '"_d', { desc = "Delete Without Register" })
+vim.keymap.set({ "n", "x" }, "<M-c>", '"_c', { desc = "Change Without Register" })
 -- Operation: better indenting
 vim.keymap.set("n", "<", "<<", { desc = "Deindent" })
 vim.keymap.set("n", ">", ">>", { desc = "Indent" })
@@ -146,7 +140,7 @@ vim.keymap.set(
 -- Operation: insert mode
 vim.keymap.set("c", "<C-D>", "<Del>", { desc = "Delete Right" })
 vim.keymap.set("i", "<C-D>", "<Del>", { desc = "Delete Right" })
-vim.keymap.set("i", "<A-d>", '<C-G>u<Cmd>normal! "_dw<CR>')
+vim.keymap.set("i", "<M-d>", '<C-G>u<Cmd>normal! "_dw<CR>')
 vim.keymap.set("c", "<C-K>", function()
   local text = vim.fn.getcmdline()
   local col = vim.fn.getcmdpos()
