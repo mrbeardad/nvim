@@ -35,7 +35,7 @@ return {
       },
     },
     opts = {
-      options = { "buffers", "curdir", "tabpages", "winsize", "globals", "skiprtp", "folds" },
+      -- options = vim.opt.sessionoptions:get(),
     },
   },
 

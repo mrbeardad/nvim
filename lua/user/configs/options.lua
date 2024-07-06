@@ -7,6 +7,7 @@ vim.opt.undolevels = 10000 -- Increase undolevels since lots of undo breaks are 
 vim.opt.updatetime = 300 -- Save swap file and trigger CursorHold
 vim.opt.timeoutlen = 300 -- Wait for a mapped sequence to complete.
 vim.opt.shortmess = "oOtTWIcCFS" -- Configure the message format
+vim.opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
 
 -- Search
 vim.opt.ignorecase = true -- Ignore case
