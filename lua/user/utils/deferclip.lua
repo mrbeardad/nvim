@@ -65,8 +65,8 @@ end
 
 function M.copy(regtype)
   return function(lines)
-    add_entry({ lines = lines, regtype = regtype })
     active_entry = { lines = lines, regtype = regtype }
+    add_entry(active_entry)
     sync_to()
   end
 end

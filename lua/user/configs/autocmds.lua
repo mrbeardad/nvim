@@ -1,5 +1,6 @@
 local deferclip = require("user.utils.deferclip")
 local utils = require("user.utils")
+local watch = require("user.utils.watch")
 
 -- Trigger event LazyDir
 vim.api.nvim_create_autocmd("BufEnter", {
@@ -149,5 +150,20 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "gitcommit", "gitrebase", "markdown" },
   callback = function()
     vim.opt_local.wrap = true
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  group = utils.augroup("AutoRead"),
+  callback = function(ev)
+    vim.schedule(function()
+      watch.buf_win_enter()
+    end)
+  end,
+})
+vim.api.nvim_create_autocmd("VimLeave", {
+  group = utils.augroup("AutoRead"),
+  callback = function(ev)
+    watch.stop_all()
   end,
 })
