@@ -43,7 +43,7 @@ function M.start_watch(buf, fname)
 end
 
 function M.stop_watch(buf, fname)
-  fname = fname and vim.api.nvim_buf_get_name(buf)
+  fname = fname or vim.api.nvim_buf_get_name(buf)
   local watcher = M.busy_watchers[fname]
   if not watcher then
     return
