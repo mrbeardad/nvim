@@ -43,7 +43,8 @@ return {
     "mrbeardad/nvim-multi-cursor",
     keys = {
       { "<C-N>", false },
-      { "<C-S-N>", false },
+      { "<C-S-N>", false, mode = { "n", "x" } },
+      { "<C-S-L>", false, mode = { "n", "x" } },
     },
   },
   {
