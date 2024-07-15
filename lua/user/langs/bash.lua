@@ -1,3 +1,4 @@
+local utils = require("user.utils")
 return {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -10,7 +11,13 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        bashls = {}, -- Automatically call shellcheck
+        bashls = {
+          settings = {
+            bashIde = {
+              shellcheckPath = utils.is_windows() and vim.fn.stdpath("data") .. "\\mason\\bin\\shellcheck.cmd" or nil,
+            },
+          },
+        }, -- Automatically call shellcheck
       },
     },
   },
