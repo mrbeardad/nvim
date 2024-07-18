@@ -32,7 +32,11 @@ end
 
 local root_patterns = { ".git", ".svn" }
 local root_cache = {}
+M.dir_open_by_cmd_arg = nil
 function M.workspace_root(no_cache)
+  if M.dir_open_by_cmd_arg then
+    return M.dir_open_by_cmd_arg, "arg"
+  end
   local root
   local bufnr = vim.api.nvim_get_current_buf()
   -- cache

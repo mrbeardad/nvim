@@ -11,6 +11,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
     local stat = vim.uv.fs_stat(bufname)
     if stat and stat.type == "directory" then
       vim.api.nvim_del_augroup_by_id(utils.augroup("LazyDir"))
+      utils.dir_open_by_cmd_arg = bufname
       vim.api.nvim_exec_autocmds("User", { pattern = "LazyDir" })
       -- Trigger BufEnter again for DirOpened handlers
       vim.api.nvim_exec_autocmds(ev.event, { buffer = ev.buf, data = ev.data })
