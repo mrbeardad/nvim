@@ -32,7 +32,7 @@ function M.sync_from()
   })
 end
 
-local sync_to
+M.sync_to = nil
 do
   local cur_sync_job
   local function sync_next(entry)
@@ -51,7 +51,7 @@ do
     vim.fn.chanclose(chan, "stdin")
   end
 
-  sync_to = function()
+  M.sync_to = function()
     if cur_sync_job then
       return
     else
@@ -67,7 +67,7 @@ function M.copy(regtype)
   return function(lines)
     active_entry = { lines = lines, regtype = regtype }
     add_entry(active_entry)
-    sync_to()
+    M.sync_to()
   end
 end
 
@@ -95,6 +95,10 @@ function M.setup()
     group = utils.augroup("DeferClip"),
     callback = M.sync_from,
   })
+  -- vim.api.nvim_create_autocmd({ "FocusLost", "VimEnter" }, {
+  --   group = utils.augroup("DeferClip"),
+  --   callback = M.sync_to,
+  -- })
 end
 
 return M

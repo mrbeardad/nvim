@@ -157,7 +157,7 @@ return {
               end,
               desc = "copy_path",
             },
-            ["o"] = {
+            ["O"] = {
               function(state)
                 local path = state.tree:get_node().path
                 if vim.fn.isdirectory(path) == 0 then
@@ -389,43 +389,25 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
-      plugins = {
-        presets = {
-          operators = false,
+      spec = {
+        {
+          mode = { "n", "x" },
+          { "<Leader><Tab>", group = "Switch Buffer" },
+          { "<Leader>b", group = "Buffer" },
+          { "<Leader>g", group = "Git" },
+          { "<Leader>l", group = "Language" },
+          { "<Leader>m", group = "Multi Cursor" },
+          { "<Leader>n", group = "Noice Message" },
+          { "<Leader>q", group = "Quit/Session" },
+          { "<Leader>s", group = "Search" },
+          { "<Leader>t", group = "Tabs" },
+          { "<Leader>u", group = "UI" },
+          { "[", group = "Prev" },
+          { "]", group = "Next" },
+          { "g", group = "Goto" },
         },
       },
-      -- Delete < and >
-      operators = {
-        d = "Delete",
-        c = "Change",
-        y = "Yank",
-        ["g~"] = "Toggle Case",
-        ["gu"] = "Lowercase",
-        ["gU"] = "Uppercase",
-        ["zf"] = "Create Fold",
-        ["!"] = "Filter Through External Program",
-        ["v"] = "Visual Character Mode",
-      },
     },
-    config = function(_, opts)
-      require("which-key").setup(opts)
-      require("which-key").register({
-        mode = { "n", "x" },
-        ["g"] = { name = "+Goto" },
-        ["]"] = { name = "+Next" },
-        ["["] = { name = "+Prev" },
-        ["<Leader><Tab>"] = { name = "+Switch Buffer" },
-        ["<Leader>b"] = { name = "+Buffer" },
-        ["<Leader>t"] = { name = "+Tabs" },
-        ["<Leader>q"] = { name = "+Quit/Session" },
-        ["<Leader>s"] = { name = "+Search" },
-        ["<Leader>m"] = { name = "+Multi Cursor" },
-        ["<Leader>n"] = { name = "+Noice Message" },
-        ["<Leader>l"] = { name = "+Language" },
-        ["<Leader>g"] = { name = "+Git" },
-        ["<Leader>u"] = { name = "+UI" },
-      })
-    end,
   },
 
   -- Search and preview

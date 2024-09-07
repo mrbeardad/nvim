@@ -23,7 +23,7 @@ require("lazy").setup({
   },
   install = {
     -- Try to load one of these colorschemes when starting an installation during startup
-    colorscheme = { "tokyonight", "catppuccin", "habamax" },
+    colorscheme = { "tokyonight", "habamax" },
   },
   change_detection = {
     -- Do not automatically check for config file changes and reload the ui
