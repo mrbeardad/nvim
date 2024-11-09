@@ -11,14 +11,14 @@ return {
     opts = {
       servers = {
         pyright = {},
-        ruff_lsp = {},
+        ruff = {},
       },
       setup = {
-        ruff_lsp = function()
+        ruff = function()
           vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
               local client = vim.lsp.get_client_by_id(args.data.client_id)
-              if client and client.name == "ruff_lsp" then
+              if client and client.name == "ruff" then
                 -- Disable hover in favor of Pyright
                 client.server_capabilities.hoverProvider = false
               end

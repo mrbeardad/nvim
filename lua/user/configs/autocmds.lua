@@ -168,3 +168,8 @@ vim.api.nvim_create_autocmd("VimLeave", {
     watch.stop_all()
   end,
 })
+
+vim.api.nvim_create_autocmd({ "FocusGained" }, {
+  group = utils.augroup("ResetCursor"),
+  command = "set guicursor=n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20",
+})
