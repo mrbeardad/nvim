@@ -51,57 +51,62 @@ return {
               cmp.complete()
             end
           end, { "i", "c" }),
-          ["<Tab>"] = cmp.mapping(function()
-            if cmp.visible() then
-              cmp.select_next_item()
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() and vim.cmd("let &ul=&ul") and require("cmp").confirm() then
+            elseif require("luasnip").expandable() and vim.cmd("let &ul=&ul") and require("luasnip").expand() then
+            elseif require("luasnip").jumpable(1) and require("luasnip").jump(1) then
             else
-              cmp.complete()
+              fallback()
             end
-          end, { "c" }),
-          ["<S-Tab>"] = cmp.mapping(function()
-            if cmp.visible() then
-              cmp.select_prev_item()
+          end, { "i", "s", "c" }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if
+              cmp.visible()
+              and vim.cmd("let &ul=&ul")
+              and require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace })
+            then
+            elseif require("luasnip").jumpable(-1) and require("luasnip").jump(-1) then
             else
-              cmp.complete()
+              fallback()
             end
-          end, { "c" }),
-          ["<CR>"] = cmp.mapping({
-            i = function(fallback)
-              vim.cmd("let &ul=&ul") -- break undo
-              if not require("cmp").confirm() then
-                fallback()
-              end
-            end,
-            c = function(fallback)
-              if not require("cmp").confirm() then
-                fallback()
-              end
-            end,
-          }),
-          ["<S-CR>"] = cmp.mapping({
-            i = function(fallback)
-              vim.cmd("let &ul=&ul")
-              if not require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace }) then
-                fallback()
-              end
-            end,
-            c = function(fallback)
-              if not require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace }) then
-                fallback()
-              end
-            end,
-          }),
-          ["<C-CR>"] = cmp.mapping({
-            i = function(fallback)
-              vim.cmd("let &ul=&ul")
-              cmp.abort()
-              fallback()
-            end,
-            c = function(fallback)
-              cmp.abort()
-              fallback()
-            end,
-          }),
+          end, { "i", "s", "c" }),
+          -- ["<CR>"] = cmp.mapping({
+          --   i = function(fallback)
+          --     vim.cmd("let &ul=&ul") -- break undo
+          --     if not require("cmp").confirm() then
+          --       fallback()
+          --     end
+          --   end,
+          --   c = function(fallback)
+          --     if not require("cmp").confirm() then
+          --       fallback()
+          --     end
+          --   end,
+          -- }),
+          -- ["<S-CR>"] = cmp.mapping({
+          --   i = function(fallback)
+          --     vim.cmd("let &ul=&ul")
+          --     if not require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace }) then
+          --       fallback()
+          --     end
+          --   end,
+          --   c = function(fallback)
+          --     if not require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace }) then
+          --       fallback()
+          --     end
+          --   end,
+          -- }),
+          -- ["<C-CR>"] = cmp.mapping({
+          --   i = function(fallback)
+          --     vim.cmd("let &ul=&ul")
+          --     cmp.abort()
+          --     fallback()
+          --   end,
+          --   c = function(fallback)
+          --     cmp.abort()
+          --     fallback()
+          --   end,
+          -- }),
         },
         formatting = {
           format = function(_, item)
@@ -161,31 +166,29 @@ return {
     },
     event = "InsertEnter",
     keys = {
-      -- Do not use <tab> to expand snippets since it could conflict between jumps and expands,
-      -- just expand snippets by pressing <cr> in completion menu
-      {
-        "<Tab>",
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<Tab>"
-        end,
-        expr = true,
-        silent = true,
-        mode = "i",
-      },
-      {
-        "<Tab>",
-        function()
-          require("luasnip").jump(1)
-        end,
-        mode = "s",
-      },
-      {
-        "<S-Tab>",
-        function()
-          require("luasnip").jump(-1)
-        end,
-        mode = { "i", "s" },
-      },
+      -- {
+      --   "<Tab>",
+      --   function()
+      --     return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<Tab>"
+      --   end,
+      --   expr = true,
+      --   silent = true,
+      --   mode = "i",
+      -- },
+      -- {
+      --   "<Tab>",
+      --   function()
+      --     require("luasnip").jump(1)
+      --   end,
+      --   mode = "s",
+      -- },
+      -- {
+      --   "<S-Tab>",
+      --   function()
+      --     require("luasnip").jump(-1)
+      --   end,
+      --   mode = { "i", "s" },
+      -- },
     },
     opts = {
       -- When to check if the current snippet was deleted

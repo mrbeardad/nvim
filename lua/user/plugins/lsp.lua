@@ -157,10 +157,10 @@ return {
       vim.opt.formatexpr = "v:lua.require'conform'.formatexpr()"
     end,
     opts = {
-      format_on_save = {
-        lsp_fallback = true,
-        timeout_ms = 2000,
-      },
+      -- format_on_save = {
+      --   lsp_fallback = true,
+      --   timeout_ms = 2000,
+      -- },
       formatters = {
         injected = { options = { ignore_errors = true } },
       },

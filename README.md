@@ -373,11 +373,11 @@ Use **Motion** if the target position is exactly known.
 | `p`                              | **N** **V** | Paste text after cursor                   |
 | `P`                              | **N**       | Paste text before cursor                  |
 | `gp`                             | **N**       | Paste text below current line             |
-| `gp`                             | **N**       | Paste text above current line             |
+| `gP`                             | **N**       | Paste text above current line             |
 | `zp`                             | **N** **V** | Paste last yanked text after cursor       |
 | `zP`                             | **N**       | Paste last yanked text before cursor      |
 | `zgp`                            | **N**       | Paste last yanked text below current line |
-| `zgp`                            | **N**       | Paste last yanked text above current line |
+| `zgP`                            | **N**       | Paste last yanked text above current line |
 | `[p`                             | **N**       | Cycle forward through yank history        |
 | `]p`                             | **N**       | Cycle backward through yank history       |
 | `Ctrl`+`C`                       | **I** **V** | Copy (VSCode only)                        |
@@ -440,11 +440,10 @@ Use **Motion** if the target position is exactly known.
 | ----------------- | ----------------- | --------------------------------------------- |
 | `Ctrl`+`N`        | **I**             | Select next item, or show completion menu     |
 | `Ctrl`+`P`        | **I**             | Select previous item, or show completion menu |
-| `CR`              | **I**             | Confirm selected item and insert it           |
-| `Shift`+`CR`      | **I**             | Confirm selected item and replace with it     |
-| `Ctrl`+`CR`       | **I**             | Hide completion menu and insert enter         |
-| `Tab`             | **I**             | jump to next snippet placeholder              |
-| `Shift`+`Tab`     | **I**             | jump to previous snippet placeholder          |
+| `Tab`             | **I**             | Confirm selected item and insert it           |
+| `Shift`+`Tab`     | **I**             | Confirm selected item and replace with it     |
+| `Tab`             | **I**             | Jump to next snippet placeholder              |
+| `Shift`+`Tab`     | **I**             | Jump to previous snippet placeholder          |
 | `K`               | **N**             | Signature infomation                          |
 | `F2`              | **N**             | Rename symbol                                 |
 | `Ctrl`+`.`        | **N**             | Code Action                                   |
