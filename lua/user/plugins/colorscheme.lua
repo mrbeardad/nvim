@@ -31,6 +31,8 @@ return {
         -- set the dark theme colors, and tokyonight will invert the colors for light theme automatically
         local lighten = require("tokyonight.util").lighten
         local darken = require("tokyonight.util").darken
+        hl.String.italic = true
+        hl.Statement.bold = true
         hl.NeoTreeTabInactive = {
           link = "TabLine",
         }
