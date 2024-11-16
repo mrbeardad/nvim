@@ -51,62 +51,99 @@ return {
               cmp.complete()
             end
           end, { "i", "c" }),
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() and vim.cmd("let &ul=&ul") and require("cmp").confirm() then
-            elseif require("luasnip").expandable() and vim.cmd("let &ul=&ul") and require("luasnip").expand() then
-            elseif require("luasnip").jumpable(1) and require("luasnip").jump(1) then
-            else
+          ["<Tab>"] = cmp.mapping({
+            i = function(fallback)
+              if cmp.visible() and vim.cmd("let &ul=&ul") and require("cmp").confirm() then
+              elseif require("luasnip").expandable() and vim.cmd("let &ul=&ul") and require("luasnip").expand() then
+              elseif require("luasnip").jumpable(1) and require("luasnip").jump(1) then
+              else
+                fallback()
+              end
+            end,
+            s = function(fallback)
+              if cmp.visible() and vim.cmd("let &ul=&ul") and require("cmp").confirm() then
+              elseif require("luasnip").expandable() and vim.cmd("let &ul=&ul") and require("luasnip").expand() then
+              elseif require("luasnip").jumpable(1) and require("luasnip").jump(1) then
+              else
+                fallback()
+              end
+            end,
+            c = function(fallback)
+              if cmp.visible() then
+                cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+              else
+                cmp.complete()
+              end
+            end,
+          }),
+          ["<S-Tab>"] = cmp.mapping({
+            i = function(fallback)
+              if
+                cmp.visible()
+                and vim.cmd("let &ul=&ul")
+                and require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace })
+              then
+              elseif require("luasnip").jumpable(-1) and require("luasnip").jump(-1) then
+              else
+                fallback()
+              end
+            end,
+            s = function(fallback)
+              if
+                cmp.visible()
+                and vim.cmd("let &ul=&ul")
+                and require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace })
+              then
+              elseif require("luasnip").jumpable(-1) and require("luasnip").jump(-1) then
+              else
+                fallback()
+              end
+            end,
+            c = function(fallback)
+              if cmp.visible() then
+                cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+              else
+                cmp.complete()
+              end
+            end,
+          }),
+          ["<CR>"] = cmp.mapping({
+            -- i = function(fallback)
+            --   vim.cmd("let &ul=&ul") -- break undo
+            --   if not require("cmp").confirm() then
+            --     fallback()
+            --   end
+            -- end,
+            c = function(fallback)
+              if not require("cmp").confirm() then
+                fallback()
+              end
+            end,
+          }),
+          ["<S-CR>"] = cmp.mapping({
+            -- i = function(fallback)
+            --   vim.cmd("let &ul=&ul")
+            --   if not require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace }) then
+            --     fallback()
+            --   end
+            -- end,
+            c = function(fallback)
+              if not require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace }) then
+                fallback()
+              end
+            end,
+          }),
+          ["<C-CR>"] = cmp.mapping({
+            -- i = function(fallback)
+            --   vim.cmd("let &ul=&ul")
+            --   cmp.abort()
+            --   fallback()
+            -- end,
+            c = function(fallback)
+              cmp.abort()
               fallback()
-            end
-          end, { "i", "s", "c" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if
-              cmp.visible()
-              and vim.cmd("let &ul=&ul")
-              and require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace })
-            then
-            elseif require("luasnip").jumpable(-1) and require("luasnip").jump(-1) then
-            else
-              fallback()
-            end
-          end, { "i", "s", "c" }),
-          -- ["<CR>"] = cmp.mapping({
-          --   i = function(fallback)
-          --     vim.cmd("let &ul=&ul") -- break undo
-          --     if not require("cmp").confirm() then
-          --       fallback()
-          --     end
-          --   end,
-          --   c = function(fallback)
-          --     if not require("cmp").confirm() then
-          --       fallback()
-          --     end
-          --   end,
-          -- }),
-          -- ["<S-CR>"] = cmp.mapping({
-          --   i = function(fallback)
-          --     vim.cmd("let &ul=&ul")
-          --     if not require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace }) then
-          --       fallback()
-          --     end
-          --   end,
-          --   c = function(fallback)
-          --     if not require("cmp").confirm({ behavior = cmp.ConfirmBehavior.Replace }) then
-          --       fallback()
-          --     end
-          --   end,
-          -- }),
-          -- ["<C-CR>"] = cmp.mapping({
-          --   i = function(fallback)
-          --     vim.cmd("let &ul=&ul")
-          --     cmp.abort()
-          --     fallback()
-          --   end,
-          --   c = function(fallback)
-          --     cmp.abort()
-          --     fallback()
-          --   end,
-          -- }),
+            end,
+          }),
         },
         formatting = {
           format = function(_, item)
@@ -157,7 +194,7 @@ return {
   -- Snippets
   {
     "L3MON4D3/LuaSnip",
-    build = not utils.is_windows() and "make install_jsregexp",
+    build = "make install_jsregexp",
     dependencies = {
       "rafamadriz/friendly-snippets",
       config = function()
