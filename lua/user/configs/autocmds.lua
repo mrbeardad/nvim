@@ -173,3 +173,12 @@ vim.api.nvim_create_autocmd({ "FocusGained" }, {
   group = utils.augroup("ResetCursor"),
   command = "set guicursor=n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20",
 })
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  group = utils.augroup("TurnOffScrolloff"),
+  callback = function(ev)
+    if vim.bo[ev.buf].filetype == "neo-tree" then
+      vim.wo.scrolloff=0
+    end
+  end,
+})
