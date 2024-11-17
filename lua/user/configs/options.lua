@@ -68,3 +68,4 @@ vim.opt.mouse = "a" -- Enable mouse in all mode
 vim.opt.showmode = false -- Show mode in statusline
 vim.opt.termguicolors = true -- True color support
 vim.opt.statuscolumn = [[%!v:lua.require'user.utils.ui'.statuscolumn()]]
+vim.cmd("set guicursor=n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20")
