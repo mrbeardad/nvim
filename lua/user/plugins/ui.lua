@@ -492,13 +492,28 @@ return {
             prompt_position = "top",
             -- mirror = true,
             width = 0.9,
-            preview_width = 0.45,
+            preview_width = 0.5,
           },
         },
-        path_display = {
-          -- "smart",
-          "truncate",
-        },
+        path_display = function(opts, path)
+          local prefix = vim.uv.cwd()
+          local plen = #prefix
+          local start = utils.is_windows() and 3 or 1
+          if string.sub(path, start, plen) == prefix:sub(start) then
+            -- remove prefix + \
+            local highlight = {
+              {
+                {
+                  0, -- highlight start position
+                  #path - plen - 1, -- highlight end position
+                },
+                "Directory", -- highlight group name
+              },
+            }
+            return string.sub(path, plen + 2), highlight
+          end
+          return path
+        end,
         prompt_prefix = " ",
         selection_caret = " ",
         file_ignore_patterns = {},
