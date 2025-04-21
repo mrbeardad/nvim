@@ -6,14 +6,14 @@ return {
     end,
   },
 
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        marksman = {},
-      },
-    },
-  },
+  -- {
+  --   "neovim/nvim-lspconfig",
+  --   opts = {
+  --     servers = {
+  --       marksman = {},
+  --     },
+  --   },
+  -- },
 
   {
     "mfussenegger/nvim-lint",
