@@ -37,9 +37,20 @@ return {
   {
     "stevearc/conform.nvim",
     opts = {
+      formatters = {
+        gyp = {
+          command = "prettier",
+          args = {
+            "--parser",
+            "json",
+          },
+          stdin = true,
+        },
+      },
       formatters_by_ft = {
         json = { "prettier" },
         jsonc = { "prettier" },
+        gyp = { "gyp" },
       },
     },
   },
