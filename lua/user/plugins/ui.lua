@@ -1,76 +1,29 @@
+local banners = require("user.utils.banners")
 local icons = require("user.utils.icons")
 local utils = require("user.utils")
 
 return {
   -- Startup page
   {
-    "goolord/alpha-nvim",
-    init = function()
-      -- Hide statusline during startup, the statusline plugin will reset it later
-      vim.opt.laststatus = 0
-    end,
-    event = "VimEnter",
-    opts = function()
-      -- Header
-      local dashboard = require("alpha.themes.dashboard")
-      local banners = require("user.utils.banners")
-      math.randomseed(os.time())
-      local banner = vim.split(banners[math.random(#banners)], "\n")
-      dashboard.section.header.val = banner
-      -- Buttons
-      dashboard.section.buttons.val = {
-        dashboard.button("n", "  New File", "<Cmd>ene<Bar>startinsert<CR>"),
-        dashboard.button("/", "󱎸  Find Text", "<Cmd>Telescope egrepify<CR>"),
-        dashboard.button("f", "󰈞  Find File", "<Cmd>Telescope find_files<CR>"),
-        dashboard.button("r", "  Recent Files", "<Cmd>Telescope oldfiles<CR>"),
-        dashboard.button("c", "  Config Files", "<Cmd>exe 'Telescope find_files cwd='.stdpath('config')<CR>"),
-        dashboard.button("s", "󰦛  Restore Session", "<Cmd>lua require('persistence').load()<CR>"),
-        dashboard.button("p", "  Plugins", "<Cmd>Lazy<CR>"),
-        dashboard.button("q", "  Quit", "<Cmd>qa<CR>"),
-      }
-      -- Footer
-      vim.api.nvim_create_autocmd("UIEnter", {
-        once = true,
-        callback = function()
-          local stats = require("lazy").stats()
-          dashboard.section.footer.val =
-            string.format("⚡ Neovim loaded %d/%d plugins in %.2f ms", stats.loaded, stats.count, stats.startuptime)
-          pcall(vim.cmd.AlphaRedraw)
-        end,
-      })
-      -- Vertical center the header
-      local remain_height = vim.api.nvim_win_get_height(0) - #banner - #dashboard.section.buttons.val * 2 - 2
-      remain_height = remain_height > 0 and remain_height or 0
-      dashboard.opts.layout[1].val = math.ceil(remain_height / 10 * 3)
-      dashboard.opts.layout[3].val = math.floor(remain_height / 10 * 3)
-      dashboard.opts.layout[6] = dashboard.opts.layout[5]
-      dashboard.opts.layout[5] = { type = "padding", val = math.floor(remain_height / 10 * 3) }
-      dashboard.opts.layout[7] = { type = "padding", val = math.floor(remain_height / 10 * 1) }
-      -- Highlight
-      for _, button in ipairs(dashboard.section.buttons.val) do
-        button.opts.hl = "AlphaButtons"
-        button.opts.hl_shortcut = "AlphaShortcut"
-      end
-      dashboard.section.header.opts.hl = "AlphaHeader"
-      dashboard.section.buttons.opts.hl = "AlphaButtons"
-      dashboard.section.footer.opts.hl = "AlphaFooter"
-      return dashboard.opts
-    end,
-    config = function(_, opts)
-      -- Close Lazy and re-open when the dashboard is ready
-      if vim.o.filetype == "lazy" then
-        vim.cmd.close()
-        vim.api.nvim_create_autocmd("User", {
-          once = true,
-          pattern = "AlphaReady",
-          callback = function()
-            require("lazy").show()
-          end,
-        })
-      end
-
-      require("alpha").setup(opts)
-    end,
+    "folke/snacks.nvim",
+    opts = {
+      dashboard = {
+        preset = {
+          header = banners.random_banner(),
+          keys = {
+            { icon = " ", key = "n", desc = "New File", action = "<Cmd>ene<Bar>startinsert<CR>" },
+            { icon = " ", key = "r", desc = "Recent Files", action = "<Cmd>Telescope oldfiles<CR>" },
+            { icon = "󰈞 ", key = "f", desc = "Find File", action = "<Cmd>Telescope find_files<CR>" },
+            { icon = "󱎸 ", key = "/", desc = "Find Text", action = "<Cmd>Telescope egrepify<CR>" },
+            { icon = " ", key = "c", desc = "Config", action = "<Cmd>exe 'Telescope find_files cwd='.stdpath('config')<CR>", },
+            { icon = " ", key = "s", desc = "Restore Session", action = "<Cmd>lua require('persistence').load()<CR>", },
+            { icon = " ", key = "p", desc = "Plugins", action = "<Cmd>Lazy<CR>" },
+            { icon = " ", key = "q", desc = "Quit", action = "<Cmd>qa<CR>" },
+          },
+        },
+      },
+      statuscolumn = { enabled = true },
+    },
   },
 
   -- File explorer
@@ -157,7 +110,7 @@ return {
               end,
               desc = "copy_path",
             },
-            ["O"] = {
+            ["o"] = {
               function(state)
                 local path = state.tree:get_node().path
                 if vim.fn.isdirectory(path) == 0 then
@@ -329,41 +282,12 @@ return {
     },
   },
 
-  -- Animate scroll
+  -- Smooth scroll
   {
-    "echasnovski/mini.animate",
-    event = "VeryLazy",
-    opts = function()
-      -- don't use animate when scrolling with the mouse
-      local mouse_scrolled = false
-      for _, scroll in ipairs({ "Up", "Down" }) do
-        local key = "<ScrollWheel" .. scroll .. ">"
-        vim.keymap.set({ "", "i" }, key, function()
-          mouse_scrolled = true
-          return key
-        end, { expr = true })
-      end
-
-      local animate = require("mini.animate")
-      return {
-        cursor = { enable = false },
-        resize = {
-          timing = animate.gen_timing.linear({ duration = 50, unit = "total" }),
-        },
-        scroll = {
-          timing = animate.gen_timing.linear({ duration = 150, unit = "total" }),
-          subscroll = animate.gen_subscroll.equal({
-            predicate = function(total_scroll)
-              if mouse_scrolled then
-                mouse_scrolled = false
-                return false
-              end
-              return total_scroll > 1
-            end,
-          }),
-        },
-      }
-    end,
+    "folke/snacks.nvim",
+    opts = {
+      scroll = { enabled = true }
+    },
   },
 
   -- Show context of the current cursor position
@@ -411,195 +335,198 @@ return {
   },
 
   -- Search and preview
+  -- {
+  --   "nvim-telescope/telescope.nvim",
+  --   dependencies = {
+  --     {
+  --       "nvim-telescope/telescope-fzf-native.nvim",
+  --       build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+  --     },
+  --   },
+  --   cmd = "Telescope",
+  --   keys = {
+  --     -- Buffers
+  --     {
+  --       "<Leader><Tab>",
+  --       "<Cmd>Telescope buffers sort_mru=true sort_lastused=true theme=dropdown<CR>",
+  --       desc = "Switch Buffers",
+  --     },
+  --     -- Files
+  --     { "<Leader>f", "<Cmd>Telescope find_files<CR>", desc = "Find Files" },
+  --     { "<Leader>r", "<Cmd>Telescope oldfiles<CR>", desc = "Recent Files" },
+  --     { "<Leader>R", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent Files In Cwd" },
+  --     -- Text
+  --     { "<Leader>sw", "<Cmd>Telescope grep_string<CR>", desc = "Word" },
+  --     {
+  --       "<Leader>sw",
+  --       function()
+  --         local text = table.concat(utils.get_visual_text())
+  --         require("telescope.builtin").grep_string({ search = text })
+  --       end,
+  --       mode = "x",
+  --       desc = "Word",
+  --     },
+  --     -- Lsp
+  --     { "<Leader>sd", "<Cmd>Telescope diagnostics bufnr=0<CR>", desc = "Document Diagnostics" },
+  --     { "<Leader>sD", "<Cmd>Telescope diagnostics<CR>", desc = "Workspace Diagnostics" },
+  --     {
+  --       "<Leader>ss",
+  --       function()
+  --         local kf = require("user.utils.lsp").kind_filter
+  --         kf = kf[vim.bo.filetype] or kf.default
+  --         require("telescope.builtin").lsp_document_symbols({
+  --           symbols = kf,
+  --         })
+  --       end,
+  --       desc = "Document Symbol",
+  --     },
+  --     {
+  --       "<Leader>sS",
+  --       function()
+  --         local kf = require("user.utils.lsp").kind_filter
+  --         kf = kf[vim.bo.filetype] or kf.default
+  --         require("telescope.builtin").lsp_dynamic_workspace_symbols({
+  --           symbols = kf,
+  --         })
+  --       end,
+  --       desc = "Workspace Symbols",
+  --     },
+  --     { "gd", "<Cmd>Telescope lsp_definitions reuse_win=true<CR>", desc = "Goto Definition" },
+  --     { "gt", "<Cmd>Telescope lsp_type_definitions reuse_win=true<CR>", desc = "Goto Type Definition" },
+  --     { "gr", "<Cmd>Telescope lsp_references<CR>", desc = "Goto References" },
+  --     { "gi", "<Cmd>Telescope lsp_implementations reuse_win=true<CR>", desc = "Goto Implementation" },
+  --     -- Others
+  --     { "<Leader>:", "<Cmd>Telescope command_history<CR>", desc = "Command History" },
+  --     { "<Leader>?", "<cmd>Telescope help_tags<CR>", desc = "Help Pages" },
+  --     { "<Leader>sc", "<Cmd>Telescope commands<CR>", desc = "Commands" },
+  --     { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Auto Commands" },
+  --     { "<Leader>sb", "<Cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Buffer Fuzzy Search" },
+  --     { "<Leader>sl", "<cmd>Telescope highlights<CR>", desc = "highlights" },
+  --     { "<Leader>sk", "<cmd>Telescope keymaps<CR>", desc = "Key Maps" },
+  --     { "<Leader>sm", "<cmd>Telescope marks<CR>", desc = "Jump To Mark" },
+  --     { "<Leader>so", "<cmd>Telescope vim_options<CR>", desc = "Options" },
+  --     { "<Leader>sr", "<cmd>Telescope resume<CR>", desc = "Resume" },
+  --   },
+  --   opts = {
+  --     defaults = {
+  --       sorting_strategy = "ascending",
+  --       winblend = vim.o.winblend,
+  --       layout_config = {
+  --         horizontal = {
+  --           prompt_position = "top",
+  --           -- mirror = true,
+  --           width = 0.9,
+  --           preview_width = 0.5,
+  --         },
+  --       },
+  --       path_display = function(opts, path)
+  --         local prefix = vim.uv.cwd()
+  --         local plen = #prefix
+  --         local start = utils.is_windows() and 3 or 1
+  --         if string.sub(path, start, plen) == prefix:sub(start) then
+  --           -- remove prefix + \
+  --           local highlight = {
+  --             {
+  --               {
+  --                 0, -- highlight start position
+  --                 #path - plen - 1, -- highlight end position
+  --               },
+  --               "Directory", -- highlight group name
+  --             },
+  --           }
+  --           return string.sub(path, plen + 2), highlight
+  --         end
+  --         return path
+  --       end,
+  --       prompt_prefix = " ",
+  --       selection_caret = " ",
+  --       file_ignore_patterns = {},
+  --       get_selection_window = function()
+  --         return vim.g.last_normal_win
+  --       end,
+  --       mappings = {
+  --         i = {
+  --           ["<Esc>"] = "close",
+  --           ["<C-F>"] = "preview_scrolling_down",
+  --           ["<C-B>"] = "preview_scrolling_up",
+  --           ["<M-f>"] = "preview_scrolling_right",
+  --           ["<M-b>"] = "preview_scrolling_left",
+  --           ["<Up>"] = "cycle_history_prev",
+  --           ["<Down>"] = "cycle_history_next",
+  --           ["<C-V>"] = false,
+  --           ["<C-U>"] = false,
+  --           ["<C-K>"] = false,
+  --         },
+  --       },
+  --     },
+  --     extensions = {
+  --       egrepify = {
+  --         AND = false,
+  --         prefixes = {
+  --           ["!"] = {
+  --             flag = "invert-match",
+  --           },
+  --           ["\\C"] = {
+  --             flag = "case-sensitive",
+  --           },
+  --         },
+  --         mappings = {
+  --           i = {
+  --             ["<C-z>"] = false,
+  --             ["<C-a>"] = false,
+  --             ["<C-r>"] = false,
+  --           },
+  --         },
+  --       },
+  --       undo = {
+  --         side_by_side = true,
+  --       },
+  --     },
+  --   },
+  --   config = function(_, opts)
+  --     require("telescope").setup(opts)
+  --     require("telescope").load_extension("fzf")
+  --   end,
+  -- },
+  -- -- Better live_grep that could change rg arguments on fly
+  -- {
+  --   "fdschmidt93/telescope-egrepify.nvim",
+  --   keys = {
+  --     { "<Leader>/", "<Cmd>Telescope egrepify<CR>", desc = "Search Text" },
+  --     {
+  --       "<Leader>/",
+  --       function()
+  --         local text = table.concat(utils.get_visual_text()):gsub(" ", "\\ ")
+  --         vim.cmd("Telescope egrepify default_text=" .. text)
+  --       end,
+  --       mode = "x",
+  --       desc = "Search Text",
+  --     },
+  --   },
+  --   config = function()
+  --     require("telescope").load_extension("egrepify")
+  --   end,
+  -- },
+  -- -- Undo history
+  -- {
+  --   "debugloop/telescope-undo.nvim",
+  --   keys = { { "<Leader>su", "<Cmd>Telescope undo<CR>", desc = "Undo History" } },
+  --   config = function()
+  --     require("telescope").load_extension("undo")
+  --   end,
+  -- },
   {
-    "nvim-telescope/telescope.nvim",
-    dependencies = {
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-      },
-    },
-    cmd = "Telescope",
-    keys = {
-      -- Buffers
-      {
-        "<Leader><Tab>",
-        "<Cmd>Telescope buffers sort_mru=true sort_lastused=true theme=dropdown<CR>",
-        desc = "Switch Buffers",
-      },
-      -- Files
-      { "<Leader>f", "<Cmd>Telescope find_files<CR>", desc = "Find Files" },
-      { "<Leader>r", "<Cmd>Telescope oldfiles<CR>", desc = "Recent Files" },
-      { "<Leader>R", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent Files In Cwd" },
-      -- Text
-      { "<Leader>sw", "<Cmd>Telescope grep_string<CR>", desc = "Word" },
-      {
-        "<Leader>sw",
-        function()
-          local text = table.concat(utils.get_visual_text())
-          require("telescope.builtin").grep_string({ search = text })
-        end,
-        mode = "x",
-        desc = "Word",
-      },
-      -- Lsp
-      { "<Leader>sd", "<Cmd>Telescope diagnostics bufnr=0<CR>", desc = "Document Diagnostics" },
-      { "<Leader>sD", "<Cmd>Telescope diagnostics<CR>", desc = "Workspace Diagnostics" },
-      {
-        "<Leader>ss",
-        function()
-          local kf = require("user.utils.lsp").kind_filter
-          kf = kf[vim.bo.filetype] or kf.default
-          require("telescope.builtin").lsp_document_symbols({
-            symbols = kf,
-          })
-        end,
-        desc = "Document Symbol",
-      },
-      {
-        "<Leader>sS",
-        function()
-          local kf = require("user.utils.lsp").kind_filter
-          kf = kf[vim.bo.filetype] or kf.default
-          require("telescope.builtin").lsp_dynamic_workspace_symbols({
-            symbols = kf,
-          })
-        end,
-        desc = "Workspace Symbols",
-      },
-      { "gd", "<Cmd>Telescope lsp_definitions reuse_win=true<CR>", desc = "Goto Definition" },
-      { "gt", "<Cmd>Telescope lsp_type_definitions reuse_win=true<CR>", desc = "Goto Type Definition" },
-      { "gr", "<Cmd>Telescope lsp_references<CR>", desc = "Goto References" },
-      { "gi", "<Cmd>Telescope lsp_implementations reuse_win=true<CR>", desc = "Goto Implementation" },
-      -- Others
-      { "<Leader>:", "<Cmd>Telescope command_history<CR>", desc = "Command History" },
-      { "<Leader>?", "<cmd>Telescope help_tags<CR>", desc = "Help Pages" },
-      { "<Leader>sc", "<Cmd>Telescope commands<CR>", desc = "Commands" },
-      { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Auto Commands" },
-      { "<Leader>sb", "<Cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Buffer Fuzzy Search" },
-      { "<Leader>sl", "<cmd>Telescope highlights<CR>", desc = "highlights" },
-      { "<Leader>sk", "<cmd>Telescope keymaps<CR>", desc = "Key Maps" },
-      { "<Leader>sm", "<cmd>Telescope marks<CR>", desc = "Jump To Mark" },
-      { "<Leader>so", "<cmd>Telescope vim_options<CR>", desc = "Options" },
-      { "<Leader>sr", "<cmd>Telescope resume<CR>", desc = "Resume" },
-    },
+    "folke/snacks.nvim",
     opts = {
-      defaults = {
-        sorting_strategy = "ascending",
-        winblend = vim.o.winblend,
-        layout_config = {
-          horizontal = {
-            prompt_position = "top",
-            -- mirror = true,
-            width = 0.9,
-            preview_width = 0.5,
-          },
-        },
-        path_display = function(opts, path)
-          local prefix = vim.uv.cwd()
-          local plen = #prefix
-          local start = utils.is_windows() and 3 or 1
-          if string.sub(path, start, plen) == prefix:sub(start) then
-            -- remove prefix + \
-            local highlight = {
-              {
-                {
-                  0, -- highlight start position
-                  #path - plen - 1, -- highlight end position
-                },
-                "Directory", -- highlight group name
-              },
-            }
-            return string.sub(path, plen + 2), highlight
-          end
-          return path
-        end,
-        prompt_prefix = " ",
-        selection_caret = " ",
-        file_ignore_patterns = {},
-        get_selection_window = function()
-          return vim.g.last_normal_win
-        end,
-        mappings = {
-          i = {
-            ["<Esc>"] = "close",
-            ["<C-F>"] = "preview_scrolling_down",
-            ["<C-B>"] = "preview_scrolling_up",
-            ["<M-f>"] = "preview_scrolling_right",
-            ["<M-b>"] = "preview_scrolling_left",
-            ["<Up>"] = "cycle_history_prev",
-            ["<Down>"] = "cycle_history_next",
-            ["<C-V>"] = false,
-            ["<C-U>"] = false,
-            ["<C-K>"] = false,
-          },
-        },
-      },
-      extensions = {
-        egrepify = {
-          AND = false,
-          prefixes = {
-            ["!"] = {
-              flag = "invert-match",
-            },
-            ["\\C"] = {
-              flag = "case-sensitive",
-            },
-          },
-          mappings = {
-            i = {
-              ["<C-z>"] = false,
-              ["<C-a>"] = false,
-              ["<C-r>"] = false,
-            },
-          },
-        },
-        undo = {
-          side_by_side = true,
-        },
-      },
-    },
-    config = function(_, opts)
-      require("telescope").setup(opts)
-      require("telescope").load_extension("fzf")
-    end,
-  },
-  -- Better live_grep that could change rg arguments on fly
-  {
-    "fdschmidt93/telescope-egrepify.nvim",
-    keys = {
-      { "<Leader>/", "<Cmd>Telescope egrepify<CR>", desc = "Search Text" },
-      {
-        "<Leader>/",
-        function()
-          local text = table.concat(utils.get_visual_text()):gsub(" ", "\\ ")
-          vim.cmd("Telescope egrepify default_text=" .. text)
-        end,
-        mode = "x",
-        desc = "Search Text",
-      },
-    },
-    config = function()
-      require("telescope").load_extension("egrepify")
-    end,
-  },
-  -- Undo history
-  {
-    "debugloop/telescope-undo.nvim",
-    keys = { { "<Leader>su", "<Cmd>Telescope undo<CR>", desc = "Undo History" } },
-    config = function()
-      require("telescope").load_extension("undo")
-    end,
+      picker = { enabled = true },
+      notifier = { enabled = true },
+    }
   },
 
   -- Better ui components for neovim
   {
     "folke/noice.nvim",
-    dependencies = {
-      { "rcarriga/nvim-notify", opts = {} },
-    },
     event = "VeryLazy",
-    -- stylua: ignore
     keys = {
       { "<C-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
       { "<Leader>nl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
@@ -618,6 +545,19 @@ return {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
           ["cmp.entry.get_documentation"] = true,
+        },
+      },
+      routes = {
+        {
+          filter = {
+            event = "msg_show",
+            any = {
+              { find = "%d+L, %d+B" },
+              { find = "; after #%d+" },
+              { find = "; before #%d+" },
+            },
+          },
+          view = "mini",
         },
       },
       presets = {

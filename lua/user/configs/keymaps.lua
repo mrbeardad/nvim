@@ -2,7 +2,6 @@ local keymap = require("user.utils.keymap")
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
--- TODO: esc to close floating windows
 -- Plugins Manager
 vim.keymap.set("n", "<Leader>p", "<Cmd>Lazy<CR>", { desc = "Plugins Manager" })
 
@@ -10,7 +9,7 @@ vim.keymap.set("n", "<Leader>p", "<Cmd>Lazy<CR>", { desc = "Plugins Manager" })
 vim.keymap.set("n", "<Leader><Tab><Tab>", "<Cmd>try<Bar>b#<Bar>catch<Bar>endtry<CR>", { desc = "Switch Buffer" })
 
 -- Buffers: save
-vim.keymap.set({ "n", "i", "x" }, "<C-S>", keymap.save_file(false), { desc = "Save" })
+vim.keymap.set({ "n", "x", "i" }, "<C-S>", keymap.save_file(false), { desc = "Save" })
 vim.keymap.set({ "n", "x" }, "<Leader>bw", keymap.save_file(true), { desc = "Save Without Format" })
 
 -- Windows: switch
@@ -66,7 +65,9 @@ vim.keymap.set("i", "<C-E>", "<End>", { desc = "End Of Line" })
 -- To distinguish them, you could map another key, say <M-I>, to <C-I> in neovim,
 -- and then map ctrl+i to send <M-I> key sequence in your terminal setting.
 -- For more info `:h tui-modifyOtherKeys` and https://invisible-island.net/xterm/modified-keys.html
-vim.keymap.set({ "i", "c", "n", "v" }, "<M-I>", "<C-I>", { desc = "<C-I>" })
+vim.keymap.set({ "i", "c", "n", "v" }, "<M-`>", "<C-`>", { desc = "<C-`>", remap = true })
+vim.keymap.set({ "i", "c", "n", "v" }, "<M-I>", "<C-I>", { desc = "<C-I>", remap = true })
+vim.keymap.set({ "i", "c", "n", "v" }, "<M-J>", "<C-S-J>", { desc = "<C-S-J>", remap = true })
 
 -- Motion: go to diagnostic
 local diagnostic_goto = function(next, severity)

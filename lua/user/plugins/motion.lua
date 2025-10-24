@@ -91,8 +91,8 @@ return {
       { "T", mode = { "n", "x" } },
       { "r", "<Cmd>lua require('flash').remote({restore=true})<CR>", mode = "o", desc = "Flash Remote" },
       { "S", "<Cmd>lua require('flash').treesitter()<CR>", mode = { "n", "o", "x" }, desc = "Flash Treesitter" },
-      { ";", "<Cmd>lua require('flash').treesitter({jump={pos='start'}})<CR>", mode = { "n", "o", "x" }, desc = "Outter Start Of Treesitter Node" },
-      { ",", "<Cmd>lua require('flash').treesitter({jump={pos='end'}})<CR>", mode = { "n", "o", "x" }, desc = "Outter Start Of Treesitter Node" },
+      { ",", "<Cmd>lua require('flash').treesitter({jump={pos='start'}})<CR>", mode = { "n", "o", "x" }, desc = "Outter Start Of Treesitter Node" },
+      { ";", "<Cmd>lua require('flash').treesitter({jump={pos='end'}})<CR>", mode = { "n", "o", "x" }, desc = "Outter Start Of Treesitter Node" },
     },
     opts = {
       labels = "asdfghjklqwertyuiopzxcvbnm1234567890",

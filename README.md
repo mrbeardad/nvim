@@ -88,7 +88,7 @@ For detail see [here](https://www.reddit.com/r/neovim/comments/mbj8m5/how_to_set
 For historical reason, `<Tab>` and `<C-i>` have the same key sequence in most of terminals.
 To distinguish them, you could map another key, say `<M-I>`, to `<C-i>` in neovim,
 and then map `ctrl+i` to send `<M-I>` key sequence in your terminal setting.
-For more info [`:h tui-modifyOtherKeys`](https://neovim.io/doc/user/term.html#tui-input) and [xterm-modified-keys](https://invisible-island.net/xterm/modified-keys.html)
+For more info [`:h tui-modifyOtherKeys`](https://neovim.io/doc/user/tui.html#tui-input) and [xterm-modified-keys](https://invisible-island.net/xterm/modified-keys.html)
 
 > My own windows terminal setting is [here](https://github.com/mrbeardad/MyIDE/blob/master/wt/settings.json).
 

@@ -120,4 +120,9 @@ function M.get_visual_text()
   return vim.api.nvim_buf_get_text(0, start_pos[1] - 1, start_pos[2], end_pos[1] - 1, end_pos[2] + 1, {})
 end
 
+-- Safe wrapper around snacks to prevent errors when LazyVim is still installing
+function M.statuscolumn()
+  return package.loaded.snacks and require("snacks.statuscolumn").get() or ""
+end
+
 return M

@@ -1,4 +1,3 @@
-local deferclip = require("user.utils.deferclip")
 local utils = require("user.utils")
 local watch = require("user.utils.watch")
 
@@ -118,12 +117,6 @@ vim.api.nvim_create_autocmd("BufRead", {
   end,
 })
 
--- Check if we need to reload the file when it changed
-vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  group = utils.augroup("Checktime"),
-  command = "checktime",
-})
-
 -- Auto create dir when saving a file, in case some intermediate directory does not exist
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = utils.augroup("AutoCreateDir"),
@@ -154,6 +147,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- Automatically reload the file when it changed
 vim.api.nvim_create_autocmd("BufWinEnter", {
   group = utils.augroup("AutoRead"),
   callback = function(ev)
@@ -169,16 +163,3 @@ vim.api.nvim_create_autocmd("VimLeave", {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "FocusGained" }, {
- group = utils.augroup("ResetCursor"),
- command = "execute \"set guicursor=\".&guicursor",
-})
-
-vim.api.nvim_create_autocmd("BufWinEnter", {
-  group = utils.augroup("TurnOffScrolloff"),
-  callback = function(ev)
-    if vim.bo[ev.buf].filetype == "neo-tree" then
-      vim.wo.scrolloff=0
-    end
-  end,
-})

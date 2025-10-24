@@ -1,6 +1,8 @@
 -- ascii art are copy from https://www.asciiart.eu/
 -- ascii text are generate from http://patorjk.com/software/taag/
-return {
+local M = {}
+
+M.banners = {
   [[
     ^^      ..                                       ..             
             []                                       []             
@@ -260,3 +262,10 @@ _|"""""|_|"""""|_|"""""|_| """"|_|"""""|_|"""""|
  _|      _|    _|_|_|    _|_|        _|      _|  _|    _|    _|  
 ]],
 }
+
+function M.random_banner()
+  math.randomseed(os.time())
+  return M.banners[math.random(#M.banners)]
+end
+
+return M

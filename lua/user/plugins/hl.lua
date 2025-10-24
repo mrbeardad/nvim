@@ -104,39 +104,39 @@ return {
   },
 
   -- Indent guides
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
-    event = "User LazyFile",
-    opts = {
-      indent = {
-        char = "│",
-        tab_char = "│",
-      },
-      scope = { enabled = false },
-      exclude = {},
-    },
-  },
-
-  -- Indent guides animation
-  {
-    "echasnovski/mini.indentscope",
-    event = "User LazyFile",
-    init = function()
-      -- Disable in special buffer
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function(ev)
-          if vim.bo[ev.buf].filetype ~= "noice" and not utils.is_real_file(ev.buf) then
-            vim.api.nvim_buf_set_var(ev.buf, "miniindentscope_disable", true)
-          end
-        end,
-      })
-    end,
-    opts = {
-      symbol = "│",
-      options = { try_as_border = true },
-    },
-  },
+  -- {
+  --   "lukas-reineke/indent-blankline.nvim",
+  --   main = "ibl",
+  --   event = "User LazyFile",
+  --   opts = {
+  --     indent = {
+  --       char = "│",
+  --       tab_char = "│",
+  --     },
+  --     scope = { enabled = false },
+  --     exclude = {},
+  --   },
+  -- },
+  --
+  -- -- Indent guides animation
+  -- {
+  --   "echasnovski/mini.indentscope",
+  --   event = "User LazyFile",
+  --   init = function()
+  --     -- Disable in special buffer
+  --     vim.api.nvim_create_autocmd("FileType", {
+  --       callback = function(ev)
+  --         if vim.bo[ev.buf].filetype ~= "noice" and not utils.is_real_file(ev.buf) then
+  --           vim.api.nvim_buf_set_var(ev.buf, "miniindentscope_disable", true)
+  --         end
+  --       end,
+  --     })
+  --   end,
+  --   opts = {
+  --     symbol = "│",
+  --     options = { try_as_border = true },
+  --   },
+  -- },
 
   -- Highlight the word under cursor
   {

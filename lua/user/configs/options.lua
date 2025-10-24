@@ -1,4 +1,3 @@
-local deferclip = require("user.utils.deferclip")
 -- Editor
 vim.opt.confirm = true -- Confirm to save changes before exiting modified buffer
 vim.opt.autowrite = true -- Enable auto write
@@ -28,8 +27,6 @@ vim.opt.shiftwidth = 2 -- Size of an indent
 vim.opt.shiftround = true -- Round indent
 vim.opt.smartindent = true -- Insert indents automatically
 vim.opt.formatoptions = "tcrqjnl" -- Configure the automatically format options
-vim.opt.clipboard = "unnamedplus" -- Do not sync with system clipboard
-deferclip.setup() -- Defer to sync clipboard to improve performance
 
 -- UI: inside window
 vim.opt.list = true -- Show some invisible characters
@@ -67,5 +64,5 @@ vim.opt.splitbelow = true -- Put new windows below current
 vim.opt.mouse = "a" -- Enable mouse in all mode
 vim.opt.showmode = false -- Show mode in statusline
 vim.opt.termguicolors = true -- True color support
-vim.opt.statuscolumn = [[%!v:lua.require'user.utils.ui'.statuscolumn()]]
+-- vim.opt.statuscolumn = [[%!v:lua.require'user.utils'.statuscolumn()]]
 vim.cmd("set guicursor=n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20")

@@ -24,6 +24,27 @@ return {
   -- UI lib
   { "MunifTanjim/nui.nvim", lazy = true },
 
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    keys = {
+      { "<Leader>bd", function () require("snacks").bufdelete.delete() end },
+    },
+    opts = {
+      bigfile = { enabled = true },
+      quickfile = { enabled = true },
+      indent = { enabled = true },
+    },
+    config = function(_, opts)
+      local notify = vim.notify
+      require("snacks").setup(opts)
+      -- HACK: restore vim.notify after snacks setup and let noice.nvim take over
+      -- this is needed to have early notifications show up in noice history
+      vim.notify = notify
+    end,
+  },
+
   -- Save and restore session
   {
     "folke/persistence.nvim",
@@ -55,32 +76,6 @@ return {
     opts = {
       -- options = vim.opt.sessionoptions:get(),
     },
-  },
-
-  -- Better bd
-  {
-    "echasnovski/mini.bufremove",
-    keys = {
-      {
-        "<Leader>bd",
-        function()
-          local bd = require("mini.bufremove").delete
-          if vim.bo.modified then
-            local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
-            if choice == 1 then
-              vim.cmd.write()
-              bd(0)
-            elseif choice == 2 then
-              bd(0, true)
-            end
-          else
-            bd(0)
-          end
-        end,
-        desc = "Delete Buffer",
-      },
-    },
-    opts = {},
   },
 
   -- Finds and lists all of the TODO, FIX, PERF etc comment

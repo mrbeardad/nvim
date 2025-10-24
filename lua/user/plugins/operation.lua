@@ -32,6 +32,14 @@ return {
     end,
   },
 
+  {
+    "EtiamNullam/deferred-clipboard.nvim",
+    opts = {
+      force_init_unnamed = true,
+      lazy = true
+    }
+  },
+
   -- Better yank/paste
   {
     "gbprod/yanky.nvim",
