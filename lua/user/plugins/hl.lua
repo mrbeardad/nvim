@@ -179,24 +179,25 @@ return {
   -- Highlight different level brackets with different color
   {
     "HiPhish/rainbow-delimiters.nvim",
-    event = "User LazyFile",
+    event = "LazyFile",
   },
 
   -- Highlight matched bracket
   {
     "monkoose/matchparen.nvim",
-    event = "User LazyFile",
+    event = "LazyFile",
     opts = {},
   },
 
   -- Highlight undo/redo change
   {
     "tzachar/highlight-undo.nvim",
-    keys = {
-      { "u", desc = "Undo" },
-      { "<C-R>", desc = "Redo" },
-      { "<C-Z>", "<Cmd>normal u<CR>", mode = "i", desc = "Undo" },
-    },
+    event = "LazyFile",
+    --keys = {
+    --  { "u", desc = "Undo" },
+    --  { "<C-R>", desc = "Redo" },
+    --  { "<C-Z>", "<Cmd>normal u<CR>", mode = "i", desc = "Undo" },
+    --},
     opts = {
       -- Same as highlight on yank
       duration = 150,

@@ -39,9 +39,9 @@ return {
         hl.NeoTreeTabSeparatorInactive = {
           link = "TabLine",
         }
-        hl.ScrollbarHandle = {
-          bg = lighten(hl.ScrollbarHandle.bg, 0.9),
-        }
+        -- hl.ScrollbarHandle = {
+        --   bg = lighten(hl.ScrollbarHandle.bg, 0.9),
+        -- }
         hl.MatchParen = {
           fg = hl.MatchParen.fg,
           bg = hl.IlluminatedWordText.bg,

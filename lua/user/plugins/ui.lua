@@ -15,14 +15,23 @@ return {
             { icon = " ", key = "r", desc = "Recent Files", action = "<Cmd>Telescope oldfiles<CR>" },
             { icon = "󰈞 ", key = "f", desc = "Find File", action = "<Cmd>Telescope find_files<CR>" },
             { icon = "󱎸 ", key = "/", desc = "Find Text", action = "<Cmd>Telescope egrepify<CR>" },
-            { icon = " ", key = "c", desc = "Config", action = "<Cmd>exe 'Telescope find_files cwd='.stdpath('config')<CR>", },
-            { icon = " ", key = "s", desc = "Restore Session", action = "<Cmd>lua require('persistence').load()<CR>", },
+            {
+              icon = " ",
+              key = "c",
+              desc = "Config",
+              action = "<Cmd>exe 'Telescope find_files cwd='.stdpath('config')<CR>",
+            },
+            {
+              icon = " ",
+              key = "s",
+              desc = "Restore Session",
+              action = "<Cmd>lua require('persistence').load()<CR>",
+            },
             { icon = " ", key = "p", desc = "Plugins", action = "<Cmd>Lazy<CR>" },
             { icon = " ", key = "q", desc = "Quit", action = "<Cmd>qa<CR>" },
           },
         },
       },
-      statuscolumn = { enabled = true },
     },
   },
 
@@ -52,7 +61,12 @@ return {
           { source = "document_symbols" },
         },
       },
-      open_files_do_not_replace_types = { "help", "quickfix", "terminal", "prompt" },
+      open_files_do_not_replace_types = {
+        "help",
+        "quickfix",
+        "terminal",
+        "prompt",
+      },
       default_component_configs = {
         indent = {
           with_expanders = true,
@@ -79,17 +93,6 @@ return {
           ["C"] = "noop",
           ["h"] = "close_node",
           ["l"] = "open",
-          ["<Tab>"] = {
-            function()
-              local Preview = require("neo-tree.sources.common.preview")
-              if Preview.is_active() then
-                Preview.focus()
-              else
-                vim.fn.win_gotoid(vim.g.last_normal_win)
-              end
-            end,
-            desc = "focus_preview",
-          },
         },
       },
       filesystem = {
@@ -156,7 +159,7 @@ return {
       options = {
         diagnostics = "nvim_lsp",
         close_command = function(bufnr)
-          require("mini.bufremove").delete(bufnr, false)
+          require("snacks").bufdelete.delete(bufnr)
         end,
         always_show_bufferline = true,
         diagnostics_indicator = function(_, _, diag)
@@ -286,7 +289,8 @@ return {
   {
     "folke/snacks.nvim",
     opts = {
-      scroll = { enabled = true }
+      scroll = { enabled = true },
+      statuscolumn = { enabled = true },
     },
   },
 
@@ -296,7 +300,7 @@ return {
     event = "User LazyFile",
     keys = {
       {
-        "[{",
+        "[[",
         function()
           require("treesitter-context").go_to_context(vim.v.count1)
         end,
@@ -515,11 +519,64 @@ return {
   --     require("telescope").load_extension("undo")
   --   end,
   -- },
+
   {
     "folke/snacks.nvim",
     opts = {
       picker = { enabled = true },
       notifier = { enabled = true },
+    },
+    -- stylua: ignore
+        keys = {
+          { "<leader>,", function() Snacks.picker.buffers() end, desc = "Buffers" },
+          -- { "<leader>/", LazyVim.pick("grep"), desc = "Grep (Root Dir)" },
+          { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
+          -- { "<leader><space>", LazyVim.pick("files"), desc = "Find Files (Root Dir)" },
+          { "<leader>n", function() Snacks.picker.notifications() end, desc = "Notification History" },
+          -- find
+          { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
+          { "<leader>fB", function() Snacks.picker.buffers({ hidden = true, nofile = true }) end, desc = "Buffers (all)" },
+          -- { "<leader>fc", LazyVim.pick.config_files(), desc = "Find Config File" },
+          -- { "<leader>ff", LazyVim.pick("files"), desc = "Find Files (Root Dir)" },
+          -- { "<leader>fF", LazyVim.pick("files", { root = false }), desc = "Find Files (cwd)" },
+          { "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find Files (git-files)" },
+          -- { "<leader>fr", LazyVim.pick("oldfiles"), desc = "Recent" },
+          { "<leader>fR", function() Snacks.picker.recent({ filter = { cwd = true }}) end, desc = "Recent (cwd)" },
+          { "<leader>fp", function() Snacks.picker.projects() end, desc = "Projects" },
+          -- git
+          { "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git Diff (hunks)" },
+          { "<leader>gD", function() Snacks.picker.git_diff({ base = "origin" }) end, desc = "Git Diff (origin)" },
+          { "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },
+          { "<leader>gS", function() Snacks.picker.git_stash() end, desc = "Git Stash" },
+          -- Grep
+          { "<leader>sb", function() Snacks.picker.lines() end, desc = "Buffer Lines" },
+          { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
+          -- { "<leader>sg", LazyVim.pick("live_grep"), desc = "Grep (Root Dir)" },
+          -- { "<leader>sG", LazyVim.pick("live_grep", { root = false }), desc = "Grep (cwd)" },
+          { "<leader>sp", function() Snacks.picker.lazy() end, desc = "Search for Plugin Spec" },
+          -- { "<leader>sw", LazyVim.pick("grep_word"), desc = "Visual selection or word (Root Dir)", mode = { "n", "x" } },
+          -- { "<leader>sW", LazyVim.pick("grep_word", { root = false }), desc = "Visual selection or word (cwd)", mode = { "n", "x" } },
+          -- search
+          { '<leader>s"', function() Snacks.picker.registers() end, desc = "Registers" },
+          { '<leader>s/', function() Snacks.picker.search_history() end, desc = "Search History" },
+          { "<leader>sa", function() Snacks.picker.autocmds() end, desc = "Autocmds" },
+          { "<leader>sc", function() Snacks.picker.command_history() end, desc = "Command History" },
+          { "<leader>sC", function() Snacks.picker.commands() end, desc = "Commands" },
+          { "<leader>sd", function() Snacks.picker.diagnostics() end, desc = "Diagnostics" },
+          { "<leader>sD", function() Snacks.picker.diagnostics_buffer() end, desc = "Buffer Diagnostics" },
+          { "<leader>sh", function() Snacks.picker.help() end, desc = "Help Pages" },
+          { "<leader>sH", function() Snacks.picker.highlights() end, desc = "Highlights" },
+          { "<leader>si", function() Snacks.picker.icons() end, desc = "Icons" },
+          { "<leader>sj", function() Snacks.picker.jumps() end, desc = "Jumps" },
+          { "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
+          { "<leader>sl", function() Snacks.picker.loclist() end, desc = "Location List" },
+          { "<leader>sM", function() Snacks.picker.man() end, desc = "Man Pages" },
+          { "<leader>sm", function() Snacks.picker.marks() end, desc = "Marks" },
+          { "<leader>sR", function() Snacks.picker.resume() end, desc = "Resume" },
+          { "<leader>sq", function() Snacks.picker.qflist() end, desc = "Quickfix List" },
+          { "<leader>su", function() Snacks.picker.undo() end, desc = "Undotree" },
+          -- ui
+          { "<leader>uC", function() Snacks.picker.colorschemes() end, desc = "Colorschemes" },
     }
   },
 
@@ -528,13 +585,66 @@ return {
     "folke/noice.nvim",
     event = "VeryLazy",
     keys = {
-      { "<C-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
-      { "<Leader>nl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
-      { "<Leader>nh", function() require("noice").cmd("history") end, desc = "Noice History" },
-      { "<Leader>na", function() require("noice").cmd("all") end, desc = "Noice All" },
-      { "<Leader>nd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
-      { "<C-F>", function() if not require("noice.lsp").scroll(4) then return "<C-F>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
-      { "<C-B>", function() if not require("noice.lsp").scroll(-4) then return "<C-B>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
+      {
+        "<C-Enter>",
+        function()
+          require("noice").redirect(vim.fn.getcmdline())
+        end,
+        mode = "c",
+        desc = "Redirect Cmdline",
+      },
+      {
+        "<Leader>nl",
+        function()
+          require("noice").cmd("last")
+        end,
+        desc = "Noice Last Message",
+      },
+      {
+        "<Leader>nh",
+        function()
+          require("noice").cmd("history")
+        end,
+        desc = "Noice History",
+      },
+      {
+        "<Leader>na",
+        function()
+          require("noice").cmd("all")
+        end,
+        desc = "Noice All",
+      },
+      {
+        "<Leader>nd",
+        function()
+          require("noice").cmd("dismiss")
+        end,
+        desc = "Dismiss All",
+      },
+      {
+        "<C-F>",
+        function()
+          if not require("noice.lsp").scroll(4) then
+            return "<C-F>"
+          end
+        end,
+        silent = true,
+        expr = true,
+        desc = "Scroll forward",
+        mode = { "i", "n", "s" },
+      },
+      {
+        "<C-B>",
+        function()
+          if not require("noice.lsp").scroll(-4) then
+            return "<C-B>"
+          end
+        end,
+        silent = true,
+        expr = true,
+        desc = "Scroll backward",
+        mode = { "i", "n", "s" },
+      },
     },
     init = function()
       vim.opt.cmdheight = 0

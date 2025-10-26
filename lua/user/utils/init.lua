@@ -17,7 +17,6 @@ M.os_uname = vim.uv.os_uname()
 function M.is_windows()
   return M.os_uname.sysname:find("Windows") ~= nil
 end
-
 function M.is_macos()
   return M.os_uname.sysname == "Darwin"
 end
