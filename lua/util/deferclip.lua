@@ -1,5 +1,4 @@
 -- Related issue https://github.com/neovim/neovim/issues/21739#issuecomment-1399405391
-local utils = require("user.utils")
 
 local M = {}
 
@@ -75,13 +74,16 @@ function M.paste()
   return active_entry.lines
 end
 
+-- WARN: If the system clipboard was set by another app while you are play in nvim,
+-- the new clipboard content can not be catch. Usually, it will happen if you copy from
+-- the terminal where nvim lives
 function M.setup()
   -- Only for windows now
-  if not utils.is_windows() then
+  if not LazyVim.is_win() then
     return
   end
   vim.g.clipboard = {
-    name = "deferClip",
+    name = "DeferClip",
     copy = {
       ["+"] = M.copy("+"),
       ["*"] = M.copy("*"),
@@ -92,13 +94,9 @@ function M.setup()
     },
   }
   vim.api.nvim_create_autocmd({ "FocusGained", "VimEnter" }, {
-    group = utils.augroup("DeferClip"),
+    group = vim.api.nvim_create_augroup("DeferClip", {}),
     callback = M.sync_from,
   })
-  -- vim.api.nvim_create_autocmd({ "FocusLost", "VimEnter" }, {
-  --   group = utils.augroup("DeferClip"),
-  --   callback = M.sync_to,
-  -- })
 end
 
 return M

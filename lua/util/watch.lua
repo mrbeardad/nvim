@@ -1,10 +1,9 @@
-local utils = require("user.utils")
 local M = {}
 
 ---@class Watcher
 ---@field bufnr number
 ---@field fname string
----@field watch uv_fs_event_t
+---@field watch uv.uv_fs_event_t
 
 M.busy_watchers = {} ---@type table[Watcher]
 M.idle_watchers = {} ---@type table[Watcher]
@@ -67,7 +66,7 @@ function M.buf_win_enter()
   -- start watch new buf show in win
   for _, w in ipairs(wins) do
     local b = vim.api.nvim_win_get_buf(w)
-    if utils.is_real_file(b) then
+    if vim.bo[b].buftype == "" then
       local f = vim.api.nvim_buf_get_name(b)
       M.start_watch(b, f)
       bufs[f] = b
@@ -79,6 +78,24 @@ function M.buf_win_enter()
       M.stop_watch(w.bufnr, f)
     end
   end
+end
+
+function M.setup()
+  local augroup = vim.api.nvim_create_augroup("AutoReadFile", {})
+  vim.api.nvim_create_autocmd("BufWinEnter", {
+    group = augroup,
+    callback = function()
+      vim.schedule(function()
+        M.buf_win_enter()
+      end)
+    end,
+  })
+  vim.api.nvim_create_autocmd("VimLeave", {
+    group = augroup,
+    callback = function()
+      M.stop_all()
+    end,
+  })
 end
 
 return M

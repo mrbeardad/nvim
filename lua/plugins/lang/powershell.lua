@@ -1,10 +1,7 @@
-local utils = require("user.utils")
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, { "powershell" })
-    end,
+    opts = { ensure_installed = { "powershell" } },
   },
 
   {

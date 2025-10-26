@@ -2,7 +2,7 @@
 
 # Nvim
 
-✨ A nvim config for both neovim and vscode. The biggest difference from the other configs, such as [LazyVim](https://github.com/LazyVim/LazyVim), is that this config keeps neovim as a simple editor rather than IDE. Let vscode focus on being IDE, and let neovim focus on editing.
+✨ A nvim config for both neovim and vscode. This config is based on [LazyVim](https://github.com/LazyVim/LazyVim).
 
 ![lisence](https://img.shields.io/github/license/mrbeardad/nvim?style=for-the-badge&color=brightgreen)
 ![stars](https://img.shields.io/github/stars/mrbeardad/nvim?style=for-the-badge&color=yellow)
@@ -88,7 +88,7 @@ For detail see [here](https://www.reddit.com/r/neovim/comments/mbj8m5/how_to_set
 For historical reason, `<Tab>` and `<C-i>` have the same key sequence in most of terminals.
 To distinguish them, you could map another key, say `<M-I>`, to `<C-i>` in neovim,
 and then map `ctrl+i` to send `<M-I>` key sequence in your terminal setting.
-For more info [`:h tui-modifyOtherKeys`](https://neovim.io/doc/user/term.html#tui-input) and [xterm-modified-keys](https://invisible-island.net/xterm/modified-keys.html)
+For more info [`:h tui-modifyOtherKeys`](https://neovim.io/doc/user/tui.html#tui-input) and [xterm-modified-keys](https://invisible-island.net/xterm/modified-keys.html)
 
 > My own windows terminal setting is [here](https://github.com/mrbeardad/MyIDE/blob/master/wt/settings.json).
 
@@ -135,7 +135,7 @@ Make sure you have added following settings to your settings.json,
     "x",
     "y",
     // "z",
-    "/",
+    // "/",
     "]",
     "right",
     "left",
@@ -160,25 +160,23 @@ and also add all the [keybindings](https://github.com/mrbeardad/MyIDE/blob/maste
 | `k`         | `k`                | _Explorer_ | Down                   |
 | `h`         | `h`                | _Explorer_ | Collapse               |
 | `l`         | `l`                | _Explorer_ | Expand or open         |
-| `a`         | `a`                | _Explorer_ | Add new file           |
-| `A`         | `A`                | _Explorer_ | Add new directory      |
+| `a`         | `a`                | _Explorer_ | Add new file/directory |
 | `r`         | `r`                | _Explorer_ | Rename                 |
-| `x`         | `x`                | _Explorer_ | Cut                    |
 | `y`         | `y`                | _Explorer_ | Copy                   |
 | `p`         | `p`                | _Explorer_ | Paste                  |
 | `d`         | `d`                | _Explorer_ | Delete                 |
 | `c`         | `c`                | _Explorer_ | Copy path              |
 | `o`         | `o`                | _Explorer_ | Open by system         |
 | `/`         | `/`                | _Explorer_ | Filter                 |
-| `?`         | -                  | _Explorer_ | Help                   |
+| `?`         |                    | _Explorer_ | Help                   |
 
-| Neovim Keys                                       | VSCode Keys  | Mode  | Description   |
-| ------------------------------------------------- | ------------ | ----- | ------------- |
-| `H`                                               | `H`          | **N** | Previous file |
-| `L`                                               | `L`          | **N** | Next file     |
-| `Space` `Tab`/`Space` `Tab` `Tab`/`Space` `` ` `` | `Ctrl`+`Tab` | **N** | Switch file   |
-| `Ctrl`+`S`                                        | `Ctrl`+`S`   | **N** | Save file     |
-| `Space` `bd`                                      | `Ctrl+W` `q` | **N** | Close file    |
+| Neovim Keys   | VSCode Keys  | Mode  | Description   |
+| ------------- | ------------ | ----- | ------------- |
+| `H`           | `H`          | **N** | Previous file |
+| `L`           | `L`          | **N** | Next file     |
+| `Space` `Tab` | `Ctrl`+`Tab` | **N** | Switch file   |
+| `Ctrl`+`S`    | `Ctrl`+`S`   | **N** | Save file     |
+| `Space` `bd`  | `Ctrl+W` `q` | **N** | Close file    |
 
 | Neovim Keys    | VSCode Keys    | Mode  | Description                                 |
 | -------------- | -------------- | ----- | ------------------------------------------- |
@@ -200,27 +198,25 @@ and also add all the [keybindings](https://github.com/mrbeardad/MyIDE/blob/maste
 
 Use **Search** if the target positon is unknown or too far.
 
-| Neovim Key   | VSCode Key         | Mode        | Description                                                |
-| ------------ | ------------------ | ----------- | ---------------------------------------------------------- |
-| `/`          | `/`                | **N**       | Search forward in file                                     |
-| `?`          | `?`                | **N**       | Search backward in file                                    |
-| `*`          | `*`                | **N** **V** | Search forward for the word nearest to the cursor in file  |
-| `#`          | `#`                | **N** **V** | Search backward for the word nearest to the cursor in file |
-| `n`          | `n`                | **n**       | Search forwar for last pattern in file                     |
-| `N`          | `N`                | **N**       | Search backward for last pattern in file                   |
-| `Space` `/`  | `Ctrl`+`Shift`+`F` | **N** **V** | Search in workspace                                        |
-| `Space` `f`  | `Ctrl`+`P`         | **N**       | Search files in workspace                                  |
-| `Space` `r`  | `Ctrl`+`K` `R`     | **N**       | Search recently opened files                               |
-| `Space` `sw` | -                  | **N** **V** | Search based on word in workspace                          |
-| `Space` `sm` | _Side Bar_         | **N**       | Search marks                                               |
-| `Space` `st` | _Side Bar_         | **N**       | Search todos                                               |
-| `Space` `ss` | `Ctrl`+`Shift`+`O` | **N**       | Search symbols in file                                     |
-| `Space` `sS` | `Ctrl`+`T`         | **N**       | Search symbols in workspace                                |
-| `gd`         | `gd`               | **N**       | Go to definition                                           |
-| `gt`         | `gt`               | **N**       | Go to type definition                                      |
-| `gr`         | `gr`               | **N**       | Go to reference                                            |
-| `gi`         | `gi`               | **N**       | Go to implementation                                       |
-| `Ctrl`+`/`   | -                  | _Telescope_ | Help                                                       |
+| Neovim Key   | VSCode Key            | Mode        | Description                                                |
+| ------------ | --------------------- | ----------- | ---------------------------------------------------------- |
+| `/`          | `/`, `Ctrl`+`F`       | **N**       | Search forward in file                                     |
+| `?`          | `?`                   | **N**       | Search backward in file                                    |
+| `*`          | `*`                   | **N** **V** | Search forward for the word nearest to the cursor in file  |
+| `#`          | `#`                   | **N** **V** | Search backward for the word nearest to the cursor in file |
+| `n`          | `n`                   | **n**       | Search forwar for last pattern in file                     |
+| `N`          | `N`                   | **N**       | Search backward for last pattern in file                   |
+| `Space` `/`  | `Ctrl`+`Shift`+`F`    | **N** **V** | Search in workspace                                        |
+| `Space` `ff` | `Ctrl`+`P`            | **N**       | Search files in workspace                                  |
+| `Space` `fr` | `Ctrl`+`K` `Ctrl`+`R` | **N**       | Search recently opened files                               |
+| `Space` `sm` | _Side Bar_            | **N**       | Search marks                                               |
+| `Space` `st` | _Side Bar_            | **N**       | Search todos                                               |
+| `Space` `ss` | `Ctrl`+`Shift`+`O`    | **N**       | Search symbols in file                                     |
+| `Space` `sS` | `Ctrl`+`T`            | **N**       | Search symbols in workspace                                |
+| `gd`         | `gd`                  | **N**       | Go to definition                                           |
+| `gy`         | `gy`                  | **N**       | Go to type definition                                      |
+| `gr`         | `gr`                  | **N**       | Go to reference                                            |
+| `Ctrl`+`/`   |                       | _Picker_    | Help                                                       |
 
 > Tips:
 >
@@ -235,16 +231,15 @@ Use **Scroll** if the target position is roughly known.
 | ----------- | ----------- | ----- | ------------------------------------------------ |
 | `Ctrl`+`D`  | `Ctrl`+`D`  | **N** | Scroll down half screen                          |
 | `Ctrl`+`U`  | `Ctrl`+`U`  | **N** | Scroll up half screen                            |
-| `Ctrl`+`F`  | `Ctrl`+`F`  | **N** | Scroll down full screen                          |
+| `Ctrl`+`F`  |             | **N** | Scroll down full screen                          |
 | `Ctrl`+`B`  | `Ctrl`+`B`  | **N** | Scroll up full screen                            |
 | `gg`        | `gg`        | **N** | Go to first line                                 |
 | `G`         | `G`         | **N** | Go to `{count}`-th line , default last line      |
 | `zz`        | `zz`        | **N** | Scroll to leave current line at center of screen |
 | `zt`        | `zt`        | **N** | Scroll to leave current line at top of screen    |
 | `zb`        | `zb`        | **N** | Scroll to leave current line at bottom of screen |
-| `zh`        | `zh`        | **N** | Scroll left                                      |
-| `zl`        | `zl`        | **N** | Scroll right                                     |
-| `zs`        | -           | **N** | Scroll to leave current column at left of screen |
+| `Alt`+`F`   | `Alt`+`F`   | **N** | Scroll left                                      |
+| `Alt`+`B`   | `Alt`+`F`   | **N** | Scroll right                                     |
 
 ### Motion
 
@@ -277,27 +272,25 @@ Use **Motion** if the target position is exactly known.
 >   If you make the cursor "jump", the position of the cursor before the jump is remembered in jump list.
 >   For details, see [`:h jump-motions`](https://neovim.io/doc/user/motion.html#jump-motions)
 
-| Text Object (omit `a`/`i`) | Motions                       | Description                                    |
-| -------------------------- | ----------------------------- | ---------------------------------------------- |
-| `q`                        |                               | Quote surround, `""` `''` ` `` `               |
-| `b`                        |                               | Bracket surround, `{}` `[]` `()` `<>`          |
-| `t`                        |                               | Tag surround, `<tag></tag>`                    |
-| `{char}`                   |                               | Character surround, support punction and digit |
-| `?`                        |                               | User prompt surround                           |
-| `w`                        | `w` `b` `e`                   | word                                           |
-| `W`                        | `W` `B` `E`                   | WORD                                           |
-| `p`                        | `{` `}`                       | Paragraph                                      |
-| `l`                        |                               | Line                                           |
-| `e`                        |                               | Entire file                                    |
-| `g`                        | `[g` `]g`                     | Git change hunk                                |
-| `i`                        | `[i` `]i`                     | Indent                                         |
-| `o`                        |                               | Block/Loop/Condition                           |
-| `a`                        | `[a` `]a`                     | Argument                                       |
-| `f`                        |                               | Function call surround                         |
-| `F`                        | `[f` `]f`                     | Function                                       |
-| `c`                        | `[c` `]c`                     | Type definition                                |
-| -                          | `[d` `]d` `[e` `]e` `[w` `]w` | Diagnostics/Error/Warning                      |
-| `S` (not text object)      | `;` `,`                       | Parent treesitter node                         |
+| Text Object (omit `a`/`i`) | Motions                       | Description                                     |
+| -------------------------- | ----------------------------- | ----------------------------------------------- |
+| `?`                        |                               | User prompt surround                            |
+| `{char}`                   |                               | Character surround (support punction and digit) |
+| `q`                        |                               | Quote surround, `""` `''` ` `` `                |
+| `b`                        |                               | Bracket surround, `{}` `[]` `()` `<>`           |
+| `t`                        |                               | Tag surround, `<tag></tag>`                     |
+| `w`, `e`                   | `w` `b` `e`                   | word                                            |
+| `W`, `e`                   | `W` `B` `E`                   | WORD                                            |
+| `p`                        | `{` `}`                       | Paragraph                                       |
+| `g`                        |                               | Entire file                                     |
+| `i`                        | `[i` `]i`                     | Indent                                          |
+| `o`                        |                               | Block/Loop/Condition                            |
+| `a`                        | `[a` `]a`                     | Argument                                        |
+| `f`                        | `[f` `]f`                     | Function                                        |
+| `u`                        |                               | Function usage (calling)                        |
+| `c`                        | `[c` `]c`                     | Type definition                                 |
+|                            | `[d` `]d` `[e` `]e` `[w` `]w` | Diagnostics/Error/Warning                       |
+|                            | `[h` `]h`                     | Hunks (Git change or diff)                      |
 
 | Visual Selection Keys | Mode        | Description                                                                          |
 | --------------------- | ----------- | ------------------------------------------------------------------------------------ |
@@ -307,7 +300,7 @@ Use **Motion** if the target position is exactly known.
 | `o`                   | **V**       | Move cursor to begin or end of selection region, so you can tweek the range manually |
 | `a`/`i` `{textobj}`   | **V**       | Expand selection to fit outter text object, else select next text object             |
 | `an`/`in` `{textobj}` | **V**       | Select next/previous text object                                                     |
-| `aN`/`iN` `{textobj}` | **V**       | Select next/previous text object                                                     |
+| `al`/`il` `{textobj}` | **V**       | Select next/previous text object                                                     |
 
 ### Operation
 
@@ -361,7 +354,6 @@ Use **Motion** if the target position is exactly known.
 | `Ctrl`+`D` | **I** | Delete right                                   |
 | `Alt`+`D`  | **I** | Delete right word                              |
 | `Ctrl`+`K` | **I** | Delete all right                               |
-| `Ctrl`+`J` | **I** | New line                                       |
 
 #### Yank
 
@@ -376,13 +368,13 @@ Use **Motion** if the target position is exactly known.
 | `gP`                             | **N**       | Paste text above current line             |
 | `zp`                             | **N** **V** | Paste last yanked text after cursor       |
 | `zP`                             | **N**       | Paste last yanked text before cursor      |
-| `zgp`                            | **N**       | Paste last yanked text below current line |
-| `zgP`                            | **N**       | Paste last yanked text above current line |
-| `[p`                             | **N**       | Cycle forward through yank history        |
-| `]p`                             | **N**       | Cycle backward through yank history       |
+| `zgp`\|`gzp`                     | **N**       | Paste last yanked text below current line |
+| `zgP`\|`gzP`                     | **N**       | Paste last yanked text above current line |
+| `[y`                             | **N**       | Cycle forward through yank history        |
+| `]y`                             | **N**       | Cycle backward through yank history       |
 | `Ctrl`+`C`                       | **I** **V** | Copy (VSCode only)                        |
 | `Ctrl`+`V`                       | **I**       | Paste last yanked                         |
-| `Space` `sy`                     | **N**       | Search yank history                       |
+| `Space` `p`                      | **N**       | Search yank history                       |
 
 > Tips
 >
@@ -406,15 +398,15 @@ Use **Motion** if the target position is exactly known.
 | `@` `{register}`   | **N** | Execute the contents of register                         |
 | `@@`               | **N** | Repeat Previous `@`                                      |
 | `Q`                | **N** | Repeat the last recorded register                        |
-| `Ctrl`+`N`         | **N** | Add selection at next find match                         |
-| `Ctrl`+`Shift`+`N` | **N** | Move selection to next find match                        |
-| `Ctrl`+`Shift`+`L` | **N** | Add selection at all find match                          |
 | `Ctrl`+`J`         | **N** | Add cursor downward                                      |
 | `Ctrl`+`Shift`+`J` | **N** | Move cursor down                                         |
 | `Ctrl`+`K`         | **N** | Add cursor upward                                        |
 | `Ctrl`+`Shift`+`K` | **N** | Move cursor up                                           |
+| `Ctrl`+`N`         | **N** | Add selection at next find match                         |
+| `Ctrl`+`Shift`+`N` | **N** | Move selection to next find match                        |
+| `Ctrl`+`Shift`+`L` | **N** | Add selection at all find match                          |
 | `Space` `mw`       | **N** | Add cursor at selected word                              |
-| `Space` `ms`       | **N** | Add cursor at selected pattern match                     |
+| `Space` `mm`       | **N** | Add cursor at selected pattern match                     |
 
 > Tips
 >
