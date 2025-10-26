@@ -10,6 +10,7 @@ if vim.g.vscode then
 end
 
 vim.g.autoformat = true
+vim.opt.cmdheight = 0
 
 vim.opt.listchars = {
   tab = "→ ",
