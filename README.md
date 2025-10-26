@@ -2,7 +2,7 @@
 
 # Nvim
 
-✨ A nvim config for both neovim and vscode. The biggest difference from the other configs, such as [LazyVim](https://github.com/LazyVim/LazyVim), is that this config keeps neovim as a simple editor rather than IDE. Let vscode focus on being IDE, and let neovim focus on editing.
+✨ A nvim config for both neovim and vscode. This config is based on [LazyVim](https://github.com/LazyVim/LazyVim).
 
 ![lisence](https://img.shields.io/github/license/mrbeardad/nvim?style=for-the-badge&color=brightgreen)
 ![stars](https://img.shields.io/github/stars/mrbeardad/nvim?style=for-the-badge&color=yellow)
