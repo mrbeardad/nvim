@@ -2,7 +2,7 @@
 
 # Nvim
 
-✨ A nvim config for both neovim and vscode. This config is based on [LazyVim](https://github.com/LazyVim/LazyVim).
+✨ A nvim config for both neovim and vscode. Now this config is based on [LazyVim](https://github.com/LazyVim/LazyVim).
 
 ![lisence](https://img.shields.io/github/license/mrbeardad/nvim?style=for-the-badge&color=brightgreen)
 ![stars](https://img.shields.io/github/stars/mrbeardad/nvim?style=for-the-badge&color=yellow)
@@ -379,7 +379,6 @@ Use **Motion** if the target position is exactly known.
 > Tips
 >
 > - Commonly used registers (With [yanky](https://github.com/gbprod/yanky.nvim) installed)
->
 >   1. `"`: laste deleted, changed or yanked
 >   2. `0`: last yanked
 >   3. `1-9`: history of deleted, changed or yanked
