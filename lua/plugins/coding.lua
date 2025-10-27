@@ -92,14 +92,6 @@ return {
     },
   },
 
-  {
-    "neovim/nvim-lspconfig",
-    opts = function()
-      local keys = require("lazyvim.plugins.lsp.keymaps").get()
-      keys[#keys + 1] = { "<F2>", vim.lsp.buf.rename, desc = "Rename", has = "rename" }
-    end,
-  },
-
   -- Multiple cursor to modify matched pattern
   {
     "mrbeardad/nvim-multi-cursor",
