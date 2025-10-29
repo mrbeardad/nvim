@@ -11,7 +11,7 @@ return {
       { "t", mode = { "n", "x", "o" } },
       { "T", mode = { "n", "x", "o" } },
       { ";", mode = { "n", "x", "o" } },
-      { "n", mode = { "n", "x", "o" } },
+      { ",", mode = { "n", "x", "o" } },
       { "s", false, mode = { "n", "x", "o" } },
     },
     opts = {
