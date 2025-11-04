@@ -91,7 +91,17 @@ return {
       },
 
       terminal = {
-        shell = "pwsh",
+        win = {
+          keys = {
+            nav_h = false,
+            nav_j = false,
+            nav_k = false,
+            nav_l = false,
+            hide_slash = false,
+            hide_underscore = false,
+            hide = { "<C-`>", "hide", desc = "Hide Terminal", mode = { "t", "n" } },
+          },
+        },
       },
     },
   },
