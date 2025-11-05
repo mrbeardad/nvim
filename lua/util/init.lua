@@ -11,6 +11,17 @@ function M.goto_explorer_window()
   return false
 end
 
+function M.goto_terminal_window()
+  for index, win_id in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    local buf = vim.api.nvim_win_get_buf(win_id)
+    if vim.bo[buf].buftype == "terminal" then
+      vim.api.nvim_set_current_win(win_id)
+      return true
+    end
+  end
+  return false
+end
+
 function M.open_in_system(path)
   local sysname = vim.uv.os_uname().sysname
   if sysname:find("Windows") ~= nil then

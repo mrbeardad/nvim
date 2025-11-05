@@ -114,17 +114,6 @@ vim.keymap.del({ "n", "x" }, "gra")
 -- Toggle Wrap
 vim.keymap.set("n", "<M-z>", "<Cmd>setlocal wrap!<CR>", { desc = "Toggle 'wrap'" })
 
--- Terminal
-vim.keymap.set({ "n", "t" }, "<C-`>", function()
-  Snacks.terminal(
-    -- on windows, execute pwsh.exe directly may run the pwsh as unpackage app and case problem
-    LazyVim.is_win()
-        and vim.env.LOCALAPPDATA .. "\\Microsoft\\WindowsApps\\Microsoft.PowerShell_8wekyb3d8bbwe\\pwsh.exe"
-      or nil,
-    { cwd = LazyVim.root(), win = { position = "bottom" } }
-  )
-end, { desc = "Terminal (Root Dir)" })
-
 -- Buffers
 vim.keymap.set("n", "<Leader><Tab>", "<Cmd>try<Bar>b#<Bar>catch<Bar>endtry<CR>", { desc = "Switch Buffer" })
 
