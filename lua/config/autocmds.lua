@@ -20,5 +20,12 @@ if vim.g.vscode then
   return
 end
 
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("lazyvim_wrap_spell", { clear = true }),
+  pattern = { "text", "plaintex", "typst", "gitcommit", "markdown" },
+  callback = function()
+    vim.opt_local.wrap = true
+  end,
+})
 -- Automatically reload the file when it changed
 require("util.watch").setup()
