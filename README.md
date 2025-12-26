@@ -73,6 +73,21 @@ nvim
 
 ## Configuration
 
+Make sure you have added following settings to your vscode settings.json,
+
+```json
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+
+  // prettier-ignore
+  "vscode-neovim.ctrlKeysForInsertMode": ["w", "a", "e", "o", "h", "u", "d", "k", "r", "n"],
+  // prettier-ignore
+  "vscode-neovim.ctrlKeysForNormalMode": ["w", "d", "u", "b", "o", "i", "a", "x", "v", "r", "j", "n"],
+```
+
+and also add all the [keybindings](https://github.com/mrbeardad/MyIDE/blob/master/vscode/keybindings.json) to your keybindings.json
+
 In most of terminals, `<C-S-*>` and `<C-*>` have the same key sequence.
 To distinguish them, map `ctrl+shift+*` to send `<C-S-*>` key sequence in your terminal setting.
 For detail see [here](https://www.reddit.com/r/neovim/comments/mbj8m5/how_to_setup_ctrlshiftkey_mappings_in_neovim_and/)
@@ -83,63 +98,6 @@ and then map `ctrl+i` to send `<M-I>` key sequence in your terminal setting.
 For more info [`:h tui-modifyOtherKeys`](https://neovim.io/doc/user/tui.html#tui-input) and [xterm-modified-keys](https://invisible-island.net/xterm/modified-keys.html)
 
 > My own windows terminal setting is [here](https://github.com/mrbeardad/MyIDE/blob/master/wt/settings.json).
-
-Make sure you have added following settings to your settings.json,
-
-```json
-  "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1
-  },
-
-  "vscode-neovim.ctrlKeysForInsertMode": [
-    "a",
-    // "c",
-    "d",
-    "h",
-    "j",
-    "o",
-    "r",
-    "t",
-    "u",
-    "w",
-    // all above are default keys
-    "e",
-    "k",
-    "n"
-  ],
-  "vscode-neovim.ctrlKeysForNormalMode": [
-    "a",
-    "b",
-    // "c",
-    "d",
-    "e",
-    "f",
-    "h",
-    "i",
-    "j",
-    "l",
-    "o",
-    "r",
-    // "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    // "z",
-    // "/",
-    "]",
-    "right",
-    "left",
-    "up",
-    "down",
-    "backspace",
-    "delete",
-    "n"
-  ],
-```
-
-and also add all the [keybindings](https://github.com/mrbeardad/MyIDE/blob/master/vscode/keybindings.json) to your keybindings.json
 
 ## Keymaps
 
@@ -361,8 +319,8 @@ Use **Motion** if the target position is exactly known.
 | `zP`                             | **N**       | Paste last yanked text before cursor      |
 | `zgp`\|`gzp`                     | **N**       | Paste last yanked text below current line |
 | `zgP`\|`gzP`                     | **N**       | Paste last yanked text above current line |
-| `[y`                             | **N**       | Cycle forward through yank history        |
-| `]y`                             | **N**       | Cycle backward through yank history       |
+| `[y`\|`[p`                       | **N**       | Cycle forward through yank history        |
+| `]y`\|`]p`                       | **N**       | Cycle backward through yank history       |
 | `Ctrl`+`C`                       | **V**       | Copy (VSCode only)                        |
 | `Ctrl`+`V`                       | **I** **V** | Paste last yanked                         |
 | `Space` `p`                      | **N**       | Search yank history                       |

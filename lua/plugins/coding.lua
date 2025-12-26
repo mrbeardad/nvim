@@ -60,6 +60,8 @@ return {
       { "gzP", '"0<Plug>(YankyPutIndentBeforeLinewise)', desc = "Put Last Yanked Text Before Selection (Linewise)" },
       { "zgp", '"0<Plug>(YankyPutIndentAfterLinewise)', desc = "Put Last Yanked Text After Selection (Linewise)" },
       { "zgP", '"0<Plug>(YankyPutIndentBeforeLinewise)', desc = "Put Last Yanked Text Before Selection (Linewise)" },
+      { "[p", "<Plug>(YankyCycleForward)", desc = "Cycle Forward Through Yank History" },
+      { "]p", "<Plug>(YankyCycleBackward)", desc = "Cycle Backward Through Yank History" },
       { ">p", false },
       { "<p", false },
       { ">P", false },
@@ -144,18 +146,18 @@ return {
         end,
         mode = "x",
       },
-      {
-        "I",
-        function()
-          if #require("vscode-multi-cursor.state").cursors == 0 then
-            return "I"
-          end
-          require("vscode-multi-cursor").start_left()
-          return "<Ignore>"
-        end,
-        mode = "n",
-        expr = true,
-      },
+      -- {
+      --   "I",
+      --   function()
+      --     if #require("vscode-multi-cursor.state").cursors == 0 then
+      --       return "I"
+      --     end
+      --     require("vscode-multi-cursor").start_left()
+      --     return "<Ignore>"
+      --   end,
+      --   mode = "n",
+      --   expr = true,
+      -- },
       {
         "A",
         function()
@@ -163,18 +165,18 @@ return {
         end,
         mode = "x",
       },
-      {
-        "A",
-        function()
-          if #require("vscode-multi-cursor.state").cursors == 0 then
-            return "A"
-          end
-          require("vscode-multi-cursor").start_right()
-          return "<Ignore>"
-        end,
-        mode = "n",
-        expr = true,
-      },
+      -- {
+      --   "A",
+      --   function()
+      --     if #require("vscode-multi-cursor.state").cursors == 0 then
+      --       return "A"
+      --     end
+      --     require("vscode-multi-cursor").start_right()
+      --     return "<Ignore>"
+      --   end,
+      --   mode = "n",
+      --   expr = true,
+      -- },
       {
         "c",
         function()
@@ -189,15 +191,15 @@ return {
         mode = "x",
         expr = true,
       },
-      {
-        "<Leader>m",
-        function()
-          return require("vscode-multi-cursor").create_cursor()
-        end,
-        mode = { "n", "x" },
-        expr = true,
-        desc = "Create Cursor",
-      },
+      -- {
+      --   "<Leader>m",
+      --   function()
+      --     return require("vscode-multi-cursor").create_cursor()
+      --   end,
+      --   mode = { "n", "x" },
+      --   expr = true,
+      --   desc = "Create Cursor",
+      -- },
       -- {
       --   "<Leader>ms",
       --   function()
@@ -221,36 +223,36 @@ return {
       --   mode = "n",
       --   desc = "Create selection using flash",
       -- },
-      {
-        "<Esc>",
-        function()
-          if #require("vscode-multi-cursor.state").cursors ~= 0 then
-            require("vscode-multi-cursor").cancel()
-            return "<Ignore>"
-          else
-            return "<Cmd>nohlsearch|diffupdate|normal! <C-L><CR><Esc>"
-          end
-        end,
-        expr = true,
-        mode = "n",
-        desc = "Cancel/Clear All Cursors",
-      },
-      {
-        "[m",
-        function()
-          require("vscode-multi-cursor").prev_cursor()
-        end,
-        mode = "n",
-        desc = "Goto Prev Cursor",
-      },
-      {
-        "]m",
-        function()
-          require("vscode-multi-cursor").next_cursor()
-        end,
-        mode = "n",
-        desc = "Goto Next Cursor",
-      },
+      -- {
+      --   "<Esc>",
+      --   function()
+      --     if #require("vscode-multi-cursor.state").cursors ~= 0 then
+      --       require("vscode-multi-cursor").cancel()
+      --       return "<Ignore>"
+      --     else
+      --       return "<Cmd>nohlsearch|diffupdate|normal! <C-L><CR><Esc>"
+      --     end
+      --   end,
+      --   expr = true,
+      --   mode = "n",
+      --   desc = "Cancel/Clear All Cursors",
+      -- },
+      -- {
+      --   "[m",
+      --   function()
+      --     require("vscode-multi-cursor").prev_cursor()
+      --   end,
+      --   mode = "n",
+      --   desc = "Goto Prev Cursor",
+      -- },
+      -- {
+      --   "]m",
+      --   function()
+      --     require("vscode-multi-cursor").next_cursor()
+      --   end,
+      --   mode = "n",
+      --   desc = "Goto Next Cursor",
+      -- },
       {
         "<C-S-L>",
         function()
