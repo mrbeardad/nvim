@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD013 -->
 <div align="center">
 
 # Nvim
@@ -40,16 +41,7 @@
 
 ## Installation
 
-### Requirements
-
-- Neovim 0.10.0
-- Git
-- C/C++ compiler
-- CMake
-- ripgrep
-- fd
-- sqlite
-- Nerd Font
+### [Requirements](https://www.lazyvim.org/#%EF%B8%8F-requirements)
 
 ### Windows
 
@@ -186,7 +178,7 @@ and also add all the [keybindings](https://github.com/mrbeardad/MyIDE/blob/maste
 | `Ctrl`+`W` `v` | `Ctrl`+`W` `v` | **N** | Vertical split window                       |
 | `Ctrl`+`W` `=` | `Ctrl`+`W` `=` | **N** | Resize windows                              |
 | `Ctrl`+`W` `o` | `Ctrl`+`W` `o` | **N** | Close other windows                         |
-| `Ctrl`+`W` `q` | `Ctrl`+`W` `q` | **N** | Close `{count}`-th windows, default current |
+| `Ctrl`+`W` `c` | `Ctrl`+`W` `c` | **N** | Close `{count}`-th windows, default current |
 
 > Tips:
 >
@@ -198,30 +190,30 @@ and also add all the [keybindings](https://github.com/mrbeardad/MyIDE/blob/maste
 
 Use **Search** if the target positon is unknown or too far.
 
-| Neovim Key   | VSCode Key            | Mode        | Description                                                |
-| ------------ | --------------------- | ----------- | ---------------------------------------------------------- |
-| `/`          | `/`, `Ctrl`+`F`       | **N**       | Search forward in file                                     |
-| `?`          | `?`                   | **N**       | Search backward in file                                    |
-| `*`          | `*`                   | **N** **V** | Search forward for the word nearest to the cursor in file  |
-| `#`          | `#`                   | **N** **V** | Search backward for the word nearest to the cursor in file |
-| `n`          | `n`                   | **n**       | Search forwar for last pattern in file                     |
-| `N`          | `N`                   | **N**       | Search backward for last pattern in file                   |
-| `Space` `/`  | `Ctrl`+`Shift`+`F`    | **N** **V** | Search in workspace                                        |
-| `Space` `ff` | `Ctrl`+`P`            | **N**       | Search files in workspace                                  |
-| `Space` `fr` | `Ctrl`+`K` `Ctrl`+`R` | **N**       | Search recently opened files                               |
-| `Space` `sm` | _Side Bar_            | **N**       | Search marks                                               |
-| `Space` `st` | _Side Bar_            | **N**       | Search todos                                               |
-| `Space` `ss` | `Ctrl`+`Shift`+`O`    | **N**       | Search symbols in file                                     |
-| `Space` `sS` | `Ctrl`+`T`            | **N**       | Search symbols in workspace                                |
-| `gd`         | `gd`                  | **N**       | Go to definition                                           |
-| `gy`         | `gy`                  | **N**       | Go to type definition                                      |
-| `gr`         | `gr`                  | **N**       | Go to reference                                            |
-| `Ctrl`+`/`   |                       | _Picker_    | Help                                                       |
+| Neovim Key      | VSCode Key            | Mode        | Description                                                |
+| --------------- | --------------------- | ----------- | ---------------------------------------------------------- |
+| `/`             | `/`, `Ctrl`+`F`       | **N**       | Search forward in file                                     |
+| `?`             | `?`                   | **N**       | Search backward in file                                    |
+| `*`             | `*`                   | **N** **V** | Search forward for the word nearest to the cursor in file  |
+| `#`             | `#`                   | **N** **V** | Search backward for the word nearest to the cursor in file |
+| `n`             | `n`                   | **n**       | Search forwar for last pattern in file                     |
+| `N`             | `N`                   | **N**       | Search backward for last pattern in file                   |
+| `Space` `/`     | `Ctrl`+`Shift`+`F`    | **N** **V** | Search in workspace                                        |
+| `Space` `Space` | `Ctrl`+`P`            | **N**       | Search files in workspace                                  |
+| `Space` `r`     | `Ctrl`+`K` `Ctrl`+`R` | **N**       | Search recently opened files                               |
+| `Space` `sm`    | _Side Bar_            | **N**       | Search marks                                               |
+| `Space` `st`    | _Side Bar_            | **N**       | Search todos                                               |
+| `Space` `ss`    | `Ctrl`+`Shift`+`O`    | **N**       | Search symbols in file                                     |
+| `Space` `sS`    | `Ctrl`+`T`            | **N**       | Search symbols in workspace                                |
+| `gd`            | `gd`                  | **N**       | Go to definition                                           |
+| `gy`            | `gy`                  | **N**       | Go to type definition                                      |
+| `gr`            | `gr`                  | **N**       | Go to reference                                            |
+| `Ctrl`+`/`      |                       | _Picker_    | Help                                                       |
 
 > Tips:
 >
 > 1. For details of vim regular expression, see [`:h pattern`](https://neovim.io/doc/user/pattern.html#search-pattern)
-> 2. For fzf fuzzy search syntax, see [`:h telescope-fzf-native.nvim`](https://github.com/nvim-telescope/telescope-fzf-native.nvim#telescope-fzf-nativenvim)
+> 2. For fzf fuzzy search syntax, see [Fzf Search Syntax](https://junegunn.github.io/fzf/search-syntax/)
 
 ### Scroll
 
@@ -234,10 +226,9 @@ Use **Scroll** if the target position is roughly known.
 | `Ctrl`+`F`  |             | **N** | Scroll down full screen                          |
 | `Ctrl`+`B`  | `Ctrl`+`B`  | **N** | Scroll up full screen                            |
 | `gg`        | `gg`        | **N** | Go to first line                                 |
-| `G`         | `G`         | **N** | Go to `{count}`-th line , default last line      |
+| `G`         | `G`         | **N** | Go to `{count}`-th line, default last line       |
 | `zz`        | `zz`        | **N** | Scroll to leave current line at center of screen |
-| `zt`        | `zt`        | **N** | Scroll to leave current line at top of screen    |
-| `zb`        | `zb`        | **N** | Scroll to leave current line at bottom of screen |
+| `M`         | `M`         | **N** | Move cursor to center of screen                  |
 | `Alt`+`F`   | `Alt`+`F`   | **N** | Scroll left                                      |
 | `Alt`+`B`   | `Alt`+`F`   | **N** | Scroll right                                     |
 
@@ -372,8 +363,8 @@ Use **Motion** if the target position is exactly known.
 | `zgP`\|`gzP`                     | **N**       | Paste last yanked text above current line |
 | `[y`                             | **N**       | Cycle forward through yank history        |
 | `]y`                             | **N**       | Cycle backward through yank history       |
-| `Ctrl`+`C`                       | **I** **V** | Copy (VSCode only)                        |
-| `Ctrl`+`V`                       | **I**       | Paste last yanked                         |
+| `Ctrl`+`C`                       | **V**       | Copy (VSCode only)                        |
+| `Ctrl`+`V`                       | **I** **V** | Paste last yanked                         |
 | `Space` `p`                      | **N**       | Search yank history                       |
 
 > Tips
@@ -385,7 +376,6 @@ Use **Motion** if the target position is exactly known.
 >   4. `.`: last inserted text
 >   5. `:`: last command line
 >   6. `/`: last search pattern
->
 > - Use `` `[ `` or `` `] `` to jump to the start or end of last changed or yanked text.
 
 #### Repeat

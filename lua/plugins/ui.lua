@@ -25,7 +25,7 @@ return {
             Snacks.explorer({ cwd = LazyVim.root() })
           end
         end,
-        desc = "Explorer Snacks (root dir)",
+        desc = "Explorer Snacks (Root Dir)",
       },
       {
         "<leader>fE",
@@ -40,6 +40,20 @@ return {
         "<C-p>",
         "<Leader>ff",
         desc = "Find Files (Root Dir)",
+        remap = true,
+      },
+      {
+        "<Leader>r",
+        "<Leader>fr",
+        desc = "Recent",
+        mode = { "x" },
+        remap = true,
+      },
+      {
+        "<Leader>/",
+        "<Leader>sw",
+        desc = "Visual selection or word (Root Dir)",
+        mode = { "x" },
         remap = true,
       },
       {
@@ -65,6 +79,7 @@ return {
               ["<Esc>"] = { "close", mode = { "n", "i" } },
               ["<C-_>"] = { "toggle_help_input", mode = { "n", "i" } },
               ["<C-u>"] = false,
+              ["<C-v>"] = false,
             },
           },
         },
@@ -148,7 +163,12 @@ return {
   {
     "folke/which-key.nvim",
     opts = function(plugin, opts)
-      table.insert(opts.spec, { mode = { "n", "x" }, { { "<leader>t", group = "tabs" } } })
+      for _, group in ipairs(opts.spec[1]) do
+        if group.group == "tabs" then
+          group[1] = "<leader>t"
+          break
+        end
+      end
       table.insert(opts.spec, { mode = { "n", "x" }, { { "<leader>m", group = "multi-cursor" } } })
     end,
   },
@@ -188,9 +208,7 @@ return {
   {
     "tzachar/highlight-undo.nvim",
     event = "LazyFile",
-    opts = {
-      hlgroup = "IncSearch",
-    },
+    opts = {},
     vscode = true,
   },
 

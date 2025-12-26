@@ -1,3 +1,4 @@
+local func = require("vim.func")
 return {
   {
     "nvim-mini/mini.ai",
@@ -41,12 +42,15 @@ return {
     event = function()
       return "InsertEnter"
     end,
+    cond = not vim.g.vscode,
   },
 
   {
     "gbprod/yanky.nvim",
     -- stylua: ignore
     keys = {
+      { "p", "<Plug>(YankyPutBefore)", desc = "Yank Text Before Cursor", mode={"x"} },
+      { "<C-v>", "<Plug>(YankyPutBefore)", desc = "Yank Text Before Cursor", mode={"x"} },
       { "Y", "<Plug>(YankyYank)$", desc = "Yank Text After Cursor" },
       { "gp", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put Indented After Cursor (Linewise)" },
       { "gP", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put Indented Before Cursor (Linewise)" },
@@ -101,12 +105,31 @@ return {
       { "<C-S-J>", function() require("nvim-multi-cursor.cursor").cursor_down() end, mode = { "n" }, desc = "Move Cursor Down" },
       { "<C-K>", function() require("nvim-multi-cursor.cursor").toggle_cursor_upward() end, mode = { "n" }, desc = "Add Cursor Upward" },
       { "<C-S-K>", function() require("nvim-multi-cursor.cursor").cursor_up() end, mode = { "n" }, desc = "Move Cursor Up" },
-      { "<C-N>", function() require("nvim-multi-cursor.cursor").toggle_cursor_next_match() end, mode = { "n", "x" }, desc = "Add Cursor Upward" },
-      { "<C-S-N>", function() require("nvim-multi-cursor.cursor").cursor_next_match() end, mode = { "n" }, desc = "Move Cursor Up" },
+      { "<C-N>", function() require("nvim-multi-cursor.cursor").toggle_cursor_next_match() end, mode = { "n", "x" }, desc = "Add Cursor at Next Match" },
+      { "<C-S-N>", function() require("nvim-multi-cursor.cursor").cursor_next_match() end, mode = { "n" }, desc = "Move Cursor to Next Match" },
       { "<Leader>mw", function() require("nvim-multi-cursor.cursor").toggle_cursor_by_flash([[\<\w*\>]]) end, mode = { "n" }, desc = "Selection Wrod To Add Cursor" },
       { "<Leader>mm", function() require("nvim-multi-cursor.cursor").toggle_cursor_by_flash() end, mode = { "n" }, desc = "Selection To Add Cursor" },
     },
-    opts = {},
+    opts = {
+      start_hook = function()
+        vim.keymap.set({ "n" }, "m", function()
+          vim.b._nvim_multi_cursor_pressed_m = true
+          return "<Leader>ml"
+        end, { desc = "Add vscode cursor", buffer = true, remap = true, expr = true })
+      end,
+      stop_hook = function()
+        vim.keymap.del({ "n" }, "m", { buffer = true })
+      end,
+      normal_changed_hook = function()
+        vim.schedule(function()
+          if vim.b._nvim_multi_cursor_pressed_m then
+            require("nvim-multi-cursor.state").stop()
+            vim.api.nvim_input("I")
+            vim.b._nvim_multi_cursor_pressed_m = false
+          end
+        end)
+      end,
+    },
     vscode = true,
   },
 
