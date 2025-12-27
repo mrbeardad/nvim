@@ -361,7 +361,7 @@ Use **Motion** if the target position is exactly known.
 >
 > 1. Dot repeat `.`
 > 2. Multiple cursors
-> 3. Substitute command `:s/pat/repl/[flag]`
+> 3. Substitute command `:%s/pat/repl/[flag]`
 > 4. Macro `q`/`@`
 
 #### Undo

@@ -1,4 +1,3 @@
-local func = require("vim.func")
 return {
   {
     "nvim-mini/mini.ai",
@@ -112,26 +111,7 @@ return {
       { "<Leader>mw", function() require("nvim-multi-cursor.cursor").toggle_cursor_by_flash([[\<\w*\>]]) end, mode = { "n" }, desc = "Selection Wrod To Add Cursor" },
       { "<Leader>mm", function() require("nvim-multi-cursor.cursor").toggle_cursor_by_flash() end, mode = { "n" }, desc = "Selection To Add Cursor" },
     },
-    opts = {
-      start_hook = function()
-        vim.keymap.set({ "n" }, "m", function()
-          vim.b._nvim_multi_cursor_pressed_m = true
-          return "<Leader>ml"
-        end, { desc = "Add vscode cursor", buffer = true, remap = true, expr = true })
-      end,
-      stop_hook = function()
-        vim.keymap.del({ "n" }, "m", { buffer = true })
-      end,
-      normal_changed_hook = function()
-        vim.schedule(function()
-          if vim.b._nvim_multi_cursor_pressed_m then
-            require("nvim-multi-cursor.state").stop()
-            vim.api.nvim_input("I")
-            vim.b._nvim_multi_cursor_pressed_m = false
-          end
-        end)
-      end,
-    },
+    opts = {},
     vscode = true,
   },
 
@@ -146,18 +126,6 @@ return {
         end,
         mode = "x",
       },
-      -- {
-      --   "I",
-      --   function()
-      --     if #require("vscode-multi-cursor.state").cursors == 0 then
-      --       return "I"
-      --     end
-      --     require("vscode-multi-cursor").start_left()
-      --     return "<Ignore>"
-      --   end,
-      --   mode = "n",
-      --   expr = true,
-      -- },
       {
         "A",
         function()
@@ -165,24 +133,12 @@ return {
         end,
         mode = "x",
       },
-      -- {
-      --   "A",
-      --   function()
-      --     if #require("vscode-multi-cursor.state").cursors == 0 then
-      --       return "A"
-      --     end
-      --     require("vscode-multi-cursor").start_right()
-      --     return "<Ignore>"
-      --   end,
-      --   mode = "n",
-      --   expr = true,
-      -- },
       {
         "c",
         function()
           if vim.fn.mode() == "\x16" then
             require("vscode-multi-cursor").start_right()
-            require("vscode-neovim").action("deleteLeft")
+            require("vscode").action("deleteLeft")
             return "<Ignore>"
           else
             return "c"
@@ -191,68 +147,6 @@ return {
         mode = "x",
         expr = true,
       },
-      -- {
-      --   "<Leader>m",
-      --   function()
-      --     return require("vscode-multi-cursor").create_cursor()
-      --   end,
-      --   mode = { "n", "x" },
-      --   expr = true,
-      --   desc = "Create Cursor",
-      -- },
-      -- {
-      --   "<Leader>ms",
-      --   function()
-      --     if vim.api.nvim_get_hl(0, { name = "FlashLabelUnselected" }).bg == nil then
-      --       vim.api.nvim_set_hl(
-      --         0,
-      --         "FlashLabelUnselected",
-      --         { fg = "#b9bbc4", bg = "#bd0c69", italic = true, bold = true }
-      --       )
-      --     end
-      --     keymap.toggle_cursor_by_flash()
-      --   end,
-      --   mode = "n",
-      --   desc = "Create cursor using flash",
-      -- },
-      -- {
-      --   "mcw",
-      --   function()
-      --     require("vscode-multi-cursor").flash_word()
-      --   end,
-      --   mode = "n",
-      --   desc = "Create selection using flash",
-      -- },
-      -- {
-      --   "<Esc>",
-      --   function()
-      --     if #require("vscode-multi-cursor.state").cursors ~= 0 then
-      --       require("vscode-multi-cursor").cancel()
-      --       return "<Ignore>"
-      --     else
-      --       return "<Cmd>nohlsearch|diffupdate|normal! <C-L><CR><Esc>"
-      --     end
-      --   end,
-      --   expr = true,
-      --   mode = "n",
-      --   desc = "Cancel/Clear All Cursors",
-      -- },
-      -- {
-      --   "[m",
-      --   function()
-      --     require("vscode-multi-cursor").prev_cursor()
-      --   end,
-      --   mode = "n",
-      --   desc = "Goto Prev Cursor",
-      -- },
-      -- {
-      --   "]m",
-      --   function()
-      --     require("vscode-multi-cursor").next_cursor()
-      --   end,
-      --   mode = "n",
-      --   desc = "Goto Next Cursor",
-      -- },
       {
         "<C-S-L>",
         function()

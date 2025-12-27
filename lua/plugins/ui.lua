@@ -46,7 +46,6 @@ return {
         "<Leader>r",
         "<Leader>fr",
         desc = "Recent",
-        mode = { "x" },
         remap = true,
       },
       {

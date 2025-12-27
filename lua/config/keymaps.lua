@@ -32,7 +32,7 @@ vim.keymap.set("n", "<Leader>t[", "<Cmd>tabprevious<CR>", { desc = "Previous Tab
 
 -- VSCode
 if vim.g.vscode then
-  local vscode = require("vscode-neovim")
+  local vscode = require("vscode")
   local function vscode_action(cmd)
     return function()
       vscode.action(cmd)
