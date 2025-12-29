@@ -46,12 +46,11 @@ return {
 
   {
     "gbprod/yanky.nvim",
-    -- stylua: ignore
     keys = {
-      { "p", "<Plug>(YankyPutBefore)", desc = "Yank Text Before Cursor", mode={"x"} },
-      { "P", "<Plug>(YankyPutAfter)", desc = "Yank Text After Cursor", mode={"x"} },
-      { "<C-v>", "<Plug>(YankyPutBefore)", desc = "Yank Text Before Cursor", mode={"x"} },
       { "Y", "<Plug>(YankyYank)$", desc = "Yank Text After Cursor" },
+      { "p", "<Plug>(YankyPutBefore)", mode = { "x" }, desc = "Put Text Before Cursor" },
+      { "P", "<Plug>(YankyPutAfter)", mode = { "x" }, desc = "Put Text After Cursor" },
+      { "<C-v>", "<Plug>(YankyPutBefore)", mode = { "x" }, desc = "Yank Text Before Cursor" },
       { "gp", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put Indented After Cursor (Linewise)" },
       { "gP", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put Indented Before Cursor (Linewise)" },
       { "zp", '"0<Plug>(YankyPutAfter)', mode = { "n", "x" }, desc = "Put Last Yanked Text After Cursor" },
@@ -66,6 +65,16 @@ return {
       { "<p", false },
       { ">P", false },
       { "<P", false },
+    },
+    opts = {
+      ring = {
+        permanent_wrapper = function(callback)
+          return function(state, do_put)
+            require("nvim-multi-cursor.utils").on_put_pre()
+            return callback(state, do_put)
+          end
+        end,
+      },
     },
   },
 
@@ -89,11 +98,48 @@ return {
 
   {
     "saghen/blink.cmp",
+    init = function()
+      -- enable cmp when reg_recording
+      LazyVim.on_load("blink.cmp", function()
+        -- stylua: ignore
+        require("blink.cmp.config").enabled = function()
+          -- disable in macros
+          -- if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then return false end
+
+          if vim.api.nvim_get_mode().mode == "c" or vim.fn.win_gettype() == "command" then return true end
+          if vim.api.nvim_get_mode().mode == "t" then return false end
+
+          local user_enabled = true
+          -- User explicitly ignores default conditions
+          if user_enabled == "force" then return true end
+
+          -- Buffer explicitly set completion to true, always enable
+          if user_enabled and vim.b.completion == true then return true end
+
+          -- Buffer explicitly set completion to false, always disable
+          if vim.b.completion == false then return false end
+
+          -- Exceptions
+          if user_enabled and vim.bo.filetype == "dap-repl" then return true end
+
+          return user_enabled and vim.bo.buftype ~= "prompt" and vim.b.completion ~= false
+        end
+      end)
+    end,
+
     opts = {
       keymap = {
         preset = "super-tab",
         -- stylua: ignore
-        ["<C-n>"] = { function(cmp) cmp.show() end, "select_next", },
+        ["<C-n>"] = { function(cmp) cmp.show() end, "select_next", 'fallback_to_mappings' },
+      },
+      completion = {
+        accept = {
+          auto_brackets = {
+            enabled = false,
+          },
+        },
+        list = { selection = { preselect = true, auto_insert = false } },
       },
     },
   },
@@ -112,7 +158,21 @@ return {
       { "<Leader>mw", function() require("nvim-multi-cursor.cursor").toggle_cursor_by_flash([[\<\w*\>]]) end, mode = { "n" }, desc = "Selection Wrod To Add Cursor" },
       { "<Leader>mm", function() require("nvim-multi-cursor.cursor").toggle_cursor_by_flash() end, mode = { "n" }, desc = "Selection To Add Cursor" },
     },
-    opts = {},
+    opts = {
+      start_hook = function()
+        vim.keymap.set("i", "<C-r>", function()
+          local ch = vim.fn.getcharstr()
+          local reg_pattern = [[^[a-zA-Z0-9"_%#*+\-.:/=]$]]
+          if string.match(ch, reg_pattern) then
+            require("nvim-multi-cursor.utils").on_put_pre(ch)
+          end
+          return "<C-r>" .. ch
+        end, { expr = true, buffer = true })
+      end,
+      stop_hook = function()
+        vim.keymap.del("i", "<C-r>", { buffer = true })
+      end,
+    },
     vscode = true,
   },
 

@@ -5,7 +5,6 @@
 local util = require("util")
 
 -- Buffers
-vim.keymap.del("n", "<Leader>`")
 vim.keymap.del("n", "<Leader>,")
 vim.keymap.set("n", "<Leader><Tab>", "<Cmd>try<Bar>b#<Bar>catch<Bar>endtry<CR>", { desc = "Switch Buffer" })
 vim.keymap.set("n", "<Leader><Tab><Tab>", "<Leader>fb", { desc = "Find Buffers", remap = true })
@@ -32,10 +31,9 @@ vim.keymap.set("n", "<Leader>t[", "<Cmd>tabprevious<CR>", { desc = "Previous Tab
 
 -- VSCode
 if vim.g.vscode then
-  local vscode = require("vscode")
   local function vscode_action(cmd)
     return function()
-      vscode.action(cmd)
+      require("vscode").action(cmd)
     end
   end
 
@@ -72,12 +70,12 @@ if vim.g.vscode then
   vim.keymap.set({ "n", "x" }, "<C-o>", vscode_action("workbench.action.navigateBack"), { desc = "Go Back" })
   vim.keymap.set({ "n", "x" }, "<C-i>", vscode_action("workbench.action.navigateForward"), { desc = "Go Forward" })
   vim.keymap.set("n", "]h", function()
-    vscode.action("workbench.action.editor.nextChange")
-    vscode.action("workbench.action.compareEditor.nextChange")
+    require("vscode").action("workbench.action.editor.nextChange")
+    require("vscode").action("workbench.action.compareEditor.nextChange")
   end, { desc = "Next Git Diff" })
   vim.keymap.set("n", "[h", function()
-    vscode.action("workbench.action.editor.previousChange")
-    vscode.action("workbench.action.compareEditor.previousChange")
+    require("vscode").action("workbench.action.editor.previousChange")
+    require("vscode").action("workbench.action.compareEditor.previousChange")
   end, { desc = "Prev Git Diff" })
   vim.keymap.set("n", "]d", vscode_action("editor.action.marker.next"), { desc = "Next Diagnostic" })
   vim.keymap.set("n", "[d", vscode_action("editor.action.marker.prev"), { desc = "Prev Diagnostic" })
@@ -103,7 +101,7 @@ vim.keymap.set("i", "<C-e>", "<End>", { desc = "End Of Line" })
 -- and then map ctrl+i to send <M-I> key sequence in your terminal setting.
 -- For more info `:h tui-input` and https://invisible-island.net/xterm/modified-keys.html
 vim.keymap.set({ "i", "c", "n", "v", "t" }, "<M-`>", "<C-`>", { desc = "<C-`>", remap = true })
-vim.keymap.set({ "i", "c", "n", "v" }, "<M-I>", "<C-I>", { desc = "<C-I>", remap = true })
+vim.keymap.set({ "i", "c", "n", "v" }, "<M-I>", "<C-I>", { desc = "<C-I>" })
 vim.keymap.set({ "i", "c", "n", "v" }, "<M-J>", "<C-S-J>", { desc = "<C-S-J>", remap = true })
 
 -- Operation: visual word
@@ -151,3 +149,10 @@ vim.keymap.del({ "n", "x" }, "gra")
 
 -- Toggle Wrap
 vim.keymap.set("n", "<M-z>", "<Cmd>setlocal wrap!<CR>", { desc = "Toggle 'wrap'" })
+
+-- Misc
+vim.keymap.set("n", "g8", function()
+  local ga = vim.fn.execute("ascii")
+  vim.cmd("silent normal! g8")
+  vim.print(ga .. ", UTF-8: " .. vim.v.statusmsg)
+end, { desc = "Ascii and Utf-8" })

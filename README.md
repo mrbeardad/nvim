@@ -328,12 +328,13 @@ Use **Motion** if the target position is exactly known.
 > Tips
 >
 > - Commonly used registers (With [yanky](https://github.com/gbprod/yanky.nvim) installed)
->   1. `"`: laste deleted, changed or yanked
->   2. `0`: last yanked
->   3. `1-9`: history of deleted, changed or yanked
->   4. `.`: last inserted text
->   5. `:`: last command line
->   6. `/`: last search pattern
+>   1. `"`: laste changed, deleted or yanked
+>   2. `1-9`: history of deleted, changed or yanked
+>   3. `0`: last yanked
+>   4. `-`: last short changed or deleted (didn't across multiple lines)
+>   5. `.`: last inserted text
+>   6. `:`: last command line
+>   7. `/`: last search pattern
 > - Use `` `[ `` or `` `] `` to jump to the start or end of last changed or yanked text.
 
 #### Repeat

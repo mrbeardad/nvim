@@ -140,6 +140,14 @@ return {
     event = function(plugin, events)
       return "LazyFile"
     end,
+    keys = {
+      {
+        "<Leader>`",
+        "<Cmd>BufferLinePick<CR>",
+        desc = "Pick Buffer",
+        mode = { "n" },
+      },
+    },
     opts = {
       options = {
         always_show_bufferline = true,
