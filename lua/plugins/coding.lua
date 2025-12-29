@@ -49,6 +49,7 @@ return {
     -- stylua: ignore
     keys = {
       { "p", "<Plug>(YankyPutBefore)", desc = "Yank Text Before Cursor", mode={"x"} },
+      { "P", "<Plug>(YankyPutAfter)", desc = "Yank Text After Cursor", mode={"x"} },
       { "<C-v>", "<Plug>(YankyPutBefore)", desc = "Yank Text Before Cursor", mode={"x"} },
       { "Y", "<Plug>(YankyYank)$", desc = "Yank Text After Cursor" },
       { "gp", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put Indented After Cursor (Linewise)" },
