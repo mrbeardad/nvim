@@ -229,7 +229,7 @@ Use **Motion** if the target position is exactly known.
 | `b`                        |                               | Bracket surround, `{}` `[]` `()` `<>`           |
 | `t`                        |                               | Tag surround, `<tag></tag>`                     |
 | `w`, `e`                   | `w` `b` `e`                   | word                                            |
-| `W`, `e`                   | `W` `B` `E`                   | WORD                                            |
+| `W`, `E`                   | `W` `B` `E`                   | WORD                                            |
 | `p`                        | `{` `}`                       | Paragraph                                       |
 | `g`                        |                               | Entire file                                     |
 | `i`                        | `[i` `]i`                     | Indent                                          |
