@@ -5,6 +5,7 @@
 if vim.g.vscode then
   vim.notify = require("vscode").notify
   vim.g.clipboard = vim.g.vscode_clipboard
+  vim.cmd.syntax("off")
   return
 end
 
