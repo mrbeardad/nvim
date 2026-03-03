@@ -60,9 +60,7 @@ return {
         function()
           if not util.goto_terminal_window() then
             -- on windows, execute pwsh.exe directly may run the pwsh as unpackage app and case problem
-            local cmd = LazyVim.is_win()
-                and vim.env.LOCALAPPDATA .. "\\Microsoft\\WindowsApps\\Microsoft.PowerShell_8wekyb3d8bbwe\\pwsh.exe"
-              or nil
+            local cmd = LazyVim.is_win() and "pwsh.exe" or nil
             Snacks.terminal(cmd, { cwd = LazyVim.root(), win = { position = "bottom" }, auto_insert = false })
           end
         end,
