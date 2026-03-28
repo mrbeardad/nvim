@@ -80,13 +80,11 @@ Make sure you have added following settings to your vscode settings.json,
     "asvetliakov.vscode-neovim": 1
   },
 
-  // prettier-ignore
   "vscode-neovim.ctrlKeysForInsertMode": ["w", "a", "e", "o", "h", "u", "d", "k", "r", "n"],
-  // prettier-ignore
   "vscode-neovim.ctrlKeysForNormalMode": ["w", "d", "u", "b", "o", "i", "a", "x", "v", "r", "j", "n"],
 ```
 
-and also add all the [keybindings](https://github.com/mrbeardad/MyIDE/blob/master/vscode/keybindings.json) to your keybindings.json
+and also add all the [keybindings](https://github.com/mrbeardad/MyIDE/blob/3061a0c1f81ae012952358f97c651e27bb16e664/vscode/keybindings.json) to your keybindings.json
 
 In most of terminals, `<C-S-*>` and `<C-*>` have the same key sequence.
 To distinguish them, map `ctrl+shift+*` to send `<C-S-*>` key sequence in your terminal setting.
